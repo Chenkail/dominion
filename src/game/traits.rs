@@ -2,7 +2,7 @@ pub trait Card {
     fn cost(&self) -> u8;
     fn name(&self) -> &'static str;
 
-    fn description() -> &'static str {
+    fn description(&self) -> &'static str {
         return "";
     }
 }
@@ -20,7 +20,7 @@ pub trait Action: Card {
 }
 
 pub trait Attack: Action {
-    fn effects(&self);
+    fn attack(&self);
 }
 
 pub trait Reaction: Action {
