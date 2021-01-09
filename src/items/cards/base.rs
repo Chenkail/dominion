@@ -1,9 +1,6 @@
-#[path = "../traits/card.rs"] pub mod card;
-pub use card as data;
-use data::*;
+use crate::items::traits::card::*;
 
 pub struct Copper;
-
 impl Card for Copper {
     fn cost(&self) -> u8 {
         return 0;
@@ -13,14 +10,13 @@ impl Card for Copper {
         return "Copper";
     }
 }
-
 impl Treasure for Copper {
     fn value(&self) -> u8 {
         return 1;
     }
 }
-pub struct Silver;
 
+pub struct Silver;
 impl Card for Silver {
     fn cost(&self) -> u8 {
         return 3;
@@ -30,7 +26,6 @@ impl Card for Silver {
         return "Silver";
     }
 }
-
 impl Treasure for Silver {
     fn value(&self) -> u8 {
         return 2;
@@ -38,7 +33,6 @@ impl Treasure for Silver {
 }
 
 pub struct Gold;
-
 impl Card for Gold {
     fn cost(&self) -> u8 {
         return 6;
@@ -48,7 +42,6 @@ impl Card for Gold {
         return "Gold";
     }
 }
-
 impl Treasure for Gold {
     fn value(&self) -> u8 {
         return 3;

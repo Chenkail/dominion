@@ -1,12 +1,16 @@
-mod cards;
+mod items;
+use items::cards;
+use items::traits::card::*;
 
-use cards::base;
-use cards::base::data::{Card, Treasure};
+use cards::*;
 
 fn main() {
-    let cop = base::Copper;
-    println!("{}", cop.cost());
+    let copper = base::Copper;
+    println!("{}", copper.cost());
 
-    let sil = base::Silver;
-    println!("{}", sil.value());
+    let silver = base::Silver;
+    println!("{}", silver.value());
+
+    let nobles = intrigue::Nobles;
+    println!("{}", nobles.points());
 }
