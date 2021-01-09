@@ -1,3 +1,4 @@
+use std::mem;
 use rand::thread_rng;
 use rand::seq::SliceRandom;
 
@@ -35,15 +36,28 @@ impl Player {
         Player {hand, deck, discard}
     }
 
-    pub fn actions() {
+    pub fn actions(&self) {
         
     }
 
-    pub fn buy() {
+    pub fn buy(&self) {
 
     }
 
-    pub fn cleanup() {
-        
+    pub fn cleanup(&mut self) {
+        for _ in 0..self.hand.len() {
+            self.discard.push(self.hand.pop().unwrap());
+        }
+
+        for _ in 0..5 {
+            // If deck is empty, shuffle discard and swap it with the empty deck
+            if self.deck.len() == 0 {
+                let mut rng = thread_rng();
+                self.discard.shuffle(&mut rng);
+                mem::swap(&mut self.deck, &mut self.discard);
+            }
+
+            self.hand.push(self.deck.pop().unwrap());
+        }
     }
 }

@@ -13,9 +13,22 @@ fn main() {
 
     let nobles = intrigue::Nobles;
     println!("{}", nobles.points());
+    
+    println!();
+    let mut player = Player::new();
+    for card in &player.hand {
+        println!("{}", &*card.name());
+    }
 
-    let player1 = Player::new();
-    for card in player1.deck {
-        // let ca = *card.;
+    println!();
+    for card in &player.deck {
+        println!("{}", &*card.name());
+    }
+
+    player.cleanup();
+
+    println!();
+    for card in &player.discard {
+        println!("{}", &*card.name());
     }
 }
