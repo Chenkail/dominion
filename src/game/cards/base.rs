@@ -99,7 +99,7 @@ impl Victory for Province {
 pub struct Curse;
 impl Card for Curse {
     fn cost(&self) -> u8 {
-        return 6;
+        return 0;
     }
     
     fn name(&self) -> &'static str {
