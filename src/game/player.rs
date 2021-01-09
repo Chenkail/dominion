@@ -2,7 +2,9 @@ use std::mem;
 use rand::thread_rng;
 use rand::seq::SliceRandom;
 
-use super::{cards::base::*, traits::Card};
+use super::{traits::Card, 
+            cards::base::*, 
+            cards::intrigue::*,};
 
 pub struct Player {
     pub hand: Vec<Box<dyn Card>>,
