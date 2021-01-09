@@ -2,9 +2,7 @@ use std::mem;
 use rand::thread_rng;
 use rand::seq::SliceRandom;
 
-use super::{traits::Card, 
-            cards::base::*, 
-            cards::intrigue::*,};
+use super::{traits::Card, cards::base::*};
 
 pub struct Player {
     pub hand: Vec<Box<dyn Card>>,
@@ -13,6 +11,7 @@ pub struct Player {
 }
 
 impl Player {
+    /// Create a new player with 3 estates and 7 copper
     pub fn new() -> Player {
         let mut hand: Vec<Box<dyn Card>> = Vec::new();
         let mut deck: Vec<Box<dyn Card>> = Vec::new();
@@ -35,17 +34,20 @@ impl Player {
             hand.push(deck.pop().unwrap());
         }
 
-        Player {hand, deck, discard}
+        Player { hand, deck, discard }
     }
 
+    /// Action phase
     pub fn actions(&self) {
         
     }
 
+    /// Buy phase
     pub fn buy(&self) {
 
     }
 
+    /// Cleanup phase at end of turn - discard hand and draw five new cards
     pub fn cleanup(&mut self) {
         for _ in 0..self.hand.len() {
             self.discard.push(self.hand.pop().unwrap());

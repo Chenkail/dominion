@@ -24,7 +24,7 @@ pub trait Attack: Action {
 }
 
 pub trait Reaction: Action {
-    
+    fn react(&self);
 }
 
 pub (crate) trait CurseTrait: Card {
