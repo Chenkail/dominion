@@ -1,6 +1,6 @@
 mod items;
 use items::cards;
-use items::traits::card::*;
+use crate::items::traits::*;
 
 use cards::*;
 
