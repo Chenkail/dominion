@@ -16,5 +16,7 @@ impl Victory for Nobles {
     }
 }
 impl Action for Nobles {
-    
+    fn effects(&self) {
+        
+    }
 }
