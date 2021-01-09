@@ -1,4 +1,4 @@
-use crate::items::traits::*;
+use crate::game::traits::*;
 
 pub struct Smithy;
 impl Card for Smithy {

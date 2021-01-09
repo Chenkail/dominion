@@ -1,6 +1,6 @@
-mod items;
-use items::cards;
-use crate::items::traits::*;
+mod game;
+use game::cards;
+use crate::game::traits::*;
 
 use cards::*;
 

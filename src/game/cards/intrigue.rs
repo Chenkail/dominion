@@ -1,4 +1,4 @@
-use crate::items::traits::*;
+use crate::game::traits::*;
 
 pub struct Nobles;
 impl Card for Nobles {
