@@ -19,7 +19,7 @@ pub (crate) trait Victory: Card {
     fn points(&self) -> u8;
 }
 
-pub (crate) trait Curse: Card {
+pub (crate) trait CurseTrait: Card {
     fn points(&self) -> u8 {
         return 1;
     }

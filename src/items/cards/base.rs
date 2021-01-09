@@ -47,3 +47,67 @@ impl Treasure for Gold {
         return 3;
     }
 }
+
+pub struct Estate;
+impl Card for Estate {
+    fn cost(&self) -> u8 {
+        return 2;
+    }
+    
+    fn name(&self) -> &'static str {
+        return "Estate";
+    }
+}
+impl Victory for Estate {
+    fn points(&self) -> u8 {
+        return 1;
+    }
+}
+
+pub struct Duchy;
+impl Card for Duchy {
+    fn cost(&self) -> u8 {
+        return 5;
+    }
+    
+    fn name(&self) -> &'static str {
+        return "Duchy";
+    }
+}
+impl Victory for Duchy {
+    fn points(&self) -> u8 {
+        return 3;
+    }
+}
+
+pub struct Province;
+impl Card for Province {
+    fn cost(&self) -> u8 {
+        return 8;
+    }
+    
+    fn name(&self) -> &'static str {
+        return "Province";
+    }
+}
+impl Victory for Province {
+    fn points(&self) -> u8 {
+        return 6;
+    }
+}
+
+pub struct Curse;
+impl Card for Curse {
+    fn cost(&self) -> u8 {
+        return 6;
+    }
+    
+    fn name(&self) -> &'static str {
+        return "Curse";
+    }
+}
+impl CurseTrait for Curse {
+    fn points(&self) -> u8 {
+        return 1;
+    }
+}
