@@ -12,8 +12,9 @@ pub struct Resources {
 }
 
 impl Resources {
+    /// Create a new Resources object
     pub fn new() -> Resources {
-        Resources {actions: 0, buys: 0, temp_coins: 0}
+        Resources {actions: 1, buys: 1, temp_coins: 0}
     }
 }
 
@@ -67,8 +68,9 @@ impl Player {
         }
     }
 
-    pub fn play_action(mut self, card: &dyn Action) {
+    pub fn play_action(mut self, card: &dyn Action) -> Player {
         self = card.effects(self);
+        return self;
     }
 
     /// Action phase
@@ -94,5 +96,26 @@ impl Player {
         }
 
         self.draw_cards(5);
+    }
+
+    /// Print out all cards that the player has
+    pub fn print_cards(&self) {
+        println!("Hand:");
+        for card in &self.hand {
+            print!("{}, ", card.name());
+        }
+        println!();
+
+        println!("Deck:");
+        for card in &self.deck {
+            print!("{}, ", card.name());
+        }
+        println!();
+        
+        println!("Discard:");
+        for card in &self.discard {
+            print!("{}, ", card.name());
+        }
+        println!();
     }
 }

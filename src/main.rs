@@ -1,10 +1,11 @@
 mod game;
-use game::{cards, gamedata::Game, player, traits::*};
-
-use cards::*;
-use player::Player;
+use game::{cards, gamedata::Game, player::*, traits::*};
+use cards::dominion::*;
 
 fn main() {
     let game = Game::default(4);
-    
+    let mut player = Player::new();
+    player.print_cards();
+    player = player.play_action(&Smithy);
+    player.print_cards();
 }
