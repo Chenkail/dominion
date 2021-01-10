@@ -1,7 +1,7 @@
 use crate::game::player::Player;
 
 pub trait Card {
-    fn cost(&self) -> u8;
+    fn cost(&self) -> i32;
     fn name(&self) -> &'static str;
 
     fn description(&self) -> &'static str {
@@ -10,11 +10,11 @@ pub trait Card {
 }
 
 pub trait Treasure: Card {
-    fn value(&self) -> u8;
+    fn value(&self) -> i32;
 }
 
 pub trait Victory: Card {
-    fn points(&self) -> u8;
+    fn points(&self) -> i32;
 }
 
 pub trait Action: Card {
@@ -30,7 +30,7 @@ pub trait Reaction: Action {
 }
 
 pub (crate) trait CurseTrait: Card {
-    fn points(&self) -> u8 {
+    fn points(&self) -> i32 {
         return 1;
     }
 }

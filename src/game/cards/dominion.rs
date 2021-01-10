@@ -2,7 +2,7 @@ use crate::game::{player::Player, traits::*};
 
 pub struct Smithy;
 impl Card for Smithy {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 4;
     }
     

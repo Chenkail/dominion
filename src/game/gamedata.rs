@@ -11,29 +11,29 @@ impl Game {
         let mut supply = HashMap::new();
         let kingdom_cards = vec!["Cellar", "Market", "Merchant", "Militia", "Mine", 
                                             "Moat", "Remodel", "Smithy", "Village", "Workshop"];
-        let victory_count;
+        let victory_card_count;
         match players {
             2 => {
                 supply.insert("Curse", 10);
-                victory_count = 8;
+                victory_card_count = 8;
             }
             
             3 => {
                 supply.insert("Curse", 20);
-                victory_count = 12;
+                victory_card_count = 12;
             }
 
             4 => {
                 supply.insert("Curse", 30);
-                victory_count = 12;
+                victory_card_count = 12;
             }
 
             _ => panic!("Invalid player count!")
         }
 
-        supply.insert("Estate", victory_count);
-        supply.insert("Duchy", victory_count);
-        supply.insert("Province", victory_count);
+        supply.insert("Estate", victory_card_count);
+        supply.insert("Duchy", victory_card_count);
+        supply.insert("Province", victory_card_count);
         
         // If card is victory card, count matches other victory cards
         // Otherwise use 10 copies

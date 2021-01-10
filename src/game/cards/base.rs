@@ -2,7 +2,7 @@ use crate::game::traits::*;
 
 pub struct Copper;
 impl Card for Copper {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 0;
     }
     
@@ -11,14 +11,14 @@ impl Card for Copper {
     }
 }
 impl Treasure for Copper {
-    fn value(&self) -> u8 {
+    fn value(&self) -> i32 {
         return 1;
     }
 }
 
 pub struct Silver;
 impl Card for Silver {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 3;
     }
     
@@ -27,14 +27,14 @@ impl Card for Silver {
     }
 }
 impl Treasure for Silver {
-    fn value(&self) -> u8 {
+    fn value(&self) -> i32 {
         return 2;
     }
 }
 
 pub struct Gold;
 impl Card for Gold {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 6;
     }
     
@@ -43,14 +43,14 @@ impl Card for Gold {
     }
 }
 impl Treasure for Gold {
-    fn value(&self) -> u8 {
+    fn value(&self) -> i32 {
         return 3;
     }
 }
 
 pub struct Estate;
 impl Card for Estate {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 2;
     }
     
@@ -59,14 +59,14 @@ impl Card for Estate {
     }
 }
 impl Victory for Estate {
-    fn points(&self) -> u8 {
+    fn points(&self) -> i32 {
         return 1;
     }
 }
 
 pub struct Duchy;
 impl Card for Duchy {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 5;
     }
     
@@ -75,14 +75,14 @@ impl Card for Duchy {
     }
 }
 impl Victory for Duchy {
-    fn points(&self) -> u8 {
+    fn points(&self) -> i32 {
         return 3;
     }
 }
 
 pub struct Province;
 impl Card for Province {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 8;
     }
     
@@ -91,14 +91,14 @@ impl Card for Province {
     }
 }
 impl Victory for Province {
-    fn points(&self) -> u8 {
+    fn points(&self) -> i32 {
         return 6;
     }
 }
 
 pub struct Curse;
 impl Card for Curse {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 0;
     }
     
@@ -107,7 +107,7 @@ impl Card for Curse {
     }
 }
 impl CurseTrait for Curse {
-    fn points(&self) -> u8 {
-        return 1;
+    fn points(&self) -> i32 {
+        return -1;
     }
 }

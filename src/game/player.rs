@@ -6,15 +6,15 @@ use crate::game::{cards::base::*, traits::{Action, Card}};
 
 #[derive(Clone, Copy)]
 pub struct Resources {
-    actions: u32,
-    buys: u32,
-    temp_coins: u32,
+    actions: i32,
+    buys: i32,
+    coins: i32,
 }
 
 impl Resources {
     /// Create a new Resources object
     pub fn new() -> Resources {
-        Resources {actions: 1, buys: 1, temp_coins: 0}
+        Resources {actions: 1, buys: 1, coins: 0}
     }
 }
 
@@ -55,7 +55,7 @@ impl Player {
     }
 
     /// Draws x cards for the player
-    pub fn draw_cards(&mut self, cards: u32) {
+    pub fn draw_cards(&mut self, cards: i32) {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
             if self.deck.len() == 0 {
@@ -69,20 +69,21 @@ impl Player {
     }
 
     /// Add extra actions for the player for this turn
-    pub fn add_actions(&mut self, actions: u32) {
+    pub fn add_actions(&mut self, actions: i32) {
         self.resources.actions += actions;
     }
 
     /// Add extra buys for the player for this turn
-    pub fn add_buys(&mut self, buys: u32) {
+    pub fn add_buys(&mut self, buys: i32) {
         self.resources.buys += buys;
     }
 
     /// Add extra coins for the player for this turn
-    pub fn add_coins(&mut self, coins: u32) {
-        self.resources.temp_coins += coins;
+    pub fn add_coins(&mut self, coins: i32) {
+        self.resources.coins += coins;
     }
 
+    /// Plays a non-attack action card
     pub fn play_action(mut self, card: &dyn Action) -> Player {
         self.resources.actions -= 1;
         self = card.effects(self);
@@ -94,17 +95,30 @@ impl Player {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
-        self.resources.temp_coins = 0;
+        self.resources.coins = 0;
 
         while self.resources.actions > 0 {
             // Play cards
         }
     }
 
+    /// Buy a card
+    pub fn buy_card(&mut self, card: Box<dyn Card>) {
+        self.resources.coins -= card.cost();
+        self.discard.push(card);
+    }
+
     /// Buy phase
     pub fn buy_phase(&mut self) {
+        // Add coins from treasures in hand to total
+        for card in &self.hand {
+            // TODO: Check if is treasure, then add value
+
+        }
+
         while self.resources.buys > 0 {
             // Buy cards
+
         }
     }
 
@@ -117,7 +131,29 @@ impl Player {
         self.draw_cards(5);
     }
 
-    /// Print out all cards that the player has
+    /// Take a turn
+    pub fn turn(&mut self) {
+        self.action_phase();
+        self.buy_phase();
+        self.cleanup();
+    }
+
+    /// Count up a player's victory points
+    pub fn victory_points(&self) -> i32 {
+        let mut points = 0;
+        for card in &self.hand {
+            
+        }
+        for card in &self.deck {
+            
+        }
+        for card in &self.discard {
+        
+        }
+        return points;
+    }
+
+    /// Print out all cards that the player has, in order, and where they are
     pub fn print_cards(&self) {
         println!("Hand:");
         for card in &self.hand {

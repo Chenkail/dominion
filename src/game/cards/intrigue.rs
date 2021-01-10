@@ -2,7 +2,7 @@ use crate::game::traits::*;
 
 pub struct Nobles;
 impl Card for Nobles {
-    fn cost(&self) -> u8 {
+    fn cost(&self) -> i32 {
         return 6;
     }
     
@@ -11,7 +11,7 @@ impl Card for Nobles {
     }
 }
 impl Victory for Nobles {
-    fn points(&self) -> u8 {
+    fn points(&self) -> i32 {
         return 2;
     }
 }
