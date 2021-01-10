@@ -68,13 +68,30 @@ impl Player {
         }
     }
 
+    /// Add extra actions for the player for this turn
+    pub fn add_actions(&mut self, actions: u32) {
+        self.resources.actions += actions;
+    }
+
+    /// Add extra buys for the player for this turn
+    pub fn add_buys(&mut self, buys: u32) {
+        self.resources.buys += buys;
+    }
+
+    /// Add extra coins for the player for this turn
+    pub fn add_coins(&mut self, coins: u32) {
+        self.resources.temp_coins += coins;
+    }
+
     pub fn play_action(mut self, card: &dyn Action) -> Player {
+        self.resources.actions -= 1;
         self = card.effects(self);
         return self;
     }
 
     /// Action phase
     pub fn action_phase(&mut self) {
+        // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
         self.resources.temp_coins = 0;
@@ -86,7 +103,9 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self) {
-
+        while self.resources.buys > 0 {
+            // Buy cards
+        }
     }
 
     /// Cleanup phase at end of turn - discard hand and draw five new cards

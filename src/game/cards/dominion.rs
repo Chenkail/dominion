@@ -1,4 +1,4 @@
-use crate::game::{player::{Player, Resources}, traits::*};
+use crate::game::{player::Player, traits::*};
 
 pub struct Smithy;
 impl Card for Smithy {
