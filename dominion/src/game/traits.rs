@@ -36,6 +36,6 @@ pub trait Reaction: Action {
 
 pub (crate) trait CurseTrait: Card {
     fn points(&self) -> i32 {
-        return 1;
+        return -1;
     }
 }
