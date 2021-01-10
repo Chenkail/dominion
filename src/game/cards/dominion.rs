@@ -1,3 +1,5 @@
+/// Cards from the original Dominion set (2nd edition?)
+
 use crate::game::{player::Player, traits::*};
 
 pub struct Smithy;

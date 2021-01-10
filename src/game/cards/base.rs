@@ -1,3 +1,5 @@
+/// Base cards that get used in every game of Dominion
+
 use crate::game::traits::*;
 
 pub struct Copper;

@@ -1,10 +1,11 @@
+/// Defines Player object and associated functions
+
 use std::mem;
-use rand::thread_rng;
+use rand;
 use rand::seq::SliceRandom;
 
 use crate::game::{cards::base::*, traits::{Action, Card}};
 
-#[derive(Clone, Copy)]
 pub struct Resources {
     actions: i32,
     buys: i32,
@@ -43,7 +44,7 @@ impl Player {
             deck.push(estate);
         }
 
-        let mut rng = thread_rng();
+        let mut rng = rand::thread_rng();
         deck.shuffle(&mut rng);
 
         // Initial hand of 5 cards
@@ -59,7 +60,7 @@ impl Player {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
             if self.deck.len() == 0 {
-                let mut rng = thread_rng();
+                let mut rng = rand::thread_rng();
                 self.discard.shuffle(&mut rng);
                 mem::swap(&mut self.deck, &mut self.discard);
             }
