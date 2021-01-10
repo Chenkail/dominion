@@ -84,10 +84,9 @@ impl Player {
     }
 
     /// Plays a non-attack action card
-    pub fn play_action(mut self, card: &dyn Action) -> Player {
+    pub fn play_action(&mut self, card: &dyn Action) {
         self.resources.actions -= 1;
-        self = card.effects(self);
-        return self;
+        card.effects(self);
     }
 
     /// Action phase

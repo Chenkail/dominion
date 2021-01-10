@@ -11,8 +11,7 @@ impl Card for Smithy {
     }
 }
 impl Action for Smithy {
-    fn effects(&self, mut player: Player) -> Player {
+    fn effects(&self, player: &mut Player) {
         player.draw_cards(3);
-        return player;
     }
 }

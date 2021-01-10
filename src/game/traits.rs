@@ -18,15 +18,20 @@ pub trait Victory: Card {
 }
 
 pub trait Action: Card {
-    fn effects(&self, player: Player) -> Player;
+    /// Effects that the Action card has on the person playing it
+    fn effects(&self, player: &mut Player);
 }
 
 pub trait Attack: Action {
-    fn attack(&self, target: Player) -> Player;
+    /// Effects that the Attack card has
+    /// TODO: Figure out how to implement attack cards that hit everyone - boolean flag?
+    fn attack(&self, player: &mut Player, target: &mut Player);
 }
 
 pub trait Reaction: Action {
-    fn react(&self, player: Player) -> Player;
+    /// Effects that the Reaction card has
+    /// TODO: boolean flag for Moat immunity?
+    fn react(&self, player: &mut Player);
 }
 
 pub (crate) trait CurseTrait: Card {

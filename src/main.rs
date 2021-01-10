@@ -6,6 +6,6 @@ fn main() {
     let game = Game::default(4);
     let mut player = Player::new();
     player.print_cards();
-    player = player.play_action(&Smithy);
+    player.play_action(&Smithy);
     player.print_cards();
 }
