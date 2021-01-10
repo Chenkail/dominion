@@ -1,4 +1,4 @@
-use crate::game::traits::*;
+use crate::game::{player::{Player, Resources}, traits::*};
 
 pub struct Smithy;
 impl Card for Smithy {
@@ -11,7 +11,8 @@ impl Card for Smithy {
     }
 }
 impl Action for Smithy {
-    fn effects(&self) {
-        
+    fn effects(&self, mut player: Player) -> Player {
+        player.draw_cards(3);
+        return player;
     }
 }

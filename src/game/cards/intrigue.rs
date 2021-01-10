@@ -15,8 +15,8 @@ impl Victory for Nobles {
         return 2;
     }
 }
-impl Action for Nobles {
-    fn effects(&self) {
+// impl Action for Nobles {
+//     fn effects(&self) {
         
-    }
-}
+//     }
+// }

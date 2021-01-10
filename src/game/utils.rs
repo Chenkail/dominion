@@ -1,4 +1,4 @@
-use super::{traits::Card, cards::base::*};
+use crate::game::{traits::Card, cards::base::*};
 
 /// Returns a Card trait object given the name
 pub fn card_lookup(name: &str) -> Box<dyn Card> {

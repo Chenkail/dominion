@@ -1,3 +1,5 @@
+use crate::game::player::Player;
+
 pub trait Card {
     fn cost(&self) -> u8;
     fn name(&self) -> &'static str;
@@ -16,15 +18,15 @@ pub trait Victory: Card {
 }
 
 pub trait Action: Card {
-    fn effects(&self);
+    fn effects(&self, player: Player) -> Player;
 }
 
 pub trait Attack: Action {
-    fn attack(&self);
+    fn attack(&self, target: Player) -> Player;
 }
 
 pub trait Reaction: Action {
-    fn react(&self);
+    fn react(&self, player: Player) -> Player;
 }
 
 pub (crate) trait CurseTrait: Card {
