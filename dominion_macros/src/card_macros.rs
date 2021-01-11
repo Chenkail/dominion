@@ -57,7 +57,7 @@ macro_rules! curse {
 /// 
 /// Usage:
 /// ```
-/// action!(MyCard, actions, buys, cards, coins);
+/// action!(MyCard, cards, actions, buys, coins);
 /// ```
 #[macro_export]
 macro_rules! action {

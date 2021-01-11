@@ -46,23 +46,14 @@ card!(Remodel, "Remodel", 4);
 card!(Sentry, "Sentry", 5);
 
 card!(Smithy, "Smithy", 4);
-impl Action for Smithy {
-    fn effects(&self, player: &mut Player, _: &mut Game) {
-        player.draw_cards(3);
-    }
-}
+action!(Smithy, 3, 0, 0, 0);
 
 card!(ThroneRoom, "Throne Room", 4);
 
 card!(Vassal, "Vassal", 3);
 
 card!(Village, "Village", 3);
-impl Action for Village {
-    fn effects(&self, player: &mut Player, _: &mut Game) {
-        player.draw_cards(1);
-        player.add_actions(2);
-    }
-}
+action!(Village, 1, 2, 0, 0);
 
 card!(Witch, "Witch", 5);
 
