@@ -1,7 +1,7 @@
 //! Module for importing all card sets at once
 //!
 //! ```
-//! use dominion::game::cards::all::*;
+//! use dominion::cards::all::*;
 //! ```
 
 pub use super::base::*;

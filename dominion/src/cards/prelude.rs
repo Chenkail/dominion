@@ -1,7 +1,7 @@
 //! Module for single import when defining cards
 //!
 //! ```
-//! use dominion::game::cards::prelude::*;
+//! use dominion::cards::prelude::*;
 //! ```
 
 pub use crate::game::{gamedata::Game, player::Player, traits::*};
