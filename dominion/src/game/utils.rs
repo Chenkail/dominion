@@ -1,5 +1,6 @@
-use std::collections::VecDeque;
+//! Various utilities for Dominion
 
+use std::collections::VecDeque;
 use crate::game::{traits::Card, cards::base::*};
 
 /// Returns a Card trait object given the name

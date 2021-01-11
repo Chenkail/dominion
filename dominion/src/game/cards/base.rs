@@ -1,7 +1,6 @@
-/// Base cards that get used in every game of Dominion
+//! Base cards that get used in every game of Dominion
 
-use crate::game::traits::*;
-use dominion_macros::*;
+use super::prelude::*;
 
 card!(Copper, "Copper", 0);
 treasure!(Copper, 1);

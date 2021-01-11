@@ -1,4 +1,4 @@
-/// Defines Player object and associated functions
+//! Defines Player object and associated functions
 
 use std::{collections::VecDeque, mem};
 use crate::game::{cards::base::*, gamedata::Game, traits::{Action, Card}, utils};

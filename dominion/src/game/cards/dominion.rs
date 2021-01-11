@@ -1,7 +1,6 @@
-/// Cards from the original Dominion set (2nd edition)
+//! Cards from the original Dominion set (2nd edition)
 
-use crate::game::{gamedata::Game, player::Player, traits::*};
-use dominion_macros::*;
+use super::prelude::*;
 
 card!(Artisan, "Artisan", 6);
 
@@ -27,7 +26,7 @@ card!(Library, "Library", 5);
 
 card!(Market, "Market", 5);
 impl Action for Market {
-    fn effects(&self, player: &mut Player, game: &mut Game) {
+    fn effects(&self, player: &mut Player, _: &mut Game) {
         player.draw_cards(1);
         player.add_actions(1);
         player.add_buys(1);
@@ -53,7 +52,7 @@ card!(Sentry, "Sentry", 5);
 
 card!(Smithy, "Smithy", 4);
 impl Action for Smithy {
-    fn effects(&self, player: &mut Player, game: &mut Game) {
+    fn effects(&self, player: &mut Player, _: &mut Game) {
         player.draw_cards(3);
     }
 }

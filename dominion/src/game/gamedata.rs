@@ -1,6 +1,7 @@
+//! Defines the Game struct and its behavior
+
 use std::collections::{HashMap, VecDeque};
-use crate::game::{player::Player, traits::Card};
-use crate::game::cards::all::*;
+use crate::game::{cards::all::*, player::Player, traits::Card};
 
 pub struct Game {
     pub supply: HashMap<Box<dyn Card>, u8>,
@@ -31,7 +32,6 @@ impl Game {
         // Otherwise use 10 copies
         // TODO: check if card implements victory (is this even possible?)
         for card in cards {
-            // let card = card_lookup(&name);
             supply.insert(card, 10);
         }
 
