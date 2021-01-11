@@ -8,4 +8,3 @@ edition = "2018"
 
 [dependencies]
 dominion = { path = "../../" }
-# dominion_macros = { path = "../../dominion_macros/" }
