@@ -9,7 +9,7 @@ pub struct Game {
 }
 
 impl Game {
-    /// Create a new game given a list of cards for the supply
+    /// Create a new [Game] given a list of [Cards](Card) for the supply
     pub fn new(players: u8, cards: Vec<Box<dyn Card>>) -> Game {
         let mut supply: HashMap<Box<dyn Card>, u8> = HashMap::new();
         let trash = VecDeque::new();

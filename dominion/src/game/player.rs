@@ -24,7 +24,7 @@ pub struct Player {
 }
 
 impl Player {
-    /// Create a new player with 3 estates and 7 copper
+    /// Create a new Player with 3 estates and 7 copper
     pub fn new() -> Player {
         let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
         let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
@@ -79,7 +79,7 @@ impl Player {
         self.resources.coins += coins;
     }
 
-    /// Play an action card from the player's hand
+    /// Play an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
     pub fn play_action_from_hand(&mut self, card: &dyn Action, game: &mut Game) {

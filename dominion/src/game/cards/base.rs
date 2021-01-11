@@ -1,4 +1,4 @@
-//! Base cards that get used in every game of Dominion
+//! Base [cards](Card) that get used in every game of Dominion
 
 use super::prelude::*;
 
