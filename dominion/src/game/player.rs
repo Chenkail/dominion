@@ -3,6 +3,7 @@
 use std::{collections::VecDeque, mem};
 use crate::game::{cards::base::*, gamedata::Game, traits::{Action, Card}, utils};
 
+/// Struct to keep track of a Player's actions/buys/coins for each turn
 struct Resources {
     actions: i32,
     buys: i32,
@@ -10,12 +11,13 @@ struct Resources {
 }
 
 impl Resources {
-    /// Create a new Resources object
+    /// Construct a new [Resources] struct
     pub fn new() -> Resources {
         Resources {actions: 1, buys: 1, coins: 0}
     }
 }
 
+/// Struct representing a player
 pub struct Player {
     pub hand: VecDeque<Box<dyn Card>>,
     pub deck: VecDeque<Box<dyn Card>>,
@@ -24,7 +26,7 @@ pub struct Player {
 }
 
 impl Player {
-    /// Create a new Player with 3 estates and 7 copper
+    /// Construct a new [Player] with 3 estates and 7 copper
     pub fn new() -> Player {
         let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
         let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
@@ -108,9 +110,13 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>) {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, game: &mut Game) {
+        // TODO: check if supply pile is empty
+        *game.supply.get_mut(&card).unwrap() -= 1;
+        
         self.resources.coins -= card.cost();
         self.discard.push_back(card);
+        
     }
 
     /// Buy phase

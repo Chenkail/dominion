@@ -10,9 +10,9 @@ pub trait Card {
     /// How much the card costs to buy
     fn cost(&self) -> i32;
     /// The name on the card (e.g. "Throne Room")
-    fn name(&self) -> &'static str;
+    fn name(&self) -> &str;
     /// The card text (this will often be blank, as is the case with all the cards in the base set)
-    fn description(&self) -> &'static str {
+    fn description(&self) -> &str {
         return "";
     }
 }
@@ -43,6 +43,12 @@ pub trait Victory: Card {
     fn points(&self, player: &Player) -> i32;
 }
 
+/// Trait for curse cards
+pub (crate) trait CurseTrait: Card {
+    /// How many victory points the card is worth (this should be negative)
+    fn points(&self, player: &Player) -> i32;
+}
+
 /// Trait for action cards
 pub trait Action: Card {
     /// Effects that the Action card has on the person playing it
@@ -64,10 +70,3 @@ pub trait Reaction: Action {
     /// TODO: player boolean flag for Moat immunity?
     fn react(&self, player: &mut Player);
 }
-
-/// Trait for curse cards
-pub (crate) trait CurseTrait: Card {
-    /// How many victory points the card is worth (this should be negative)
-    fn points(&self, player: &Player) -> i32;
-}
-
