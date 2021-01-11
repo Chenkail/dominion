@@ -10,12 +10,10 @@ pub struct Game {
 
 impl Game {
     /// Create a new game using the recommended set for first time players
-    pub fn default(players: u8) -> Game {
+    pub fn new(players: u8, cards: Vec<Box<dyn Card>>) -> Game {
         let mut supply: HashMap<Box<dyn Card>, u8> = HashMap::new();
         let trash = VecDeque::new();
-        let kingdom_cards: Vec<Box<dyn Card>> = vec![Box::new(Cellar), Box::new(Market), Box::new(Merchant), Box::new(Militia), 
-                                                    Box::new(Mine), Box::new(Moat), Box::new(Remodel), Box::new(Smithy), 
-                                                    Box::new(Village), Box::new(Workshop)];
+        
         let victory_card_count;
         match players {
             2 => {
@@ -43,9 +41,9 @@ impl Game {
         // If card is victory card, count matches other victory cards
         // Otherwise use 10 copies
         // TODO: check if card implements victory (is this even possible?)
-        for name in kingdom_cards {
+        for card in cards {
             // let card = card_lookup(&name);
-            supply.insert(name, 10);
+            supply.insert(card, 10);
         }
 
         Game { supply, trash }
