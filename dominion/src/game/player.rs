@@ -1,10 +1,7 @@
 /// Defines Player object and associated functions
 
 use std::{collections::VecDeque, mem};
-use rand;
-use rand::seq::SliceRandom;
-
-use crate::game::{cards::base::*, traits::{Action, Card}};
+use crate::game::{cards::base::*, traits::{Action, Card}, utils};
 
 pub struct Resources {
     actions: i32,
@@ -44,8 +41,7 @@ impl Player {
             deck.push_back(estate);
         }
 
-        // let mut rng = rand::thread_rng();
-        // deck.shuffle(&mut rng);
+        utils::shuffle(&mut deck);
 
         // Initial hand of 5 cards
         for _ in 0..5 {
@@ -60,8 +56,7 @@ impl Player {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
             if self.deck.len() == 0 {
-                // let mut rng = rand::thread_rng();
-                // self.discard.shuffle(&mut rng);
+                utils::shuffle(&mut self.discard);
                 mem::swap(&mut self.deck, &mut self.discard);
             }
 
@@ -84,9 +79,19 @@ impl Player {
         self.resources.coins += coins;
     }
 
-    /// Plays a non-attack action card
-    pub fn play_action(&mut self, card: &dyn Action) {
+    /// Play an action card from the player's hand
+    ///
+    /// This is the function to call when a player plays a card directly
+    pub fn play_action_from_hand(&mut self, card: &dyn Action) {
         self.resources.actions -= 1;
+        self.action_effects(card);
+    }
+
+    /// Gives the player the effects of an action card as if they had played it
+    ///
+    /// Does not subtract actions from the player's total. Should only be called
+    /// in the effects() function of other cards (e.g. Throne Room)
+    pub fn action_effects(&mut self, card: &dyn Action) {
         card.effects(self);
     }
 

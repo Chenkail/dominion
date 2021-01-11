@@ -1,6 +1,9 @@
 use crate::game::player::Player;
 use std::hash::{Hash, Hasher};
 
+/// The basic Card type
+///
+/// dyn Card implements Hash and Eq so that Box\<dyn Card\> can be used as keys for a HashMap
 pub trait Card {
     fn cost(&self) -> i32;
     fn name(&self) -> &'static str;
@@ -45,7 +48,7 @@ pub trait Attack: Action {
 
 pub trait Reaction: Action {
     /// Effects that the Reaction card has
-    /// TODO: boolean flag for Moat immunity?
+    /// TODO: player boolean flag for Moat immunity?
     fn react(&self, player: &mut Player);
 }
 

@@ -9,6 +9,6 @@ fn main() {
     let game = Game::new(4, kingdom_cards);
     let mut player = Player::new();
     player.print_cards();
-    player.play_action(&Market);
+    player.action_effects(&Market);
     player.print_cards();
 }
