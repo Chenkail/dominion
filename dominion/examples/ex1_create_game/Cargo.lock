@@ -11,6 +11,7 @@ name = "create_game"
 version = "0.1.0"
 dependencies = [
  "dominion",
+ "dominion_macros",
 ]
 
 [[package]]
