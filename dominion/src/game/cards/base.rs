@@ -1,17 +1,9 @@
 /// Base cards that get used in every game of Dominion
 
 use crate::game::traits::*;
+use dominion_macros::*;
 
-pub struct Copper;
-impl Card for Copper {
-    fn cost(&self) -> i32 {
-        return 0;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Copper";
-    }
-}
+card!(Copper, "Copper", 0);
 impl Treasure for Copper {
     fn value(&self) -> i32 {
         return 1;
