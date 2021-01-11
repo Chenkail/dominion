@@ -13,10 +13,9 @@ impl Game {
     pub fn default(players: u8) -> Game {
         let mut supply: HashMap<Box<dyn Card>, u8> = HashMap::new();
         let trash = VecDeque::new();
-        let kingdom_cards: Vec<Box<dyn Card>> = vec![Box::new(Market), Box::new(Market), Box::new(Market), Box::new(Market), 
-                                                    Box::new(Market), Box::new(Market), Box::new(Market), Box::new(Market), 
-                                                    Box::new(Market), Box::new(Market)];
-        //vec!["Cellar", "Market", "Merchant", "Militia", "Mine", "Moat", "Remodel", "Smithy", "Village", "Workshop"];
+        let kingdom_cards: Vec<Box<dyn Card>> = vec![Box::new(Cellar), Box::new(Market), Box::new(Merchant), Box::new(Militia), 
+                                                    Box::new(Mine), Box::new(Moat), Box::new(Remodel), Box::new(Smithy), 
+                                                    Box::new(Village), Box::new(Workshop)];
         let victory_card_count;
         match players {
             2 => {
