@@ -3,7 +3,7 @@
 use std::{collections::VecDeque, mem};
 use crate::game::{cards::base::*, gamedata::Game, traits::{Action, Card}, utils};
 
-pub struct Resources {
+struct Resources {
     actions: i32,
     buys: i32,
     coins: i32,

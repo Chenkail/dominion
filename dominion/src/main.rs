@@ -1,5 +1,5 @@
 mod game;
-use game::{cards::all::*, gamedata::Game, player::*, traits::*};
+use game::prelude::*;
 
 fn main() {
     let kingdom_cards: Vec<Box<dyn Card>> = vec![Box::new(Cellar), Box::new(Market), Box::new(Merchant), Box::new(Militia), 
