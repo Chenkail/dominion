@@ -2,7 +2,8 @@
 
 use std::collections::VecDeque;
 use rand;
-use crate::game::{traits::Card, cards::base::*};
+use crate::cards::all::*;
+use crate::game::traits::Card;
 
 /// Returns a Card trait object given the name
 pub fn card_lookup(name: &str) -> Box<dyn Card> {

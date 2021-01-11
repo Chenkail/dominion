@@ -1,7 +1,8 @@
 //! Defines Player object and associated functions
 
 use std::{collections::VecDeque, mem};
-use crate::game::{cards::base::*, gamedata::Game, traits::{Action, Card}, utils};
+use crate::cards::base::*;
+use crate::game::{gamedata::Game, traits::{Action, Card}, utils};
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 struct Resources {

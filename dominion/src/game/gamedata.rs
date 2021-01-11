@@ -1,7 +1,8 @@
 //! Defines the Game struct and its behavior
 
 use std::collections::{HashMap, VecDeque};
-use crate::game::{cards::all::*, player::Player, traits::Card};
+use crate::cards::all::*;
+use crate::game::{player::Player, traits::Card};
 
 pub struct Game {
     pub supply: HashMap<Box<dyn Card>, u8>,

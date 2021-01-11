@@ -1,5 +1,4 @@
-mod game;
-use game::prelude::*;
+use dominion::game::prelude::*;
 
 fn main() {
     let kingdom_cards: Vec<Box<dyn Card>> = 
