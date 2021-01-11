@@ -98,7 +98,7 @@ impl Player {
     }
 
     /// Action phase
-    pub fn action_phase(&mut self) {
+    pub fn action_phase(&mut self, game: &mut Game) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -113,14 +113,14 @@ impl Player {
     pub fn buy_card(&mut self, card: Box<dyn Card>, game: &mut Game) {
         // TODO: check if supply pile is empty
         *game.supply.get_mut(&card).unwrap() -= 1;
-        
+
         self.resources.coins -= card.cost();
         self.discard.push_back(card);
         
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self) {
+    pub fn buy_phase(&mut self, game: &mut Game) {
         // Add coins from treasures in hand to total
         for card in &self.hand {
             // TODO: Check if is treasure, then add value
@@ -143,9 +143,9 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self) {
-        self.action_phase();
-        self.buy_phase();
+    pub fn turn(&mut self, game: &mut Game) {
+        self.action_phase(game);
+        self.buy_phase(game);
         self.cleanup();
     }
 

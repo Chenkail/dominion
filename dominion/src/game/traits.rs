@@ -58,9 +58,7 @@ pub trait Action: Card {
 /// Trait for attack cards
 pub trait Attack: Action {
     /// Effects that the Attack card has
-    ///
-    /// TODO: Figure out how to implement attack cards that hit everyone - boolean flag?
-    fn attack(&self, player: &mut Player, game: &mut Game, target: &mut Player);
+    fn attack(&self, player: &mut Player, game: &mut Game);
 }
 
 /// Trait for reaction cards
