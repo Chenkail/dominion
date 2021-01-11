@@ -1,8 +1,6 @@
-// use dominion_macros;
+// use dominion;
+// // ::{cards, gamedata::Game, player::*, traits::*};
+// use dominion_macros::*;
 
-// #[dominion_macros::test_macro]
-
-// #[test]
-// fn works() {
-//     macro_test();
-// }
+// #[cfg(test)]
+// card!(TestCard, "Test Card", 100);

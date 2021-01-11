@@ -4,59 +4,16 @@ use crate::game::traits::*;
 use dominion_macros::*;
 
 card!(Copper, "Copper", 0);
-impl Treasure for Copper {
-    fn value(&self) -> i32 {
-        return 1;
-    }
-}
+treasure!(Copper, 1);
 
-pub struct Silver;
-impl Card for Silver {
-    fn cost(&self) -> i32 {
-        return 3;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Silver";
-    }
-}
-impl Treasure for Silver {
-    fn value(&self) -> i32 {
-        return 2;
-    }
-}
+card!(Silver, "Silver", 3);
+treasure!(Silver, 2);
 
-pub struct Gold;
-impl Card for Gold {
-    fn cost(&self) -> i32 {
-        return 6;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Gold";
-    }
-}
-impl Treasure for Gold {
-    fn value(&self) -> i32 {
-        return 3;
-    }
-}
+card!(Gold, "Gold", 6);
+treasure!(Gold, 3);
 
-pub struct Estate;
-impl Card for Estate {
-    fn cost(&self) -> i32 {
-        return 2;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Estate";
-    }
-}
-impl Victory for Estate {
-    fn points(&self) -> i32 {
-        return 1;
-    }
-}
+card!(Estate, "Estate", 2);
+victory!(Estate, 1);
 
 pub struct Duchy;
 impl Card for Duchy {
