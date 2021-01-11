@@ -1,7 +1,7 @@
 /// Defines Player object and associated functions
 
 use std::{collections::VecDeque, mem};
-use crate::game::{cards::base::*, traits::{Action, Card}, utils};
+use crate::game::{cards::base::*, gamedata::Game, traits::{Action, Card}, utils};
 
 pub struct Resources {
     actions: i32,
@@ -82,17 +82,17 @@ impl Player {
     /// Play an action card from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, card: &dyn Action) {
+    pub fn play_action_from_hand(&mut self, card: &dyn Action, game: &mut Game) {
         self.resources.actions -= 1;
-        self.action_effects(card);
+        self.action_effects(card, game);
     }
 
     /// Gives the player the effects of an action card as if they had played it
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Action) {
-        card.effects(self);
+    pub fn action_effects(&mut self, card: &dyn Action, game: &mut Game) {
+        card.effects(self, game);
     }
 
     /// Action phase

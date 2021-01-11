@@ -1,4 +1,4 @@
-use crate::game::player::Player;
+use crate::game::{gamedata::Game, player::Player};
 use std::hash::{Hash, Hasher};
 
 /// The basic Card type
@@ -37,7 +37,7 @@ pub trait Victory: Card {
 
 pub trait Action: Card {
     /// Effects that the Action card has on the person playing it
-    fn effects(&self, player: &mut Player);
+    fn effects(&self, player: &mut Player, game: &mut Game);
 }
 
 pub trait Attack: Action {

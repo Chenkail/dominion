@@ -1,7 +1,6 @@
 use std::collections::{HashMap, VecDeque};
 use crate::game::{player::Player, traits::Card};
-use crate::game::cards::{base::*,
-                        dominion::*,};
+use crate::game::cards::all::*;
 
 pub struct Game {
     pub supply: HashMap<Box<dyn Card>, u8>,
