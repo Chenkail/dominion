@@ -3,16 +3,7 @@
 use crate::game::{player::Player, traits::*};
 use dominion_macros::*;
 
-pub struct Smithy;
-impl Card for Smithy {
-    fn cost(&self) -> i32 {
-        return 4;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Smithy";
-    }
-}
+card!(Smithy, "Smithy", 4);
 impl Action for Smithy {
     fn effects(&self, player: &mut Player) {
         player.draw_cards(3);

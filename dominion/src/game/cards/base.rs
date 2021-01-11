@@ -15,50 +15,11 @@ treasure!(Gold, 3);
 card!(Estate, "Estate", 2);
 victory!(Estate, 1);
 
-pub struct Duchy;
-impl Card for Duchy {
-    fn cost(&self) -> i32 {
-        return 5;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Duchy";
-    }
-}
-impl Victory for Duchy {
-    fn points(&self) -> i32 {
-        return 3;
-    }
-}
+card!(Duchy, "Duchy", 5);
+victory!(Duchy, 3);
 
-pub struct Province;
-impl Card for Province {
-    fn cost(&self) -> i32 {
-        return 8;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Province";
-    }
-}
-impl Victory for Province {
-    fn points(&self) -> i32 {
-        return 6;
-    }
-}
+card!(Province, "Province", 8);
+victory!(Province, 6);
 
-pub struct Curse;
-impl Card for Curse {
-    fn cost(&self) -> i32 {
-        return 0;
-    }
-    
-    fn name(&self) -> &'static str {
-        return "Curse";
-    }
-}
-impl CurseTrait for Curse {
-    fn points(&self) -> i32 {
-        return -1;
-    }
-}
+card!(Curse, "Curse", 0);
+curse!(Curse, -1);

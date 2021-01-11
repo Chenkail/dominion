@@ -1,20 +1,6 @@
-// extern crate proc_macro;
-// use proc_macro::TokenStream;
-// use quote::quote;
+/// Macros for defining cards
 
-// #[proc_macro_attribute]
-// pub fn test_macro(attr: TokenStream, item: TokenStream) -> TokenStream {
-//     let output = quote! {
-//         fn macro_test() {
-//             // This is a macro
-//         }
-//     };
-
-//     output.into()
-// }
-
-
-/// Macro for defining a new card
+/// Create a new card with a struct name, card name, and cost
 #[macro_export]
 macro_rules! card {
     ($struct:ident, $name:expr, $cost:expr) => {
@@ -31,6 +17,7 @@ macro_rules! card {
     };
 }
 
+/// Implement Treasure for a Card with a fixed gold value
 #[macro_export]
 macro_rules! treasure {
     ($struct:ident, $value:expr) => {
@@ -42,6 +29,7 @@ macro_rules! treasure {
     };
 }
 
+/// Implement Victory for a Card with a fixed victory point value
 #[macro_export]
 macro_rules! victory {
     ($struct:ident, $points:expr) => {
@@ -53,6 +41,7 @@ macro_rules! victory {
     };
 }
 
+/// Implement Curse for a Card with a fixed curse value
 #[macro_export]
 macro_rules! curse {
     ($struct:ident, $points:expr) => {
