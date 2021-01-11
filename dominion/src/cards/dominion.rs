@@ -15,12 +15,25 @@ card!(Chapel, "Chapel", 2);
 card!(CouncilRoom, "Council Room", 5);
 
 card!(Festival, "Festival", 5);
+impl Action for Festival {
+    fn effects(&self, player: &mut Player, _: &mut Game) {
+        player.add_actions(2);
+        player.add_buys(1);
+        player.add_coins(2);
+    }
+}
 
 card!(Gardens, "Gardens", 4);
 
 card!(Harbinger, "Harbinger", 3);
 
 card!(Laboratory, "Laboratory", 5);
+impl Action for Laboratory {
+    fn effects(&self, player: &mut Player, _: &mut Game) {
+        player.add_actions(1);
+        player.draw_cards(2);
+    }
+}
 
 card!(Library, "Library", 5);
 
@@ -62,6 +75,12 @@ card!(ThroneRoom, "Throne Room", 4);
 card!(Vassal, "Vassal", 3);
 
 card!(Village, "Village", 3);
+impl Action for Village {
+    fn effects(&self, player: &mut Player, _: &mut Game) {
+        player.draw_cards(1);
+        player.add_actions(2);
+    }
+}
 
 card!(Witch, "Witch", 5);
 
