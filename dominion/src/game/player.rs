@@ -158,21 +158,47 @@ impl Player {
         return points;
     }
 
+    /// Prints out resources along with number of cards in hand/deck/discard/total
+    pub fn print_state(&self) {
+        let hand_count = self.hand.len();
+        let deck_count = self.deck.len();
+        let discard_count = self.discard.len();
+        let indent = "    ";
+        
+        println!("Cards in");
+        print!("{}", indent);
+        println!("hand: {}", hand_count);
+        print!("{}", indent);
+        println!("deck: {}", deck_count);
+        print!("{}", indent);
+        println!("discard: {}", discard_count);
+        println!("Total cards: {}", hand_count + deck_count + discard_count);
+        
+        println!("Actions: {}", self.resources.actions);
+        println!("Buys: {}", self.resources.buys);
+        println!("Coins: {}", self.resources.coins);
+    }
+
     /// Print out all cards that the player has, in order, and where they are
     pub fn print_cards(&self) {
+        let indent = "    ";
+
         println!("Hand:");
+        print!("{}", indent);
         for card in &self.hand {
             print!("{}, ", card.name());
         }
         println!();
 
         println!("Deck:");
+        print!("{}", indent);
         for card in &self.deck {
             print!("{}, ", card.name());
         }
         println!();
         
         println!("Discard:");
+        print!("{}", indent);
         for card in &self.discard {
             print!("{}, ", card.name());
         }
