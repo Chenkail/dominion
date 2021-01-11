@@ -67,6 +67,16 @@ impl Player {
         }
     }
 
+    /// discards cards from hand given an array of indexes of said cards
+    pub fn discard_given_indexes(&mut self, indexes: Vec<i8>) {
+
+    }
+
+    /// trashes cards from hand given an array of indexes of said cards
+    pub fn trash_given_indexes(&mut self, indexes: Vec<i8>, _: &mut Game) {
+
+    }
+
     /// Add extra actions for the player for this turn
     pub fn add_actions(&mut self, actions: i32) {
         self.resources.actions += actions;
