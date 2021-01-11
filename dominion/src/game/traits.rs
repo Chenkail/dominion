@@ -1,7 +1,7 @@
 //! Defines traits for the various card types
 
-use crate::game::{gamedata::Game, player::Player};
 use std::hash::{Hash, Hasher};
+use crate::game::{gamedata::Game, player::Player};
 
 /// The basic Card trait
 ///
