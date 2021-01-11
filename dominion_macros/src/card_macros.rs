@@ -52,3 +52,23 @@ macro_rules! curse {
         }
     };
 }
+
+/// Implement a basic action (one that only has +actions/buys/cards/coins)
+/// 
+/// Usage:
+/// ```
+/// action!(MyCard, actions, buys, cards, coins);
+/// ```
+#[macro_export]
+macro_rules! action {
+    ($struct_name:ident, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
+        impl Action for $struct_name {
+            fn effects(&self, player: &mut Player, _: &mut Game) {
+                player.draw_cards($cards);
+                player.add_actions($actions);
+                player.add_buys($buys);
+                player.add_coins($coins);
+            }
+        }
+    };
+}
