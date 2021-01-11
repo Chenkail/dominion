@@ -1,6 +1,6 @@
 /// Defines Player object and associated functions
 
-use std::mem;
+use std::{collections::VecDeque, mem};
 use rand;
 use rand::seq::SliceRandom;
 
@@ -20,36 +20,36 @@ impl Resources {
 }
 
 pub struct Player {
-    pub hand: Vec<Box<dyn Card>>,
-    pub deck: Vec<Box<dyn Card>>,
-    pub discard: Vec<Box<dyn Card>>,
+    pub hand: VecDeque<Box<dyn Card>>,
+    pub deck: VecDeque<Box<dyn Card>>,
+    pub discard: VecDeque<Box<dyn Card>>,
     resources: Resources,
 }
 
 impl Player {
     /// Create a new player with 3 estates and 7 copper
     pub fn new() -> Player {
-        let mut hand: Vec<Box<dyn Card>> = Vec::new();
-        let mut deck: Vec<Box<dyn Card>> = Vec::new();
-        let discard: Vec<Box<dyn Card>> = Vec::new();
+        let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
+        let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
+        let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
         let resources = Resources::new();
         
         for _ in 0..7 {
             let copper = Box::new(Copper);
-            deck.push(copper);
+            deck.push_back(copper);
         }
         
         for _ in 0..3 {
             let estate = Box::new(Estate);
-            deck.push(estate);
+            deck.push_back(estate);
         }
 
-        let mut rng = rand::thread_rng();
-        deck.shuffle(&mut rng);
+        // let mut rng = rand::thread_rng();
+        // deck.shuffle(&mut rng);
 
         // Initial hand of 5 cards
         for _ in 0..5 {
-            hand.push(deck.pop().unwrap());
+            hand.push_back(deck.pop_front().unwrap());
         }
 
         Player { hand, deck, discard, resources }
@@ -60,12 +60,12 @@ impl Player {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
             if self.deck.len() == 0 {
-                let mut rng = rand::thread_rng();
-                self.discard.shuffle(&mut rng);
+                // let mut rng = rand::thread_rng();
+                // self.discard.shuffle(&mut rng);
                 mem::swap(&mut self.deck, &mut self.discard);
             }
 
-            self.hand.push(self.deck.pop().unwrap());
+            self.hand.push_back(self.deck.pop_front().unwrap());
         }
     }
 
@@ -105,7 +105,7 @@ impl Player {
     /// Buy a card
     pub fn buy_card(&mut self, card: Box<dyn Card>) {
         self.resources.coins -= card.cost();
-        self.discard.push(card);
+        self.discard.push_back(card);
     }
 
     /// Buy phase
@@ -125,7 +125,7 @@ impl Player {
     /// Cleanup phase at end of turn - discard hand and draw five new cards
     pub fn cleanup(&mut self) {
         for _ in 0..self.hand.len() {
-            self.discard.push(self.hand.pop().unwrap());
+            self.discard.push_back(self.hand.pop_front().unwrap());
         }
 
         self.draw_cards(5);

@@ -1,14 +1,16 @@
-use std::collections::HashMap;
-// use crate::game::{player::Player, utils::card_lookup, cards::base::*, traits::Card};
+use std::collections::{HashMap, VecDeque};
+use crate::game::{player::Player, utils::card_lookup, cards::base::*, traits::Card};
 
 pub struct Game {
     pub supply: HashMap<&'static str, u8>,
+    pub trash: VecDeque<Box<dyn Card>>,
 }
 
 impl Game {
     /// Create a new game using the recommended set for first time players
     pub fn default(players: u8) -> Game {
         let mut supply = HashMap::new();
+        let trash = VecDeque::new();
         let kingdom_cards = vec!["Cellar", "Market", "Merchant", "Militia", "Mine", 
                                             "Moat", "Remodel", "Smithy", "Village", "Workshop"];
         let victory_card_count;
@@ -43,6 +45,6 @@ impl Game {
             supply.insert(name, 10);
         }
 
-        Game { supply }
+        Game { supply, trash }
     }
 }

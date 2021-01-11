@@ -1,4 +1,5 @@
 use crate::game::player::Player;
+use std::hash::{Hash, Hasher};
 
 pub trait Card {
     fn cost(&self) -> i32;
@@ -8,6 +9,20 @@ pub trait Card {
         return "";
     }
 }
+
+impl Hash for dyn Card {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.name().hash(state);
+    }
+}
+
+impl PartialEq for dyn Card {
+    fn eq(&self, other: &Self) -> bool {
+        self.name().eq(other.name())
+    }
+}
+
+impl Eq for dyn Card {}
 
 pub trait Treasure: Card {
     fn value(&self) -> i32;
@@ -39,3 +54,4 @@ pub (crate) trait CurseTrait: Card {
         return -1;
     }
 }
+
