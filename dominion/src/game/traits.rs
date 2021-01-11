@@ -30,11 +30,11 @@ impl PartialEq for dyn Card {
 impl Eq for dyn Card {}
 
 pub trait Treasure: Card {
-    fn value(&self) -> i32;
+    fn value(&self, player: &Player) -> i32;
 }
 
 pub trait Victory: Card {
-    fn points(&self) -> i32;
+    fn points(&self, player: &Player) -> i32;
 }
 
 pub trait Action: Card {
@@ -55,8 +55,6 @@ pub trait Reaction: Action {
 }
 
 pub (crate) trait CurseTrait: Card {
-    fn points(&self) -> i32 {
-        return -1;
-    }
+    fn points(&self, player: &Player) -> i32;
 }
 

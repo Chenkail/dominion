@@ -22,7 +22,7 @@ macro_rules! card {
 macro_rules! treasure {
     ($struct:ident, $value:expr) => {
         impl Treasure for $struct {
-            fn value(&self) -> i32 {
+            fn value(&self, _: &Player) -> i32 {
                 return $value;
             }
         }
@@ -34,7 +34,7 @@ macro_rules! treasure {
 macro_rules! victory {
     ($struct:ident, $points:expr) => {
         impl Victory for $struct {
-            fn points(&self) -> i32 {
+            fn points(&self, _: &Player) -> i32 {
                 return $points;
             }
         }
@@ -46,7 +46,7 @@ macro_rules! victory {
 macro_rules! curse {
     ($struct:ident, $points:expr) => {
         impl CurseTrait for $struct {
-            fn points(&self) -> i32 {
+            fn points(&self, _: &Player) -> i32 {
                 return $points;
             }
         }
