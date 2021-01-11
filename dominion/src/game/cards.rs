@@ -1,3 +1,5 @@
+//! The various Dominion card sets
+
 // Re-export modules
 pub mod all;
 pub mod prelude;
