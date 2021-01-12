@@ -19,7 +19,7 @@ impl Resources {
 }
 
 /// Struct representing a player
-pub struct Player {
+pub struct Player { 
     pub hand: VecDeque<Box<dyn Card>>,
     pub deck: VecDeque<Box<dyn Card>>,
     pub discard: VecDeque<Box<dyn Card>>,
@@ -73,7 +73,7 @@ impl Player {
         indexes.reverse();
         for i in indexes {
             let a = self.hand.swap_remove_back(i);
-            //self.discard.append(a); TODO://we have a problem concerning lifetimes here--come up with a fix?
+            //self.discard.push_back(a); rust yells at you because they want a lifetime annotation????
         }
     }
 
