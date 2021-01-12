@@ -77,8 +77,12 @@ impl Player {
     }
 
     /// Trash cards from hand given an array of indexes of said cards
-    pub fn trash_given_indexes(&mut self, indexes: Vec<i8>, _: &mut Game) {
-
+    pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, game: &mut Game) {
+        indexes.sort();
+        indexes.reverse();
+        for i in indexes {
+            game.trash.push_back(self.hand.remove(i).unwrap());
+        }
     }
 
     /// Add extra actions for the player for this turn
