@@ -12,4 +12,5 @@ fn main() {
     player.action_effects(&Market, &mut game);
     player.print_state();
     player.print_cards();
+    println!("{}", player.count_money_in_hand());
 }

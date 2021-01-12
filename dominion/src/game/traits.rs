@@ -62,9 +62,9 @@ pub trait Attack: Action {
 }
 
 /// Trait for reaction cards
-pub trait Reaction: Action {
+pub trait Reaction: Card {
     /// Effects that the Reaction card has
     ///
     /// TODO: player boolean flag for Moat immunity?
-    fn react(&self, player: &mut Player);
+    fn react(&self, player: &mut Player, game: &mut Game);
 }
