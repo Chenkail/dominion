@@ -15,6 +15,7 @@ pub trait Card {
     fn description(&self) -> &str {
         return "";
     }
+    fn types(&self) -> &str;
 }
 
 impl Hash for dyn Card {

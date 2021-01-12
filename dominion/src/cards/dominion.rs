@@ -2,59 +2,59 @@
 
 use super::prelude::*;
 
-card!(Artisan, "Artisan", 6);
+card!(Artisan, "Artisan", 6, "Action");
 
-card!(Bandit, "Bandit", 5);
+card!(Bandit, "Bandit", 5, "Action, Attack");
 
-card!(Bureaucrat, "Bureaucrat", 4);
+card!(Bureaucrat, "Bureaucrat", 4, "Action");
 
-card!(Cellar, "Cellar", 2);
+card!(Cellar, "Cellar", 2, "Action");
 
-card!(Chapel, "Chapel", 2);
+card!(Chapel, "Chapel", 2, "Action");
 
-card!(CouncilRoom, "Council Room", 5);
+card!(CouncilRoom, "Council Room", 5, "Action");
 
-card!(Festival, "Festival", 5);
+card!(Festival, "Festival", 5, "Action");
 action!(Festival, 0, 2, 1, 2);
 
-card!(Gardens, "Gardens", 4);
+card!(Gardens, "Gardens", 4, "Action");
 
-card!(Harbinger, "Harbinger", 3);
+card!(Harbinger, "Harbinger", 3, "Action");
 
-card!(Laboratory, "Laboratory", 5);
+card!(Laboratory, "Laboratory", 5, "Action");
 action!(Laboratory, 2, 1, 0, 0);
 
-card!(Library, "Library", 5);
+card!(Library, "Library", 5, "Action");
 
-card!(Market, "Market", 5);
+card!(Market, "Market", 5, "Action");
 action!(Market, 1, 1, 1, 1);
 
-card!(Merchant, "Merchant", 3);
+card!(Merchant, "Merchant", 3, "Action");
 
-card!(Militia, "Militia", 4);
+card!(Militia, "Militia", 4, "Action, Attack");
 
-card!(Mine, "Mine", 5);
+card!(Mine, "Mine", 5, "Action");
 
-card!(Moat, "Moat", 2);
+card!(Moat, "Moat", 2, "Action, Reaction");
 
-card!(Moneylender, "Moneylender", 4);
+card!(Moneylender, "Moneylender", 4, "Action");
 
-card!(Poacher, "Poacher", 4);
+card!(Poacher, "Poacher", 4, "Action");
 
-card!(Remodel, "Remodel", 4);
+card!(Remodel, "Remodel", 4, "Action");
 
-card!(Sentry, "Sentry", 5);
+card!(Sentry, "Sentry", 5, "Action");
 
-card!(Smithy, "Smithy", 4);
+card!(Smithy, "Smithy", 4, "Action");
 action!(Smithy, 3, 0, 0, 0);
 
-card!(ThroneRoom, "Throne Room", 4);
+card!(ThroneRoom, "Throne Room", 4, "Action");
 
-card!(Vassal, "Vassal", 3);
+card!(Vassal, "Vassal", 3, "Action");
 
-card!(Village, "Village", 3);
+card!(Village, "Village", 3, "Action");
 action!(Village, 1, 2, 0, 0);
 
-card!(Witch, "Witch", 5);
+card!(Witch, "Witch", 5, "Action, Attack");
 
-card!(Workshop, "Workshop", 3);
+card!(Workshop, "Workshop", 3, "Action");
