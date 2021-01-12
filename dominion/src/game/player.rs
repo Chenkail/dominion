@@ -19,7 +19,7 @@ impl Resources {
 }
 
 /// Struct representing a player
-pub struct Player {
+pub struct Player { 
     pub hand: VecDeque<Box<dyn Card>>,
     pub deck: VecDeque<Box<dyn Card>>,
     pub discard: VecDeque<Box<dyn Card>>,
@@ -68,8 +68,13 @@ impl Player {
     }
 
     /// discards cards from hand given an array of indexes of said cards
-    pub fn discard_given_indexes(&mut self, indexes: Vec<i8>) {
-
+    pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {        
+        indexes.sort();
+        indexes.reverse();
+        for i in indexes {
+            let a = self.hand.swap_remove_back(i);
+            //self.discard.push_back(a); rust yells at you because they want a lifetime annotation????
+        }
     }
 
     /// trashes cards from hand given an array of indexes of said cards
