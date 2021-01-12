@@ -72,8 +72,7 @@ impl Player {
         indexes.sort();
         indexes.reverse();
         for i in indexes {
-            let a = self.hand.remove(i).unwrap();
-            self.discard.push_back(a);
+            self.discard.push_back(self.hand.remove(i).unwrap());
         }
     }
 
