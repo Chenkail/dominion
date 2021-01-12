@@ -54,7 +54,7 @@ impl Player {
         Player { hand, deck, discard, resources }
     }
 
-    /// Draws x cards for the player
+    /// Draw x cards for the player
     pub fn draw_cards(&mut self, cards: i32) {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
@@ -67,17 +67,17 @@ impl Player {
         }
     }
 
-    /// discards cards from hand given an array of indexes of said cards
+    /// Discard cards from hand given an array of indexes of said cards
     pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {        
         indexes.sort();
         indexes.reverse();
         for i in indexes {
-            let a = self.hand.swap_remove_back(i);
-            //self.discard.push_back(a); rust yells at you because they want a lifetime annotation????
+            let a = self.hand.swap_remove_back(i).unwrap();
+            self.discard.push_back(a);
         }
     }
 
-    /// trashes cards from hand given an array of indexes of said cards
+    /// Trash cards from hand given an array of indexes of said cards
     pub fn trash_given_indexes(&mut self, indexes: Vec<i8>, _: &mut Game) {
 
     }
@@ -105,7 +105,7 @@ impl Player {
         self.action_effects(card, game);
     }
 
-    /// Gives the player the effects of an action card as if they had played it
+    /// Give the player the effects of an action card as if they had played it
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
@@ -187,7 +187,7 @@ impl Player {
         return points;
     }
 
-    /// Prints out resources along with number of cards in hand/deck/discard/total
+    /// Print out resources along with number of cards in hand/deck/discard/total
     pub fn print_state(&self) {
         let hand_count = self.hand.len();
         let deck_count = self.deck.len();
