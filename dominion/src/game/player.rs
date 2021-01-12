@@ -73,7 +73,7 @@ impl Player {
         indexes.reverse();
         for i in indexes {
             let a = self.hand.swap_remove_back(i);
-            //self.discard.push_back(a); rust yells at you because they want a lifetime annotation????
+            //self.discard.push_back(a); //rust yells at you because they want a lifetime annotation????
         }
     }
 
