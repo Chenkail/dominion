@@ -2,7 +2,7 @@
 
 use std::{collections::VecDeque, mem};
 use crate::cards::base::*;
-use crate::game::{gamedata::Game, traits::{Action, Card}, utils};
+use crate::game::{gamedata::Game, traits::*, utils};
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 struct Resources {
@@ -132,16 +132,23 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self, game: &mut Game) {
-        // Add coins from treasures in hand to total
-        for card in &self.hand {
-            // TODO: Check if is treasure, then add value
+        // TODO: Count money
 
-        }
 
         while self.resources.buys > 0 {
             // Buy cards
 
         }
+    }
+
+    pub fn count_money_in_hand(&self) -> i32 {
+        // Add coins from treasures in hand to total
+        for card in &self.hand {
+            // TODO: Check if is treasure, then add value
+            
+        }
+        
+        -1
     }
 
     /// Cleanup phase at end of turn - discard hand and draw five new cards
