@@ -15,13 +15,18 @@ pub trait Card {
     fn description(&self) -> &str {
         return "";
     }
+    /// The card's types - each type should be title case
     fn types(&self) -> Vec<&str>;
 
+    /// The number of coins the card is worth (if it is a treasure card)
     fn treasure_value(&self, _: &Player) -> i32 { 0 }
+    /// The number of points the card is worth (if it is a victory card)
     fn victory_points(&self, _: &Player) -> i32 { 0 }
+    /// The number of points the card is worth (if it is a curse card) - this should be negative
     fn curse_points(&self, _: &Player) -> i32 { 0 }
+    /// The card's effects when played as an action
     fn action_effects(&self, _: &mut Player, _: &mut Game) {}
-    fn attack_effects(&self, _: &mut Player, _: &mut Game) {}
+    /// The card's effects when used as a reaction
     fn reaction_effects(&self, _: &mut Player, _: &mut Game) {}
 }
 
