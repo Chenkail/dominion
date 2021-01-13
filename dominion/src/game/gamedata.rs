@@ -5,6 +5,7 @@ use crate::cards::all::*;
 use crate::game::{player::Player, traits::Card};
 
 pub struct Game {
+    pub players: Vec<Player>,
     pub supply: HashMap<Box<dyn Card>, u8>,
     pub trash: VecDeque<Box<dyn Card>>,
 }
@@ -12,8 +13,13 @@ pub struct Game {
 impl Game {
     /// Create a new [Game] given a list of [Cards](Card) for the supply
     pub fn new(players: u8, cards: Vec<Box<dyn Card>>) -> Game {
+        let mut player_vec: Vec<Player> = Vec::with_capacity(players);
         let mut supply: HashMap<Box<dyn Card>, u8> = HashMap::new();
         let trash = VecDeque::new();
+
+        for _ in 0..players {
+            // player_vec.append(Player::new())
+        }
         
         let (victory_card_count, province_count, curse_count) = match players {
             2 => (8, 8, 10),
@@ -36,7 +42,7 @@ impl Game {
             supply.insert(card, 10);
         }
 
-        Game { supply, trash }
+        Game { players: player_vec, supply, trash }
     }
 
     /// Prints out all the cards in the supply and their remaining quantities
