@@ -151,8 +151,12 @@ impl Player {
 
     pub fn count_money_in_hand(&self) -> i32 {
         // Add coins from treasures in hand to total
+        let mut total = 0;
         for card in &self.hand {
-            // TODO: Check if is treasure, then add value
+            if card.types().to_lowercase().contains("Treasure") {
+                card as &dyn Treasure;
+                total += card.value();
+            }
             
         }
         
