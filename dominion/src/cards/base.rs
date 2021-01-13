@@ -2,23 +2,16 @@
 
 use super::prelude::*;
 
-card!(Copper, "Copper", 0, "Treasure");
-treasure!(Copper, 1);
+card!(Copper, "Copper", 0);
 
-card!(Silver, "Silver", 3, "Treasure");
-treasure!(Silver, 2);
+card!(Silver, "Silver", 3);
 
-card!(Gold, "Gold", 6, "Treasure");
-treasure!(Gold, 3);
+card!(Gold, "Gold", 6);
 
-card!(Estate, "Estate", 2, "Victory");
-victory!(Estate, 1);
+card!(Estate, "Estate", 2);
 
-card!(Duchy, "Duchy", 5, "Victory");
-victory!(Duchy, 3);
+card!(Duchy, "Duchy", 5);
 
-card!(Province, "Province", 8, "Victory");
-victory!(Province, 6);
+card!(Province, "Province", 8);
 
-card!(Curse, "Curse", 0, "Curse");
-curse!(Curse, -1);
+card!(Curse, "Curse", 0);

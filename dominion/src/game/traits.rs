@@ -15,7 +15,14 @@ pub trait Card {
     fn description(&self) -> &str {
         return "";
     }
-    fn types(&self) -> &str;
+    fn types(&self) -> Vec<&str>;
+
+    fn treasure_value(&self, _: &Player) -> i32 { 0 }
+    fn victory_points(&self, _: &Player) -> i32 { 0 }
+    fn curse_points(&self, _: &Player) -> i32 { 0 }
+    fn action_effects(&self, _: &mut Player, _: &mut Game) {}
+    fn attack_effects(&self, _: &mut Player, _: &mut Game) {}
+    fn reaction_effects(&self, _: &mut Player, _: &mut Game) {}
 }
 
 impl Hash for dyn Card {
@@ -32,40 +39,3 @@ impl PartialEq for dyn Card {
 
 impl Eq for dyn Card {}
 
-/// Trait for treasure cards
-pub trait Treasure: Card {
-    /// How many coins the card is worth
-    fn value(&self, player: &Player) -> i32;
-}
-
-/// Trait for victory cards
-pub trait Victory: Card {
-    /// How many victory points the card is worth
-    fn points(&self, player: &Player) -> i32;
-}
-
-/// Trait for curse cards
-pub (crate) trait CurseTrait: Card {
-    /// How many victory points the card is worth (this should be negative)
-    fn points(&self, player: &Player) -> i32;
-}
-
-/// Trait for action cards
-pub trait Action: Card {
-    /// Effects that the Action card has on the person playing it
-    fn effects(&self, player: &mut Player, game: &mut Game);
-}
-
-/// Trait for attack cards
-pub trait Attack: Action {
-    /// Effects that the Attack card has
-    fn attack(&self, player: &mut Player, game: &mut Game);
-}
-
-/// Trait for reaction cards
-pub trait Reaction: Card {
-    /// Effects that the Reaction card has
-    ///
-    /// TODO: player boolean flag for Moat immunity?
-    fn react(&self, player: &mut Player, game: &mut Game);
-}

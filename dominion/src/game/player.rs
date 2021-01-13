@@ -103,7 +103,7 @@ impl Player {
     /// Play an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, card: &dyn Action, game: &mut Game) {
+    pub fn play_action_from_hand(&mut self, card: &dyn Card, game: &mut Game) {
         self.resources.actions -= 1;
         self.action_effects(card, game);
     }
@@ -112,8 +112,8 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Action, game: &mut Game) {
-        card.effects(self, game);
+    pub fn action_effects(&mut self, card: &dyn Card, game: &mut Game) {
+        card.action_effects(self, game);
     }
 
     /// Action phase
@@ -153,14 +153,10 @@ impl Player {
         // Add coins from treasures in hand to total
         let mut total = 0;
         for card in &self.hand {
-            if card.types().to_lowercase().contains("Treasure") {
-                card as &dyn Treasure;
-                total += card.value();
-            }
-            
+            total += card.treasure_value(self);
         }
         
-        -1
+        total
     }
 
     /// Cleanup phase at end of turn - discard hand and draw five new cards

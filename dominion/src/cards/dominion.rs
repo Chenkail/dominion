@@ -2,59 +2,67 @@
 
 use super::prelude::*;
 
-card!(Artisan, "Artisan", 6, "Action");
+card!(Artisan, "Artisan", 6);
 
-card!(Bandit, "Bandit", 5, "Action, Attack");
+card!(Bandit, "Bandit", 5);
 
-card!(Bureaucrat, "Bureaucrat", 4, "Action");
+card!(Bureaucrat, "Bureaucrat", 4);
 
-card!(Cellar, "Cellar", 2, "Action");
+card!(Cellar, "Cellar", 2);
 
-card!(Chapel, "Chapel", 2, "Action");
+card!(Chapel, "Chapel", 2);
 
-card!(CouncilRoom, "Council Room", 5, "Action");
+card!(CouncilRoom, "Council Room", 5);
 
-card!(Festival, "Festival", 5, "Action");
-action!(Festival, 0, 2, 1, 2);
+card!(Festival, "Festival", 5);
 
-card!(Gardens, "Gardens", 4, "Action");
+card!(Gardens, "Gardens", 4);
 
-card!(Harbinger, "Harbinger", 3, "Action");
+card!(Harbinger, "Harbinger", 3);
 
-card!(Laboratory, "Laboratory", 5, "Action");
-action!(Laboratory, 2, 1, 0, 0);
+card!(Laboratory, "Laboratory", 5);
 
-card!(Library, "Library", 5, "Action");
+card!(Library, "Library", 5);
 
-card!(Market, "Market", 5, "Action");
-action!(Market, 1, 1, 1, 1);
+// card!(Market, "Market", 5);
+pub struct Market;
+impl Card for Market {
+    fn cost(&self) -> i32 { 5 }
+    fn name(&self) -> &str { "Market" }
+    fn types(&self) -> Vec<&str> { vec!["Action"] }
 
-card!(Merchant, "Merchant", 3, "Action");
+    fn action_effects(&self, player: &mut Player, _: &mut Game) {
+        player.draw_cards(1);
+        player.add_actions(1);
+        player.add_buys(1);
+        player.add_coins(1);
+    }
+}
 
-card!(Militia, "Militia", 4, "Action, Attack");
+card!(Merchant, "Merchant", 3);
 
-card!(Mine, "Mine", 5, "Action");
+card!(Militia, "Militia", 4);
 
-card!(Moat, "Moat", 2, "Action, Reaction");
+card!(Mine, "Mine", 5);
 
-card!(Moneylender, "Moneylender", 4, "Action");
+card!(Moat, "Moat", 2);
 
-card!(Poacher, "Poacher", 4, "Action");
+card!(Moneylender, "Moneylender", 4);
 
-card!(Remodel, "Remodel", 4, "Action");
+card!(Poacher, "Poacher", 4);
 
-card!(Sentry, "Sentry", 5, "Action");
+card!(Remodel, "Remodel", 4);
 
-card!(Smithy, "Smithy", 4, "Action");
-action!(Smithy, 3, 0, 0, 0);
+card!(Sentry, "Sentry", 5);
 
-card!(ThroneRoom, "Throne Room", 4, "Action");
+card!(Smithy, "Smithy", 4);
 
-card!(Vassal, "Vassal", 3, "Action");
+card!(ThroneRoom, "Throne Room", 4);
 
-card!(Village, "Village", 3, "Action");
-action!(Village, 1, 2, 0, 0);
+card!(Vassal, "Vassal", 3);
 
-card!(Witch, "Witch", 5, "Action, Attack");
+card!(Village, "Village", 3);
 
-card!(Workshop, "Workshop", 3, "Action");
+card!(Witch, "Witch", 5);
+
+card!(Workshop, "Workshop", 3);

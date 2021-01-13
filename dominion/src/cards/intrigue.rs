@@ -2,8 +2,7 @@
 
 use super::prelude::*;
 
-card!(Nobles, "Nobles", 6, "Action, Victory");
-victory!(Nobles, 2);
+card!(Nobles, "Nobles", 6);
 // impl Action for Nobles {
 //     fn effects(&self) {
         
