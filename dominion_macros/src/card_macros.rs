@@ -67,13 +67,79 @@ macro_rules! treasure_value {
 }
 
 #[macro_export]
-macro_rules! simple_action {
+macro_rules! victory_points {
+    ($points:expr) => {
+        fn victory_points(&self, _: &Player) -> i32 { $points }
+    };
+}
+
+#[macro_export]
+macro_rules! curse_points {
+    ($points:expr) => {
+        fn curse_points(&self, _: &Player) -> i32 { $points }
+    };
+}
+
+#[macro_export]
+macro_rules! basic_action_effects {
     ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
         fn action_effects(&self, player: &mut Player, _: &mut Game) {
             player.draw_cards($cards);
             player.add_actions($actions);
             player.add_buys($buys);
             player.add_coins($coins);
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! basic_action {
+    ($struct:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
+        pub struct $struct;
+        impl Card for $struct {
+            name!($name);
+            cost!($cost);
+            types!(vec!["Action"]);
+            basic_action_effects!($cards, $actions, $buys, $coins);
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! basic_treasure {
+    ($struct:ident, $name:expr, $cost:expr, $value:expr) => {
+        pub struct $struct;
+        impl Card for $struct {
+            name!($name);
+            cost!($cost);
+            types!(vec!["Treasure"]);
+            treasure_value!($value);
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! basic_victory {
+    ($struct:ident, $name:expr, $cost:expr, $points:expr) => {
+        pub struct $struct;
+        impl Card for $struct {
+            name!($name);
+            cost!($cost);
+            types!(vec!["Victory"]);
+            victory_points!($points);
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! basic_curse {
+    ($struct:ident, $name:expr, $cost:expr, $points:expr) => {
+        pub struct $struct;
+        impl Card for $struct {
+            name!($name);
+            cost!($cost);
+            types!(vec!["Curse"]);
+            curse_points!($points);
         }
     };
 }

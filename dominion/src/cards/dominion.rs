@@ -2,7 +2,15 @@
 
 use super::prelude::*;
 
-card!(Artisan, "Artisan", 6);
+pub struct Artisan;
+impl Card for Artisan {
+    name!("Artisan");
+    cost!(6);
+    types!(vec!["Action"]);
+    fn action_effects(&self, _: &mut Player, _: &mut Game) {
+        
+    }
+}
 
 card!(Bandit, "Bandit", 5);
 
@@ -24,13 +32,7 @@ card!(Laboratory, "Laboratory", 5);
 
 card!(Library, "Library", 5);
 
-pub struct Market;
-impl Card for Market {
-    name!("Market");
-    cost!(5);
-    types!(vec!["Action"]);
-    simple_action!(1, 1, 1, 1);
-}
+basic_action!(Market, "Market", 5, 1, 1, 1, 1);
 
 card!(Merchant, "Merchant", 3);
 

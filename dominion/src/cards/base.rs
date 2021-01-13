@@ -2,22 +2,10 @@
 
 use super::prelude::*;
 
-pub struct Copper;
-impl Card for Copper {
-    name!("Copper");
-    cost!(0);
-    types!(vec!["Treasure"]);
-    treasure_value!(1);
-}
-
-card!(Silver, "Silver", 3);
-
-card!(Gold, "Gold", 6);
-
-card!(Estate, "Estate", 2);
-
-card!(Duchy, "Duchy", 5);
-
-card!(Province, "Province", 8);
-
-card!(Curse, "Curse", 0);
+basic_treasure!(Copper, "Copper", 0, 1);
+basic_treasure!(Silver, "Silver", 3, 2);
+basic_treasure!(Gold, "Gold", 6, 3);
+basic_victory!(Estate, "Estate", 2, 1);
+basic_victory!(Duchy, "Duchy", 5, 3);
+basic_victory!(Province, "Province", 8, 6);
+basic_curse!(Curse, "Curse", 0, -1);
