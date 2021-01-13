@@ -24,19 +24,12 @@ card!(Laboratory, "Laboratory", 5);
 
 card!(Library, "Library", 5);
 
-// card!(Market, "Market", 5);
 pub struct Market;
 impl Card for Market {
     name!("Market");
     cost!(5);
     types!(vec!["Action"]);
-
-    fn action_effects(&self, player: &mut Player, _: &mut Game) {
-        player.draw_cards(1);
-        player.add_actions(1);
-        player.add_buys(1);
-        player.add_coins(1);
-    }
+    simple_action!(1, 1, 1, 1);
 }
 
 card!(Merchant, "Merchant", 3);

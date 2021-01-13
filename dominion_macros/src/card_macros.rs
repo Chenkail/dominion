@@ -65,3 +65,15 @@ macro_rules! treasure_value {
         fn treasure_value(&self, _: &Player) -> i32 { $value }
     };
 }
+
+#[macro_export]
+macro_rules! simple_action {
+    ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
+        fn action_effects(&self, player: &mut Player, _: &mut Game) {
+            player.draw_cards($cards);
+            player.add_actions($actions);
+            player.add_buys($buys);
+            player.add_coins($coins);
+        }
+    };
+}
