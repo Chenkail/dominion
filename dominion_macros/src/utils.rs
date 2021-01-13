@@ -16,5 +16,5 @@ macro_rules! card_vec {
 
             v
         }
-    }
+    };
 }

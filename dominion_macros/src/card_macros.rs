@@ -37,3 +37,31 @@ macro_rules! card {
         }
     };
 }
+
+#[macro_export]
+macro_rules! name {
+    ($name:expr) => {
+        fn name(&self) -> &str { $name }
+    };
+}
+
+#[macro_export]
+macro_rules! cost {
+    ($cost:expr) => {
+        fn cost(&self) -> i32 { $cost }
+    };
+}
+
+#[macro_export]
+macro_rules! types {
+    ($types:expr) => {
+        fn types(&self) -> Vec<&str> { $types }
+    };
+}
+
+#[macro_export]
+macro_rules! treasure_value {
+    ($value:expr) => {
+        fn treasure_value(&self, _: &Player) -> i32 { $value }
+    };
+}

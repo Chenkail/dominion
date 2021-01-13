@@ -27,9 +27,9 @@ card!(Library, "Library", 5);
 // card!(Market, "Market", 5);
 pub struct Market;
 impl Card for Market {
-    fn cost(&self) -> i32 { 5 }
-    fn name(&self) -> &str { "Market" }
-    fn types(&self) -> Vec<&str> { vec!["Action"] }
+    name!("Market");
+    cost!(5);
+    types!(vec!["Action"]);
 
     fn action_effects(&self, player: &mut Player, _: &mut Game) {
         player.draw_cards(1);

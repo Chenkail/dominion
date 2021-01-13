@@ -2,7 +2,13 @@
 
 use super::prelude::*;
 
-card!(Copper, "Copper", 0);
+pub struct Copper;
+impl Card for Copper {
+    name!("Copper");
+    cost!(0);
+    types!(vec!["Treasure"]);
+    treasure_value!(1);
+}
 
 card!(Silver, "Silver", 3);
 
