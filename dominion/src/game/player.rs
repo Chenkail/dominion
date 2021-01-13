@@ -3,6 +3,8 @@
 use std::{collections::VecDeque, mem};
 use crate::cards::base::*;
 use crate::game::{gamedata::Game, traits::*, utils};
+use crate::error::DominionError;
+use DominionError::*;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 struct Resources {
@@ -103,12 +105,17 @@ impl Player {
     /// Play an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, card: &dyn Card, game: &mut Game) {
+    pub fn play_action_from_hand(&mut self, index: usize, game: &mut Game) -> Result<(), DominionError> {
         // Remove card from hand
-        
-
-        self.resources.actions -= 1;
-        self.action_effects(card, game);
+        let card = self.hand.get(index).unwrap();
+        if card.types().contains(&"Action") {
+            let card = &*self.hand.remove(index).unwrap();
+            self.resources.actions -= 1;
+            self.action_effects(card, game);
+            Ok(())
+        } else {
+            return Err(CardTypeMisMatch);
+        }
     }
 
     /// Give the player the effects of an action card as if they had played it
