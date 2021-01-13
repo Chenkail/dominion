@@ -37,9 +37,13 @@ impl Game {
         
         // If card is victory card, count matches other victory cards
         // Otherwise use 10 copies
-        // TODO: check if card implements victory (is this even possible?)
         for card in cards {
-            supply.insert(card, 10);
+            let count = if card.types().contains(&"Victory") {
+                victory_card_count
+            } else {
+                10
+            };
+            supply.insert(card, count);
         }
 
         Game { players: player_vec, supply, trash }

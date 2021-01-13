@@ -2,24 +2,19 @@
 
 use std::collections::VecDeque;
 use rand;
-use crate::cards::all::*;
-use crate::game::traits::Card;
-
-/// Returns a Card trait object given the name
-pub fn card_lookup(name: &str) -> Box<dyn Card> {
-    // TODO: Find trait object
-    let copper = Box::new(Copper);
-    return copper;
-}
 
 // Slightly modified from https://stackoverflow.com/questions/41208694/how-do-i-shuffle-a-vecdeque
 // Requirement for Fisher-Yates shuffle: has a length and the ability to swap elements
+
+/// Does the struct have a length and a function which swaps the location of two elements
 pub trait LenAndSwap {
     fn len(&self) -> usize;
     fn swap(&mut self, i: usize, j: usize);
 }
 
 /// Shuffles anything which implements the associated trait LenAndSwap
+///
+/// Uses Fisher-Yates shuffle
 pub fn shuffle<T: LenAndSwap>(values: &mut T) {
     shuffle_with_rng(values, rand::thread_rng());
 }

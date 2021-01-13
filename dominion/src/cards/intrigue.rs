@@ -3,8 +3,3 @@
 use super::prelude::*;
 
 placeholder_card!(Nobles, "Nobles", 6);
-// impl Action for Nobles {
-//     fn effects(&self) {
-        
-//     }
-// }

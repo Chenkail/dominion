@@ -104,6 +104,9 @@ impl Player {
     ///
     /// This is the function to call when a player plays a card directly
     pub fn play_action_from_hand(&mut self, card: &dyn Card, game: &mut Game) {
+        // Remove card from hand
+        
+
         self.resources.actions -= 1;
         self.action_effects(card, game);
     }
@@ -124,7 +127,7 @@ impl Player {
         self.resources.coins = 0;
 
         while self.resources.actions > 0 {
-            // Play cards
+            // TODO: Figure out how to allow player to declare that they are done playing actions
         }
     }
 
@@ -145,7 +148,7 @@ impl Player {
 
         while self.resources.buys > 0 {
             // Buy cards
-
+            // TODO: Figure out how to allow player to declare that they are done buying cards
         }
     }
 
@@ -185,7 +188,7 @@ impl Player {
             
         }
         for card in &self.discard {
-        
+            
         }
         return points;
     }
