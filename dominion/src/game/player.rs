@@ -114,7 +114,7 @@ impl Player {
             self.action_effects(card, game);
             Ok(())
         } else {
-            return Err(CardTypeMisMatch);
+            return Err(CardTypeMisMatch { expected: "Action".to_string() });
         }
     }
 
