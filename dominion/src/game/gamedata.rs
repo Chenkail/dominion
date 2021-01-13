@@ -13,12 +13,12 @@ pub struct Game {
 impl Game {
     /// Create a new [Game] given a list of [Cards](Card) for the supply
     pub fn new(players: u8, cards: Vec<Box<dyn Card>>) -> Game {
-        let mut player_vec: Vec<Player> = Vec::with_capacity(players);
+        let mut player_vec: Vec<Player> = Vec::with_capacity(players as usize);
         let mut supply: HashMap<Box<dyn Card>, u8> = HashMap::new();
         let trash = VecDeque::new();
 
         for _ in 0..players {
-            // player_vec.append(Player::new())
+            player_vec.push(Player::new())
         }
         
         let (victory_card_count, province_count, curse_count) = match players {
