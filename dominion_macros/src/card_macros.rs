@@ -2,7 +2,7 @@
 
 /// Create a placeholder for a card - SHOULD NOT BE USED FOR ACTUAL CARDS
 #[macro_export]
-macro_rules! card {
+macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
         pub struct $struct_name;
         impl Card for $struct_name {

@@ -2,7 +2,7 @@
 
 use super::prelude::*;
 
-card!(Nobles, "Nobles", 6);
+placeholder_card!(Nobles, "Nobles", 6);
 // impl Action for Nobles {
 //     fn effects(&self) {
         

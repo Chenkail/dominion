@@ -12,52 +12,52 @@ impl Card for Artisan {
     }
 }
 
-card!(Bandit, "Bandit", 5);
+placeholder_card!(Bandit, "Bandit", 5);
 
-card!(Bureaucrat, "Bureaucrat", 4);
+placeholder_card!(Bureaucrat, "Bureaucrat", 4);
 
-card!(Cellar, "Cellar", 2);
+placeholder_card!(Cellar, "Cellar", 2);
 
-card!(Chapel, "Chapel", 2);
+placeholder_card!(Chapel, "Chapel", 2);
 
-card!(CouncilRoom, "Council Room", 5);
+placeholder_card!(CouncilRoom, "Council Room", 5);
 
-card!(Festival, "Festival", 5);
+placeholder_card!(Festival, "Festival", 5);
 
-card!(Gardens, "Gardens", 4);
+placeholder_card!(Gardens, "Gardens", 4);
 
-card!(Harbinger, "Harbinger", 3);
+placeholder_card!(Harbinger, "Harbinger", 3);
 
-card!(Laboratory, "Laboratory", 5);
+placeholder_card!(Laboratory, "Laboratory", 5);
 
-card!(Library, "Library", 5);
+placeholder_card!(Library, "Library", 5);
 
 basic_action!(Market, "Market", 5, 1, 1, 1, 1);
 
-card!(Merchant, "Merchant", 3);
+placeholder_card!(Merchant, "Merchant", 3);
 
-card!(Militia, "Militia", 4);
+placeholder_card!(Militia, "Militia", 4);
 
-card!(Mine, "Mine", 5);
+placeholder_card!(Mine, "Mine", 5);
 
-card!(Moat, "Moat", 2);
+placeholder_card!(Moat, "Moat", 2);
 
-card!(Moneylender, "Moneylender", 4);
+placeholder_card!(Moneylender, "Moneylender", 4);
 
-card!(Poacher, "Poacher", 4);
+placeholder_card!(Poacher, "Poacher", 4);
 
-card!(Remodel, "Remodel", 4);
+placeholder_card!(Remodel, "Remodel", 4);
 
-card!(Sentry, "Sentry", 5);
+placeholder_card!(Sentry, "Sentry", 5);
 
-card!(Smithy, "Smithy", 4);
+placeholder_card!(Smithy, "Smithy", 4);
 
-card!(ThroneRoom, "Throne Room", 4);
+placeholder_card!(ThroneRoom, "Throne Room", 4);
 
-card!(Vassal, "Vassal", 3);
+placeholder_card!(Vassal, "Vassal", 3);
 
-card!(Village, "Village", 3);
+placeholder_card!(Village, "Village", 3);
 
-card!(Witch, "Witch", 5);
+placeholder_card!(Witch, "Witch", 5);
 
-card!(Workshop, "Workshop", 3);
+placeholder_card!(Workshop, "Workshop", 3);
