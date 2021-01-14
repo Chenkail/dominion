@@ -9,6 +9,7 @@ use std::collections::VecDeque;
 pub trait LenAndSwap {
     fn len(&self) -> usize;
     fn swap(&mut self, i: usize, j: usize);
+    fn is_empty(&self) -> bool { self.len() == 0 }
 }
 
 /// Shuffles anything which implements the associated trait LenAndSwap

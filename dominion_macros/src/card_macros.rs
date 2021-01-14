@@ -16,15 +16,15 @@ macro_rules! placeholder_card {
         card!($struct_name);
         impl Card for $struct_name {
             fn cost(&self) -> i32 {
-                return $cost as i32;
+                $cost as i32
             }
             
             fn name(&self) -> &str {
-                return $name;
+                $name
             }
 
             fn types(&self) -> Vec<CardType> {
-                return Vec::new();
+                Vec::new()
             }
         }
     };
