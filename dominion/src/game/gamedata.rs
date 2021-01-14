@@ -2,18 +2,7 @@
 
 use std::collections::{HashMap, VecDeque};
 use crate::cards::all::*;
-use crate::game::{player::Player, card::Card};
-
-// defines the Types Enum for use in Cards
-// may be moved somewhere else later? perhaps a types.rs file
-pub enum CardType {
-    ActionCard,
-    ReactionCard,
-    VictoryCard,
-    CurseCard,
-    AttackCard,
-    TreasureCard
-}
+use crate::game::{player::Player, card::{Card, CardType::*}};
 
 pub struct Game {
     pub players: Vec<Player>,
@@ -49,7 +38,7 @@ impl Game {
         // If card is victory card, count matches other victory cards
         // Otherwise use 10 copies
         for card in cards {
-            let count = if card.types().contains(&"Victory") {
+            let count = if card.types().contains(&VictoryCard) {
                 victory_card_count
             } else {
                 10

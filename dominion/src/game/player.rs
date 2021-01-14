@@ -2,7 +2,7 @@
 
 use std::{collections::VecDeque, mem};
 use crate::cards::base::*;
-use crate::game::{gamedata::Game, card::*, utils};
+use crate::game::{gamedata::Game, card::*, card::CardType::*, utils};
 use crate::error::DominionError;
 use DominionError::*;
 
@@ -125,7 +125,7 @@ impl Player {
     pub fn play_action_from_hand(&mut self, index: usize, game: &mut Game) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
-        if card.types().contains(&"Action") {
+        if card.types().contains(&ActionCard) {
             let card = self.hand.remove(index).unwrap();
             self.in_play.push_back(card.clone());
 

@@ -5,6 +5,17 @@ use dyn_clonable::*;
 
 use crate::game::{gamedata::Game, player::Player};
 
+/// Card Types
+#[derive(PartialEq)]
+pub enum CardType {
+    ActionCard,
+    ReactionCard,
+    VictoryCard,
+    CurseCard,
+    AttackCard,
+    TreasureCard
+}
+
 /// The basic Card trait
 ///
 /// dyn Card implements [Hash] and [Eq] so that Box\<dyn Card\> can be used as keys for a HashMap
@@ -15,7 +26,7 @@ pub trait Card: Clone {
     /// The name on the card (e.g. "Throne Room")
     fn name(&self) -> &str;
     /// The card's types - each type should be title case
-    fn types(&self) -> Vec<&str>;
+    fn types(&self) -> Vec<CardType>;
     /// The card text (this will often be blank, as is the case with all the cards in the base set)
     fn description(&self) -> &str { "" }
 

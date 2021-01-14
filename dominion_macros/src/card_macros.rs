@@ -23,7 +23,7 @@ macro_rules! placeholder_card {
                 return $name;
             }
 
-            fn types(&self) -> Vec<&str> {
+            fn types(&self) -> Vec<CardType> {
                 return Vec::new();
             }
         }
@@ -47,7 +47,7 @@ macro_rules! cost {
 #[macro_export]
 macro_rules! types {
     ($types:expr) => {
-        fn types(&self) -> Vec<&str> { $types }
+        fn types(&self) -> Vec<CardType> { $types }
     };
 }
 
@@ -91,7 +91,7 @@ macro_rules! basic_action {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec!["Action"]);
+            types!(vec![ActionCard]);
             basic_action_effects!($cards, $actions, $buys, $coins);
         }
     };
@@ -104,7 +104,7 @@ macro_rules! basic_treasure {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec!["Treasure"]);
+            types!(vec![TreasureCard]);
             treasure_value!($value);
         }
     };
@@ -117,7 +117,7 @@ macro_rules! basic_victory {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec!["Victory"]);
+            types!(vec![VictoryCard]);
             victory_points!($points);
         }
     };
@@ -130,7 +130,7 @@ macro_rules! basic_curse {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec!["Curse"]);
+            types!(vec![CurseCard]);
             curse_points!($points);
         }
     };
