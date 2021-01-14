@@ -122,7 +122,7 @@ impl Player {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, game: &mut Game) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.types().contains(&ActionCard) {
@@ -130,7 +130,7 @@ impl Player {
             self.in_play.push_back(card.clone());
 
             self.resources.actions -= 1;
-            self.action_effects(&*card, game);
+            self.action_effects(&*card, supply, other_players);
             
             Ok(())
         } else {
@@ -142,12 +142,12 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Card, game: &mut Game) {
-        card.action_effects(self, game);
+    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) {
+        card.action_effects(self, supply, other_players);
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, game: &mut Game) {
+    pub fn action_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &Vec<Player>) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -199,23 +199,18 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self, game: &mut Game) {
-        self.action_phase(game);
-        self.buy_phase(&mut game.supply);
+    pub fn turn(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) {
+        self.action_phase(supply, other_players);
+        self.buy_phase(supply);
         self.cleanup();
     }
 
     /// Count up a player's victory points
     pub fn victory_points(&self) -> i32 {
         let mut points = 0;
-        for card in &self.hand {
-            
-        }
-        for card in &self.deck {
-            
-        }
-        for card in &self.discard {
-            
+        let iter = self.card_iter();
+        for card in iter {
+            points += card.victory_points(self);
         }
         points
     }

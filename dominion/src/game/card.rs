@@ -1,6 +1,6 @@
 //! Defines traits for the various card types
 
-use std::hash::{Hash, Hasher};
+use std::{collections::HashMap, hash::{Hash, Hasher}};
 use dyn_clonable::*;
 
 use crate::game::{gamedata::Game, player::Player};
@@ -31,15 +31,15 @@ pub trait Card: Clone {
     fn description(&self) -> &str { "" }
 
     /// The number of coins the card is worth (if it is a treasure card)
-    fn treasure_value(&self, _: &Player) -> i32 { 0 }
+    fn treasure_value(&self, _player: &Player) -> i32 { 0 }
     /// The number of points the card is worth (if it is a victory card)
-    fn victory_points(&self, _: &Player) -> i32 { 0 }
+    fn victory_points(&self, _player: &Player) -> i32 { 0 }
     /// The number of points the card is worth (if it is a curse card) - this should be negative
-    fn curse_points(&self, _: &Player) -> i32 { 0 }
+    fn curse_points(&self, _player: &Player) -> i32 { 0 }
     /// The card's effects when played as an action
-    fn action_effects(&self, _: &mut Player, _: &mut Game) {}
+    fn action_effects(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
     /// The card's effects when used as a reaction
-    fn reaction_effects(&self, _: &mut Player, _: &mut Game) {}
+    fn reaction_effects(&self, _player: &mut Player, _: &mut Game) {}
 }
 
 impl Hash for dyn Card {
