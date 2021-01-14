@@ -29,9 +29,9 @@ pub struct Player {
     resources: Resources,
 }
 
-impl Player {
+impl Default for Player {
     /// Constructs a new [Player] with 3 estates and 7 copper
-    pub fn new() -> Player {
+    fn default() -> Player {
         let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
         let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
         let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
@@ -57,7 +57,9 @@ impl Player {
 
         Player { hand, deck, discard, in_play, resources }
     }
+}
 
+impl Player {
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
     pub fn card_iter(&self) -> impl Iterator<Item = &Box<dyn Card>> {
         return self.hand.iter()

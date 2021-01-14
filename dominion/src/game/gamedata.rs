@@ -29,7 +29,7 @@ impl Game {
         let trash = VecDeque::new();
 
         for _ in 0..players {
-            player_vec.push(Player::new())
+            player_vec.push(Player::default())
         }
         
         let (victory_card_count, province_count, curse_count) = match players {
