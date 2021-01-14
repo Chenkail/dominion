@@ -4,6 +4,17 @@ use std::collections::{HashMap, VecDeque};
 use crate::cards::all::*;
 use crate::game::{player::Player, traits::Card};
 
+// defines the Types Enum for use in Cards
+// may be moved somewhere else later? perhaps a types.rs file
+pub enum CardType {
+    ActionCard,
+    ReactionCard,
+    VictoryCard,
+    CurseCard,
+    AttackCard,
+    TreasureCard
+}
+
 pub struct Game {
     pub players: Vec<Player>,
     pub supply: HashMap<Box<dyn Card>, u8>,
