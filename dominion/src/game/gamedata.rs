@@ -2,7 +2,7 @@
 
 use std::collections::{HashMap, VecDeque};
 use crate::cards::all::*;
-use crate::game::{player::Player, traits::Card};
+use crate::game::{player::Player, card::Card};
 
 pub struct Game {
     pub players: Vec<Player>,

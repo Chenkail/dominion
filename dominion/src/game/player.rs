@@ -2,7 +2,7 @@
 
 use std::{collections::{VecDeque, vec_deque::Iter}, mem};
 use crate::cards::base::*;
-use crate::game::{gamedata::Game, traits::*, utils};
+use crate::game::{gamedata::Game, card::*, utils};
 use crate::error::DominionError;
 use DominionError::*;
 
