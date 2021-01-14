@@ -1,6 +1,6 @@
 //! Defines Player object and associated functions
 
-use std::{collections::{VecDeque, vec_deque::Iter}, mem};
+use std::{collections::VecDeque, mem};
 use crate::cards::base::*;
 use crate::game::{gamedata::Game, card::*, utils};
 use crate::error::DominionError;
@@ -168,8 +168,7 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self, game: &mut Game) {
-        // TODO: Count money
-
+        let mut total_coins = self.count_money_in_hand() + self.resources.coins;
 
         while self.resources.buys > 0 {
             // Buy cards
