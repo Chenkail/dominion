@@ -1,6 +1,6 @@
 //! Defines Player object and associated functions
 
-use std::{collections::VecDeque, mem};
+use std::{collections::{VecDeque, vec_deque::Iter}, mem};
 use crate::cards::base::*;
 use crate::game::{gamedata::Game, traits::*, utils};
 use crate::error::DominionError;
@@ -25,15 +25,17 @@ pub struct Player {
     pub hand: VecDeque<Box<dyn Card>>,
     pub deck: VecDeque<Box<dyn Card>>,
     pub discard: VecDeque<Box<dyn Card>>,
+    pub in_play: VecDeque<Box<dyn Card>>,
     resources: Resources,
 }
 
 impl Player {
-    /// Construct a new [Player] with 3 estates and 7 copper
+    /// Constructs a new [Player] with 3 estates and 7 copper
     pub fn new() -> Player {
         let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
         let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
         let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
+        let in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
         let resources = Resources::new();
         
         for _ in 0..7 {
@@ -53,10 +55,18 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { hand, deck, discard, resources }
+        Player { hand, deck, discard, in_play, resources }
     }
 
-    /// Draw x cards for the player
+    /// Gets an iterator with references to all cards in the player's hand, deck, and discard
+    pub fn card_iter(&self) -> impl Iterator<Item = &Box<dyn Card>> {
+        return self.hand.iter()
+                .chain(self.deck.iter())
+                .chain(self.discard.iter())
+                .chain(self.in_play.iter());
+    }
+
+    /// Draws x cards for the player
     pub fn draw_cards(&mut self, cards: i32) {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
@@ -74,7 +84,7 @@ impl Player {
         }
     }
 
-    /// Discard cards from hand given an array of indexes of said cards
+    /// Discards cards from hand given an array of indexes of said cards
     pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {        
         indexes.sort();
         indexes.reverse();
@@ -83,7 +93,7 @@ impl Player {
         }
     }
 
-    /// Trash cards from hand given an array of indexes of said cards
+    /// Trashes cards from hand given an array of indexes of said cards
     pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, game: &mut Game) {
         indexes.sort();
         indexes.reverse();
@@ -92,22 +102,22 @@ impl Player {
         }
     }
 
-    /// Add extra actions for the player for this turn
+    /// Gives the player extra actions for this turn
     pub fn add_actions(&mut self, actions: i32) {
         self.resources.actions += actions;
     }
 
-    /// Add extra buys for the player for this turn
+    /// Gives the player extra buys for this turn
     pub fn add_buys(&mut self, buys: i32) {
         self.resources.buys += buys;
     }
 
-    /// Add extra coins for the player for this turn
+    /// Gives the player extra coins for this turn
     pub fn add_coins(&mut self, coins: i32) {
         self.resources.coins += coins;
     }
 
-    /// Play an action [card](Card) from the player's hand
+    /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
     pub fn play_action_from_hand(&mut self, index: usize, game: &mut Game) -> Result<(), DominionError> {
@@ -117,13 +127,14 @@ impl Player {
             let card = &*self.hand.remove(index).unwrap();
             self.resources.actions -= 1;
             self.action_effects(card, game);
+            
             Ok(())
         } else {
             Err(CardTypeMisMatch { expected: "Action".to_string() })
         }
     }
 
-    /// Give the player the effects of an action card as if they had played it
+    /// Gives the player the effects of an action card as if they had played it
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
@@ -164,6 +175,7 @@ impl Player {
         }
     }
 
+    /// Returns the total value of the treasure cards in the player's hand
     pub fn count_money_in_hand(&self) -> i32 {
         // Add coins from treasures in hand to total
         let mut total = 0;
@@ -205,7 +217,7 @@ impl Player {
         return points;
     }
 
-    /// Print out resources along with number of cards in hand/deck/discard/total
+    /// Prints out resources along with number of cards in hand/deck/discard/total
     pub fn print_state(&self) {
         let hand_count = self.hand.len();
         let deck_count = self.deck.len();
@@ -226,7 +238,7 @@ impl Player {
         println!("Coins: {}", self.resources.coins);
     }
 
-    /// Print out all cards that the player has, in order, and where they are
+    /// Prints out all cards that the player has, in order, and where they are
     pub fn print_cards(&self) {
         let indent = "    ";
 
