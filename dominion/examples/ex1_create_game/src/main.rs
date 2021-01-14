@@ -13,4 +13,7 @@ fn main() {
     player.print_state();
     player.print_cards();
     println!("{}", player.count_money_in_hand());
+
+    let e = player.play_action_from_hand(0, &mut game);
+    eprintln!("Error: {:?}", e);
 }
