@@ -70,9 +70,9 @@ impl Player {
     pub fn draw_cards(&mut self, cards: i32) {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
-            if self.deck.len() == 0 {
+            if self.deck.is_empty() {
                 // If discard is also empty, there is nothing to draw
-                if self.discard.len() == 0 {
+                if self.discard.is_empty() {
                     return;
                 }
 
@@ -86,7 +86,7 @@ impl Player {
 
     /// Discards cards from hand given an array of indexes of said cards
     pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {        
-        indexes.sort();
+        indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
             self.discard.push_back(self.hand.remove(i).unwrap());
@@ -95,7 +95,7 @@ impl Player {
 
     /// Trashes cards from hand given an array of indexes of said cards
     pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, game: &mut Game) {
-        indexes.sort();
+        indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
             game.trash.push_back(self.hand.remove(i).unwrap());
@@ -215,7 +215,7 @@ impl Player {
         for card in &self.discard {
             
         }
-        return points;
+        points
     }
 
     /// Prints out resources along with number of cards in hand/deck/discard/total

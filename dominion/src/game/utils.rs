@@ -1,7 +1,6 @@
 //! Various utilities for Dominion
 
 use std::collections::VecDeque;
-use rand;
 
 // Slightly modified from https://stackoverflow.com/questions/41208694/how-do-i-shuffle-a-vecdeque
 // Requirement for Fisher-Yates shuffle: has a length and the ability to swap elements
