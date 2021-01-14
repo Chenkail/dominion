@@ -14,12 +14,10 @@ pub trait Card: Clone {
     fn cost(&self) -> i32;
     /// The name on the card (e.g. "Throne Room")
     fn name(&self) -> &str;
-    /// The card text (this will often be blank, as is the case with all the cards in the base set)
-    fn description(&self) -> &str {
-        return "";
-    }
     /// The card's types - each type should be title case
     fn types(&self) -> Vec<&str>;
+    /// The card text (this will often be blank, as is the case with all the cards in the base set)
+    fn description(&self) -> &str { "" }
 
     /// The number of coins the card is worth (if it is a treasure card)
     fn treasure_value(&self, _: &Player) -> i32 { 0 }
