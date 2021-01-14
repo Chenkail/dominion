@@ -8,5 +8,7 @@ edition = "2018"
 
 [dependencies]
 dominion_macros = { path = "../dominion_macros/" }
+
+dyn-clonable = "0.9"
 rand = "0.8.x"
 thiserror = "1.0"

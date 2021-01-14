@@ -1,12 +1,15 @@
 //! Defines traits for the various card types
 
 use std::hash::{Hash, Hasher};
+use dyn_clonable::*;
+
 use crate::game::{gamedata::Game, player::Player};
 
 /// The basic Card trait
 ///
 /// dyn Card implements [Hash] and [Eq] so that Box\<dyn Card\> can be used as keys for a HashMap
-pub trait Card {
+#[clonable]
+pub trait Card: Clone {
     /// How much the card costs to buy
     fn cost(&self) -> i32;
     /// The name on the card (e.g. "Throne Room")
@@ -43,4 +46,3 @@ impl PartialEq for dyn Card {
 }
 
 impl Eq for dyn Card {}
-

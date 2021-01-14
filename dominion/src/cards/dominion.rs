@@ -2,7 +2,7 @@
 
 use super::prelude::*;
 
-pub struct Artisan;
+card!(Artisan);
 impl Card for Artisan {
     name!("Artisan");
     cost!(6);
