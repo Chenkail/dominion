@@ -5,4 +5,4 @@
 //! ```
 
 pub use crate::cards::all::*;
-pub use crate::game::{gamedata::Game, player::Player, traits::*};
+pub use crate::game::{gamedata::Game, player::Player, card::*};

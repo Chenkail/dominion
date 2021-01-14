@@ -2,7 +2,7 @@
 
 use std::collections::{HashMap, VecDeque};
 use crate::cards::all::*;
-use crate::game::{player::Player, traits::Card};
+use crate::game::{player::Player, card::Card};
 
 // defines the Types Enum for use in Cards
 // may be moved somewhere else later? perhaps a types.rs file

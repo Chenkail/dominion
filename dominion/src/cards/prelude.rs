@@ -4,5 +4,5 @@
 //! use dominion::cards::prelude::*;
 //! ```
 
-pub use crate::game::{gamedata::Game, player::Player, traits::*};
+pub use crate::game::{gamedata::Game, player::Player, card::*};
 pub use dominion_macros::*;

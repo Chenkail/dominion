@@ -1,10 +1,19 @@
 //! Macros for defining cards
 
+/// Declare card struct and derive Clone
+#[macro_export]
+macro_rules! card {
+    ($struct_name:ident) => {
+        #[derive(Clone)]
+        pub struct $struct_name;
+    };
+}
+
 /// Create a placeholder for a card - SHOULD NOT BE USED FOR ACTUAL CARDS
 #[macro_export]
 macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
-        pub struct $struct_name;
+        card!($struct_name);
         impl Card for $struct_name {
             fn cost(&self) -> i32 {
                 return $cost as i32;
@@ -77,9 +86,9 @@ macro_rules! basic_action_effects {
 
 #[macro_export]
 macro_rules! basic_action {
-    ($struct:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
-        pub struct $struct;
-        impl Card for $struct {
+    ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
+        card!($struct_name);
+        impl Card for $struct_name {
             name!($name);
             cost!($cost);
             types!(vec!["Action"]);
@@ -90,9 +99,9 @@ macro_rules! basic_action {
 
 #[macro_export]
 macro_rules! basic_treasure {
-    ($struct:ident, $name:expr, $cost:expr, $value:expr) => {
-        pub struct $struct;
-        impl Card for $struct {
+    ($struct_name:ident, $name:expr, $cost:expr, $value:expr) => {
+        card!($struct_name);
+        impl Card for $struct_name {
             name!($name);
             cost!($cost);
             types!(vec!["Treasure"]);
@@ -103,9 +112,9 @@ macro_rules! basic_treasure {
 
 #[macro_export]
 macro_rules! basic_victory {
-    ($struct:ident, $name:expr, $cost:expr, $points:expr) => {
-        pub struct $struct;
-        impl Card for $struct {
+    ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
+        card!($struct_name);
+        impl Card for $struct_name {
             name!($name);
             cost!($cost);
             types!(vec!["Victory"]);
@@ -116,9 +125,9 @@ macro_rules! basic_victory {
 
 #[macro_export]
 macro_rules! basic_curse {
-    ($struct:ident, $name:expr, $cost:expr, $points:expr) => {
-        pub struct $struct;
-        impl Card for $struct {
+    ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
+        card!($struct_name);
+        impl Card for $struct_name {
             name!($name);
             cost!($cost);
             types!(vec!["Curse"]);
