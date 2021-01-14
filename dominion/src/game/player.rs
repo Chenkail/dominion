@@ -1,6 +1,6 @@
 //! Defines Player object and associated functions
 
-use std::{collections::VecDeque, mem};
+use std::{collections::{HashMap, VecDeque}, mem};
 use crate::cards::base::*;
 use crate::game::{gamedata::Game, card::*, card::CardType::*, utils};
 use crate::error::DominionError;
@@ -159,9 +159,9 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, game: &mut Game) {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>) {
         // TODO: check if supply pile is empty
-        *game.supply.get_mut(&card).unwrap() -= 1;
+        *supply.get_mut(&card).unwrap() -= 1;
 
         self.resources.coins -= card.cost();
         self.discard.push_back(card);
@@ -169,7 +169,7 @@ impl Player {
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, game: &mut Game) {
+    pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>) {
         let mut total_coins = self.count_money_in_hand() + self.resources.coins;
 
         while self.resources.buys > 0 {
@@ -201,7 +201,7 @@ impl Player {
     /// Take a turn
     pub fn turn(&mut self, game: &mut Game) {
         self.action_phase(game);
-        self.buy_phase(game);
+        self.buy_phase(&mut game.supply);
         self.cleanup();
     }
 
