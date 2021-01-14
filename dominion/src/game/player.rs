@@ -61,6 +61,11 @@ impl Player {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
             if self.deck.len() == 0 {
+                // If discard is also empty, there is nothing to draw
+                if self.discard.len() == 0 {
+                    return;
+                }
+
                 utils::shuffle(&mut self.discard);
                 mem::swap(&mut self.deck, &mut self.discard);
             }
@@ -114,7 +119,7 @@ impl Player {
             self.action_effects(card, game);
             Ok(())
         } else {
-            return Err(CardTypeMisMatch { expected: "Action".to_string() });
+            Err(CardTypeMisMatch { expected: "Action".to_string() })
         }
     }
 
