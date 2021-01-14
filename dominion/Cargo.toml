@@ -9,4 +9,4 @@ edition = "2018"
 [dependencies]
 dominion_macros = { path = "../dominion_macros/" }
 rand = "0.8.x"
-thiserror = "1.0.23"
+thiserror = "1"
