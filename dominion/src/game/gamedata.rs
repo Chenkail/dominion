@@ -38,7 +38,7 @@ impl Game {
         // If card is victory card, count matches other victory cards
         // Otherwise use 10 copies
         for card in cards {
-            let count = if card.types().contains(&VictoryCard) {
+            let count = if card.is_victory() {
                 victory_card_count
             } else {
                 10

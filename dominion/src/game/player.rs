@@ -125,7 +125,7 @@ impl Player {
     pub fn play_action_from_hand(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
-        if card.types().contains(&ActionCard) {
+        if card.is_action() {
             let card = self.hand.remove(index).unwrap();
             self.in_play.push_back(card.clone());
 

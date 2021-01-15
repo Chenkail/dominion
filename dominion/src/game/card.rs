@@ -9,11 +9,12 @@ use crate::game::{gamedata::Game, player::Player};
 #[derive(PartialEq)]
 pub enum CardType {
     ActionCard,
+    AttackCard,
     ReactionCard,
+    TreasureCard,
+    PotionCard,
     VictoryCard,
     CurseCard,
-    AttackCard,
-    TreasureCard,
 }
 
 /// The basic Card trait
@@ -29,6 +30,15 @@ pub trait Card: Clone {
     fn types(&self) -> Vec<CardType>;
     /// The card text (this will often be blank, as is the case with all the cards in the base set)
     fn description(&self) -> &str { "" }
+
+    // Types
+    fn is_action(&self) -> bool { self.types().contains(&CardType::ActionCard) }
+    fn is_attack(&self) -> bool { self.types().contains(&CardType::AttackCard) }
+    fn is_reaction(&self) -> bool { self.types().contains(&CardType::ReactionCard) }
+    fn is_potion(&self) -> bool { self.types().contains(&CardType::PotionCard) }
+    fn is_treasure(&self) -> bool { self.types().contains(&CardType::TreasureCard) | self.types().contains(&CardType::PotionCard) }
+    fn is_victory(&self) -> bool { self.types().contains(&CardType::VictoryCard) }
+    fn is_curse(&self) -> bool { self.types().contains(&CardType::CurseCard) }
 
     /// The number of coins the card is worth (if it is a treasure card)
     fn treasure_value(&self, _player: &Player) -> i32 { 0 }
