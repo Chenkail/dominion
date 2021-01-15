@@ -3,11 +3,20 @@
 use std::collections::{HashMap, VecDeque};
 use crate::cards::all::*;
 use crate::game::{player::Player, card::Card};
+use dominion_macros::*;
 
 pub struct Game {
     pub players: Vec<Player>,
     pub supply: HashMap<Box<dyn Card>, u8>,
     pub trash: VecDeque<Box<dyn Card>>,
+}
+
+impl Default for Game {
+    /// Creates a two-player game with the recommended first game set
+    fn default() -> Self {
+        let kingdom_cards = card_vec![Cellar, Market, Merchant, Militia, Mine, Moat, Remodel, Smithy, Village, Workshop];
+        Game::new(2, kingdom_cards)
+    }
 }
 
 impl Game {
