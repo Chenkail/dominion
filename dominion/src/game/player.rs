@@ -5,6 +5,7 @@ use crate::cards::base::*;
 use crate::game::{card::*, card::CardType::*, utils};
 use crate::error::DominionError;
 use DominionError::*;
+use dominion_macros::card_vec;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 #[derive(Default)]
@@ -30,21 +31,18 @@ pub struct Player {
 impl Default for Player {
     /// Constructs a new [Player] with 3 estates and 7 copper
     fn default() -> Player {
+        let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
+        Player::new(deck)
+    }
+}
+
+impl Player {
+    pub fn new (cards: Vec<Box<dyn Card>>) -> Player {
         let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
-        let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
+        let mut deck: VecDeque<Box<dyn Card>> = VecDeque::from(cards);
         let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
         let in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
         let resources = Resources::default();
-        
-        for _ in 0..7 {
-            let copper = Box::new(Copper);
-            deck.push_back(copper);
-        }
-        
-        for _ in 0..3 {
-            let estate = Box::new(Estate);
-            deck.push_back(estate);
-        }
 
         utils::shuffle(&mut deck);
 
@@ -55,9 +53,7 @@ impl Default for Player {
 
         Player { hand, deck, discard, in_play, resources }
     }
-}
 
-impl Player {
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
     pub fn card_iter(&self) -> impl Iterator<Item = &Box<dyn Card>> {
         return self.hand.iter()
