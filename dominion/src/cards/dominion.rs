@@ -7,7 +7,7 @@ impl Card for Artisan {
     name!("Artisan");
     cost!(6);
     types!(vec![ActionCard]);
-    fn action_effects(&self, player: &mut Player, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) {
+    fn action_effects(&self, player: &mut Player, supply: &mut HashMap<Box<dyn Card>, u8>, _: &mut Vec<Player>) {
         
     }
 }

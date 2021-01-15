@@ -87,7 +87,7 @@ impl Player {
     }
 
     /// Discards cards from hand given an array of indexes of said cards
-    pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {        
+    pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {
         indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
@@ -131,7 +131,7 @@ impl Player {
 
             self.resources.actions -= 1;
             self.action_effects(&*card, supply, other_players);
-            
+
             Ok(())
         } else {
             Err(CardTypeMisMatch { expected: "Action".to_string() })

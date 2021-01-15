@@ -13,7 +13,7 @@ pub enum CardType {
     VictoryCard,
     CurseCard,
     AttackCard,
-    TreasureCard
+    TreasureCard,
 }
 
 /// The basic Card trait

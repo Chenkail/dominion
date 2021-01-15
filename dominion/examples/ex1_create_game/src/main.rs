@@ -6,7 +6,7 @@ fn main() {
 
     let mut game = Game::new(4, kingdom_cards);
     let mut player = Player::default();
-    
+
     player.print_state();
     player.print_cards();
     player.action_effects(&Market, &mut game.supply, &mut game.players);
