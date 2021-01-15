@@ -96,11 +96,11 @@ impl Player {
     }
 
     /// Trashes cards from hand given an array of indexes of said cards
-    pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, game: &mut Game) {
+    pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, trash: &mut VecDeque<Box<dyn Card>>) {
         indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
-            game.trash.push_back(self.hand.remove(i).unwrap());
+            trash.push_back(self.hand.remove(i).unwrap());
         }
     }
 

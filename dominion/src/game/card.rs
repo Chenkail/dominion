@@ -49,7 +49,7 @@ pub trait Card: Clone {
     /// The card's effects when played as an action
     fn action_effects(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
     /// The card's effects when used as a reaction
-    fn reaction_effects(&self, _player: &mut Player, _: &mut Game) {}
+    fn reaction_effects(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
 }
 
 impl Hash for dyn Card {
