@@ -15,16 +15,16 @@ macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
         card!($struct_name);
         impl Card for $struct_name {
-            fn cost(&self) -> i32 {
-                $cost as i32
-            }
-            
             fn name(&self) -> &str {
                 $name
             }
 
             fn types(&self) -> Vec<CardType> {
                 Vec::new()
+            }
+
+            fn coin_cost(&self) -> i32 {
+                $cost as i32
             }
         }
     };
@@ -39,8 +39,17 @@ macro_rules! name {
 
 #[macro_export]
 macro_rules! cost {
-    ($cost:expr) => {
-        fn cost(&self) -> i32 { $cost }
+    ($coins:expr) => {
+        fn coin_cost(&self) -> i32 { $coins }
+    };
+    ($coins:expr, $potions:expr) => {
+        fn coin_cost(&self) -> i32 { $coins }
+        fn potion_cost(&self) -> i32 { $potions }
+    };
+    ($coins:expr, $potions:expr, $debt:expr) => {
+        fn coin_cost(&self) -> i32 { $coins }
+        fn potion_cost(&self) -> i32 { $potions }
+        fn debt_cost(&self) -> i32 { $debt }
     };
 }
 

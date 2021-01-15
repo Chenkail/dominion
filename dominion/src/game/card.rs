@@ -3,7 +3,7 @@
 use std::{collections::HashMap, hash::{Hash, Hasher}};
 use dyn_clonable::*;
 
-use crate::game::{gamedata::Game, player::Player};
+use crate::game::player::Player;
 
 /// Card Types
 #[derive(PartialEq)]
@@ -15,6 +15,8 @@ pub enum CardType {
     PotionCard,
     VictoryCard,
     CurseCard,
+    DurationCard,
+    ReserveCard,
 }
 
 /// The basic Card trait
@@ -22,8 +24,6 @@ pub enum CardType {
 /// dyn Card implements [Hash] and [Eq] so that Box\<dyn Card\> can be used as keys for a HashMap
 #[clonable]
 pub trait Card: Clone {
-    /// How much the card costs to buy
-    fn cost(&self) -> i32;
     /// The name on the card (e.g. "Throne Room")
     fn name(&self) -> &str;
     /// The card's types - each type should be title case
@@ -31,7 +31,14 @@ pub trait Card: Clone {
     /// The card text (this will often be blank, as is the case with all the cards in the base set)
     fn description(&self) -> &str { "" }
 
-    // Types
+    /// How much the card costs to buy, in coins
+    fn coin_cost(&self) -> i32;
+    /// Potions needed to buy the card
+    fn potion_cost(&self) -> i32 { 0 }
+    /// Debt in the card cost
+    fn debt_cost(&self) -> i32 { 0 }
+
+    // Type check methods
     fn is_action(&self) -> bool { self.types().contains(&CardType::ActionCard) }
     fn is_attack(&self) -> bool { self.types().contains(&CardType::AttackCard) }
     fn is_reaction(&self) -> bool { self.types().contains(&CardType::ReactionCard) }
@@ -42,6 +49,8 @@ pub trait Card: Clone {
 
     /// The number of coins the card is worth (if it is a treasure card)
     fn treasure_value(&self, _player: &Player) -> i32 { 0 }
+    /// The number of potions the card is worth (if it is a potion treasure card)
+    fn potion_value(&self, _player: &Player) -> i32 { 0 }
     /// The number of points the card is worth (if it is a victory card)
     fn victory_points(&self, _player: &Player) -> i32 { 0 }
     /// The number of points the card is worth (if it is a curse card) - this should be negative

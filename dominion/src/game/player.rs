@@ -2,22 +2,20 @@
 
 use std::{collections::{HashMap, VecDeque}, mem};
 use crate::cards::base::*;
-use crate::game::{gamedata::Game, card::*, card::CardType::*, utils};
+use crate::game::{card::*, card::CardType::*, utils};
 use crate::error::DominionError;
 use DominionError::*;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
-struct Resources {
-    actions: i32,
-    buys: i32,
-    coins: i32,
-}
-
-impl Resources {
-    /// Construct a new [Resources] struct
-    pub fn new() -> Resources {
-        Resources {actions: 1, buys: 1, coins: 0}
-    }
+#[derive(Default)]
+pub struct Resources {
+    pub actions: i32,
+    pub buys: i32,
+    pub coins_in_hand: i32,
+    pub temp_coins: i32,
+    pub potions_in_hand: i32,
+    pub temp_potions: i32,
+    pub debt: i32,
 }
 
 /// Struct representing a player
@@ -26,7 +24,7 @@ pub struct Player {
     pub deck: VecDeque<Box<dyn Card>>,
     pub discard: VecDeque<Box<dyn Card>>,
     pub in_play: VecDeque<Box<dyn Card>>,
-    resources: Resources,
+    pub resources: Resources,
 }
 
 impl Default for Player {
@@ -36,7 +34,7 @@ impl Default for Player {
         let mut deck: VecDeque<Box<dyn Card>> = VecDeque::new();
         let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
         let in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
-        let resources = Resources::new();
+        let resources = Resources::default();
         
         for _ in 0..7 {
             let copper = Box::new(Copper);
@@ -116,7 +114,7 @@ impl Player {
 
     /// Gives the player extra coins for this turn
     pub fn add_coins(&mut self, coins: i32) {
-        self.resources.coins += coins;
+        self.resources.temp_coins += coins;
     }
 
     /// Plays an action [card](Card) from the player's hand
@@ -151,7 +149,9 @@ impl Player {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
-        self.resources.coins = 0;
+        self.resources.temp_coins = 0;
+
+        //TODO (much later): Duration cards
 
         while self.resources.actions > 0 {
             // TODO: Figure out how to allow player to declare that they are done playing actions
@@ -163,30 +163,72 @@ impl Player {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
 
-        self.resources.coins -= card.cost();
+        self.resources.temp_coins -= card.coin_cost();
         self.discard.push_back(card);
         
     }
 
     /// Buy phase
     pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>) {
-        let mut total_coins = self.count_money_in_hand() + self.resources.coins;
+        let mut coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
+        let mut potions_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
+
+        if self.resources.debt > 0 {
+            // Can't buy
+            //TODO: pay off debt
+            return;
+        }
 
         while self.resources.buys > 0 {
             // Buy cards
             // TODO: Figure out how to allow player to declare that they are done buying cards
+            self.buy_card(Box::new(Copper), supply)
         }
     }
 
+    pub fn play_treasure(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) -> Result<(), DominionError> {
+        // Remove card from hand
+        let card = self.hand.get(index).unwrap();
+        if card.is_treasure() {
+            self.resources.coins_in_hand += card.treasure_value(self);
+
+            Ok(())
+        } else {
+            Err(CardTypeMisMatch { expected: "TreasureCard".to_string() })
+        }
+    }
+
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) -> Result<(), DominionError> {
+        for i in 0..self.hand.len() {
+            let card = self.hand.get(index).unwrap();
+            if card.is_treasure() {
+                self.play_treasure(i, supply, other_players)?;
+            }
+        }
+
+        Ok(())
+    }
+
     /// Returns the total value of the treasure cards in the player's hand
-    pub fn count_money_in_hand(&self) -> i32 {
+    pub fn update_coins_in_hand(&mut self) {
         // Add coins from treasures in hand to total
         let mut total = 0;
         for card in &self.hand {
             total += card.treasure_value(self);
         }
-        
-        total
+
+        self.resources.coins_in_hand = total;
+    }
+
+    /// Returns the total value of the potion cards in the player's hand
+    pub fn update_potions_in_hand(&mut self) {
+        // Add coins from treasures in hand to total
+        let mut total = 0;
+        for card in &self.hand {
+            total += card.potion_value(self);
+        }
+
+        self.resources.potions_in_hand = total;
     }
 
     /// Cleanup phase at end of turn - discard hand and draw five new cards
@@ -233,7 +275,7 @@ impl Player {
         
         println!("Actions: {}", self.resources.actions);
         println!("Buys: {}", self.resources.buys);
-        println!("Coins: {}", self.resources.coins);
+        println!("Coins: {}", self.resources.temp_coins);
     }
 
     /// Prints out all cards that the player has, in order, and where they are

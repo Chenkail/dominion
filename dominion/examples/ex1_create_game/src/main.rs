@@ -12,7 +12,7 @@ fn main() {
     player.action_effects(&Market, &mut game.supply, &mut game.players);
     player.print_state();
     player.print_cards();
-    println!("{}", player.count_money_in_hand());
+    println!("{}", player.count_coins_in_hand());
 
     let e = player.play_action_from_hand(0, &mut game.supply, &mut game.players);
     println!("Error: {:?}", e);
