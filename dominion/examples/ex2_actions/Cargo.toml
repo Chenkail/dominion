@@ -1,15 +1,11 @@
 [package]
-name = "dominion"
+name = "actions"
 version = "0.1.0"
 authors = ["chenkail <40770208+Chenkail@users.noreply.github.com>"]
 edition = "2018"
-license = "AGPLv3"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-dominion_macros = { path = "../dominion_macros/" }
-
-dyn-clonable = "0.9"
-rand = "0.8.x"
-thiserror = "1.0"
+dominion = { path = "../../" }
+dominion_macros = { path = "../../../dominion_macros/" }

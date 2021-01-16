@@ -13,6 +13,6 @@ fn main() {
     player.update_coins_in_hand();
     println!("{}", player.resources.coins_in_hand);
 
-    let e = player.play_action_from_hand(0, &mut game.supply, &mut game.players);
-    println!("Error: {:?}", e);
+    // let e = player.play_action_from_hand(0, &mut game.supply, &mut game.players);
+    // println!("Error: {:?}", e);
 }

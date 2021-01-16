@@ -32,7 +32,7 @@ pub struct Player {
 }
 
 impl Default for Player {
-    /// Constructs a new [Player] with 3 estates and 7 copper
+    /// Constructs a new Vec<Player> with 3 estates and 7 copper
     fn default() -> Player {
         let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
         Player::new(deck)
@@ -120,7 +120,7 @@ impl Player {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
@@ -140,12 +140,12 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) {
+    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
         card.effects_on_play(self, supply, other_players);
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) {
+    pub fn action_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -153,13 +153,24 @@ impl Player {
 
         //TODO (much later): Duration cards
 
-        while self.resources.actions > 0 {
+        let mut more = "y".to_string();
+        while (self.resources.actions > 0) & (more == "y") {
             // TODO: Figure out how to allow player to declare that they are done playing actions
+            more = "".to_string();
+            std::io::stdin().read_line(&mut more).unwrap();
+            if more == "y" {
+                for i in 0..self.hand.len() {
+                    let card = self.hand.get(i).unwrap();
+                    if card.is_action() {
+                        self.play_action_from_hand(i, supply, other_players).unwrap();
+                    }
+                }
+            }
         }
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players);
@@ -167,7 +178,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players);
@@ -175,14 +186,14 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>) {
-
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+        card.effects_on_gain(self, supply, other_players);
 
         self.resources.temp_coins -= card.coin_cost();
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>) {
+    pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
         self.resources.potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
 
@@ -196,11 +207,11 @@ impl Player {
         while self.resources.buys > 0 {
             // Buy cards
             // TODO: Figure out how to allow player to declare that they are done buying cards
-            self.buy_card(Box::new(Copper), supply)
+            self.buy_card(Box::new(Copper), supply, other_players);
         }
     }
 
-    pub fn play_treasure(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) -> Result<(), DominionError> {
+    pub fn play_treasure(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) -> Result<(), DominionError> {
         // Remove card from hand
         let c = self.hand.get(index).unwrap();
         if c.is_treasure() {
@@ -214,7 +225,7 @@ impl Player {
         }
     }
 
-    pub fn play_all_treasures(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) -> Result<(), DominionError> {
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) -> Result<(), DominionError> {
         for i in 0..self.hand.len() {
             let card = self.hand.get(index).unwrap();
             if card.is_treasure() {
@@ -257,9 +268,9 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut [Player]) {
+    pub fn turn(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
         self.action_phase(supply, other_players);
-        self.buy_phase(supply);
+        self.buy_phase(supply, other_players);
         self.cleanup();
     }
 
@@ -271,6 +282,49 @@ impl Player {
         }
 
         points
+    }
+
+    /// Prints out all cards in hand
+    pub fn print_hand(&self) {
+        let indent = "    ";
+
+        println!("Hand:");
+        print!("{}", indent);
+        for card in &self.hand {
+            print!("{}, ", card.name());
+        }
+        println!();
+    }
+
+    /// Prints out all cards in hand
+    pub fn print_deck(&self) {
+        let indent = "    ";
+
+        println!("Deck:");
+        print!("{}", indent);
+        for card in &self.deck {
+            print!("{}, ", card.name());
+        }
+        println!();
+    }
+
+    /// Prints out all cards in hand
+    pub fn print_discard(&self) {
+        let indent = "    ";
+
+        println!("Discard:");
+        print!("{}", indent);
+        for card in &self.discard {
+            print!("{}, ", card.name());
+        }
+    }
+
+    /// Prints out all cards that the player has, in order, and where they are
+    pub fn print_cards(&self) {
+        self.print_hand();
+        self.print_deck();
+        self.print_discard();
+        println!();
     }
 
     /// Prints out resources along with number of cards in hand/deck/discard/total
@@ -292,31 +346,5 @@ impl Player {
         println!("Actions: {}", self.resources.actions);
         println!("Buys: {}", self.resources.buys);
         println!("Coins: {}", self.resources.temp_coins);
-    }
-
-    /// Prints out all cards that the player has, in order, and where they are
-    pub fn print_cards(&self) {
-        let indent = "    ";
-
-        println!("Hand:");
-        print!("{}", indent);
-        for card in &self.hand {
-            print!("{}, ", card.name());
-        }
-        println!();
-
-        println!("Deck:");
-        print!("{}", indent);
-        for card in &self.deck {
-            print!("{}, ", card.name());
-        }
-        println!();
-        
-        println!("Discard:");
-        print!("{}", indent);
-        for card in &self.discard {
-            print!("{}, ", card.name());
-        }
-        println!();
     }
 }

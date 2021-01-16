@@ -73,11 +73,11 @@ pub trait Card: Clone {
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut [Player]) {}
+    fn effects_on_play(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &[&mut Player]) {}
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut [Player]) {}
+    fn effects_on_react(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &[&mut Player]) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut [Player]) {}
+    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &[&mut Player]) {}
 }
 
 impl Hash for dyn Card {
