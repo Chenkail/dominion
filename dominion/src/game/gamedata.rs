@@ -39,9 +39,9 @@ impl Game {
             _ => panic!("Invalid player count!")
         };
 
-        supply.insert(Box::new(Copper), 100);
-        supply.insert(Box::new(Silver), 100);
-        supply.insert(Box::new(Gold), 100);
+        supply.insert(Box::new(Copper), 40);
+        supply.insert(Box::new(Silver), 40);
+        supply.insert(Box::new(Gold), 40);
         supply.insert(Box::new(Estate), victory_card_count);
         supply.insert(Box::new(Duchy), victory_card_count);
         supply.insert(Box::new(Province), province_count);

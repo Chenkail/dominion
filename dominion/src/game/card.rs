@@ -8,15 +8,31 @@ use crate::game::player::Player;
 /// Card Types
 #[derive(PartialEq)]
 pub enum CardType {
+    // Basic types
     ActionCard,
-    AttackCard,
-    ReactionCard,
     TreasureCard,
-    PotionCard,
     VictoryCard,
     CurseCard,
+    // Multi-set types
+    AttackCard,
+    CommandCard,
     DurationCard,
+    ReactionCard,
+    // Single-set types
+    CastleCard,
+    DoomCard,
+    FateCard,
+    GatheringCard,
+    HeirloomCard,
+    LooterCard,
+    NightCard,
+    PrizeCard,
     ReserveCard,
+    RuinsCard,
+    ShelterCard,
+    SpiritCard,
+    TravellerCard,
+    ZombieCard,
 }
 
 /// The basic Card trait
@@ -42,8 +58,7 @@ pub trait Card: Clone {
     fn is_action(&self) -> bool { self.types().contains(&CardType::ActionCard) }
     fn is_attack(&self) -> bool { self.types().contains(&CardType::AttackCard) }
     fn is_reaction(&self) -> bool { self.types().contains(&CardType::ReactionCard) }
-    fn is_potion(&self) -> bool { self.types().contains(&CardType::PotionCard) }
-    fn is_treasure(&self) -> bool { self.types().contains(&CardType::TreasureCard) | self.types().contains(&CardType::PotionCard) }
+    fn is_treasure(&self) -> bool { self.types().contains(&CardType::TreasureCard) }
     fn is_victory(&self) -> bool { self.types().contains(&CardType::VictoryCard) }
     fn is_curse(&self) -> bool { self.types().contains(&CardType::CurseCard) }
 

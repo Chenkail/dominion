@@ -1,8 +1,8 @@
 //! Defines Player object and associated functions
 
-use std::{collections::{HashMap, VecDeque}, mem};
+use std::{cmp::max, collections::{HashMap, VecDeque}, mem};
 use crate::cards::base::*;
-use crate::game::{card::*, card::CardType::*, utils};
+use crate::game::{card::*, utils};
 use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
@@ -24,7 +24,8 @@ pub struct Player {
     pub hand: VecDeque<Box<dyn Card>>,
     pub deck: VecDeque<Box<dyn Card>>,
     pub discard: VecDeque<Box<dyn Card>>,
-    pub in_play: VecDeque<Box<dyn Card>>,
+    pub actions_in_play: VecDeque<Box<dyn Card>>,
+    pub treasures_in_play: VecDeque<Box<dyn Card>>,
     pub resources: Resources,
 }
 
@@ -41,7 +42,8 @@ impl Player {
         let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
         let mut deck: VecDeque<Box<dyn Card>> = VecDeque::from(cards);
         let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
-        let in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
+        let actions_in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
+        let treasures_in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
         let resources = Resources::default();
 
         utils::shuffle(&mut deck);
@@ -51,7 +53,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { hand, deck, discard, in_play, resources }
+        Player { hand, deck, discard, actions_in_play, treasures_in_play, resources }
     }
 
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
@@ -59,7 +61,7 @@ impl Player {
         return self.hand.iter()
                 .chain(self.deck.iter())
                 .chain(self.discard.iter())
-                .chain(self.in_play.iter());
+                .chain(self.actions_in_play.iter());
     }
 
     /// Draws x cards for the player
@@ -121,7 +123,7 @@ impl Player {
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
             let card = self.hand.remove(index).unwrap();
-            self.in_play.push_back(card.clone());
+            self.actions_in_play.push_back(card.clone());
 
             self.resources.actions -= 1;
             self.action_effects(&*card, supply, other_players);
@@ -167,11 +169,12 @@ impl Player {
     /// Buy phase
     pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>) {
         let mut coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
-        let mut potions_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
+        let mut potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
 
         if self.resources.debt > 0 {
             // Can't buy
-            //TODO: pay off debt
+            //TODO: prompt to pay off debt
+            self.resources.debt = max(0, self.resources.debt - coins_remaining);
             return;
         }
 
@@ -186,7 +189,7 @@ impl Player {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_treasure() {
-            self.resources.coins_in_hand += card.treasure_value(self);
+            self.treasures_in_play.push_back(self.hand.remove(index).unwrap());
 
             Ok(())
         } else {
