@@ -58,19 +58,25 @@ pub trait Card: Clone {
 
     /// How much the card costs to buy, in coins
     fn coin_cost(&self) -> i32;
-    /// Potions needed to buy the card
-    fn potion_cost(&self) -> i32 { 0 }
     /// Debt in the card cost
     fn debt_cost(&self) -> i32 { 0 }
+    /// Potions needed to buy the card
+    fn potion_cost(&self) -> i32 { 0 }
 
     // Type check methods
     /// Print out all types a card has, separated by commas
     fn print_types(&self) { println!("{}", self.types().iter().format(", ")) }
+    /// Check if this card is an Action
     fn is_action(&self) -> bool { self.types().contains(&CardType::Action) }
+    /// Check if this card is an Attack
     fn is_attack(&self) -> bool { self.types().contains(&CardType::Attack) }
+    /// Check if this card is a Reaction
     fn is_reaction(&self) -> bool { self.types().contains(&CardType::Reaction) }
+    /// Check if this card is a Treasure
     fn is_treasure(&self) -> bool { self.types().contains(&CardType::Treasure) }
+    /// Check if this card is a Victory card
     fn is_victory(&self) -> bool { self.types().contains(&CardType::Victory) }
+    /// Check if this card is a Curse card
     fn is_curse(&self) -> bool { self.types().contains(&CardType::Curse) }
 
     /// The number of coins the card is worth (if it is a treasure card)

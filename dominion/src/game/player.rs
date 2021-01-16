@@ -195,13 +195,16 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
+        // TODO: prompt user to play treasures
+
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
         self.resources.potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
 
         if self.resources.debt > 0 {
             // Can't buy
-            //TODO: prompt player to acknowledge paying off debt
-            if self.resources.coins_remaining <= self.resources.debt {
+            // TODO: prompt player to acknowledge paying off debt
+            // If outstanding debt exists after paying, player cannot buy
+            if self.resources.coins_remaining < self.resources.debt {
                 self.resources.debt -= self.resources.coins_remaining;
                 return;
             } else {

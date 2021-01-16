@@ -47,23 +47,23 @@ macro_rules! name {
 
 /// Set the card's cost
 ///
-/// Format (If ``debt`` is present, ``potions`` is required, otherwise both are optional):
+/// Format (If ``potions`` is present, ``debt`` is required, otherwise both are optional):
 /// ```
-/// cost!(coins, potions, debt);
+/// cost!(coins, debt, potions);
 /// ```
 #[macro_export]
 macro_rules! cost {
     ($coins:expr) => {
         fn coin_cost(&self) -> i32 { $coins }
     };
-    ($coins:expr, $potions:expr) => {
+    ($coins:expr, $debt:expr) => {
         fn coin_cost(&self) -> i32 { $coins }
-        fn potion_cost(&self) -> i32 { $potions }
-    };
-    ($coins:expr, $potions:expr, $debt:expr) => {
-        fn coin_cost(&self) -> i32 { $coins }
-        fn potion_cost(&self) -> i32 { $potions }
         fn debt_cost(&self) -> i32 { $debt }
+    };
+    ($coins:expr, $debt:expr, $potions:expr) => {
+        fn coin_cost(&self) -> i32 { $coins }
+        fn debt_cost(&self) -> i32 { $debt }
+        fn potion_cost(&self) -> i32 { $potions }
     };
 }
 
