@@ -1,6 +1,10 @@
 //! Macros for defining cards
 
-/// Declare card struct and derive Clone
+/// Declares a card struct
+/// Format:
+/// ```
+/// card!(Market);
+/// ```
 #[macro_export]
 macro_rules! card {
     ($struct_name:ident) => {
@@ -30,6 +34,10 @@ macro_rules! placeholder_card {
     };
 }
 
+/// Set the card's name to be displayed, e.g.:
+/// ```
+/// name!("Market");
+/// ```
 #[macro_export]
 macro_rules! name {
     ($name:expr) => {
@@ -37,6 +45,12 @@ macro_rules! name {
     };
 }
 
+/// Set the card's cost
+///
+/// Format (If ``debt`` is present, ``potions`` is required, otherwise both are optional):
+/// ```
+/// cost!(coins, potions, debt);
+/// ```
 #[macro_export]
 macro_rules! cost {
     ($coins:expr) => {
@@ -53,6 +67,12 @@ macro_rules! cost {
     };
 }
 
+/// Sets a card's types
+///
+/// For example:
+/// ```
+/// types!(vec![Action, Victory]);
+/// ```
 #[macro_export]
 macro_rules! types {
     ($types:expr) => {
@@ -60,6 +80,12 @@ macro_rules! types {
     };
 }
 
+/// Sets a treasure card's coin value to some fixed amount
+///
+/// For example, Gold would be:
+/// ```
+/// treasure_value!(3);
+/// ```
 #[macro_export]
 macro_rules! treasure_value {
     ($value:expr) => {
@@ -67,6 +93,12 @@ macro_rules! treasure_value {
     };
 }
 
+/// Sets a victory card's point value to some fixed amount
+///
+/// For example, Province would be:
+/// ```
+/// victory_points!(6);
+/// ```
 #[macro_export]
 macro_rules! victory_points {
     ($points:expr) => {
@@ -74,6 +106,12 @@ macro_rules! victory_points {
     };
 }
 
+/// Sets a curse card's point value to some fixed amount
+///
+/// For example, the basic curse would be:
+/// ```
+/// curse_points!(-1);
+/// ```
 #[macro_export]
 macro_rules! curse_points {
     ($points:expr) => {
@@ -81,6 +119,13 @@ macro_rules! curse_points {
     };
 }
 
+/// Effects for an action with no effects other than drawing cards
+/// and/or adding actions/buys/coins for the turn
+///
+/// Format:
+/// ```
+/// basic_action!(cards, actions, buys, coins);
+/// ```
 #[macro_export]
 macro_rules! basic_action_effects {
     ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
@@ -93,6 +138,13 @@ macro_rules! basic_action_effects {
     };
 }
 
+/// Implementation in one line for an action which has no effects other than
+/// drawing cards and/or adding actions/buys/coins for the turn
+///
+/// Format:
+/// ```
+/// basic_action!(StructName, card_name, cost, cards, actions, buys, coins);
+/// ```
 #[macro_export]
 macro_rules! basic_action {
     ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
@@ -106,6 +158,12 @@ macro_rules! basic_action {
     };
 }
 
+/// Implementation in one line for a treasure card with a fixed coin value
+///
+/// Format:
+/// ```
+/// basic_treasure!(StructName, card_name, cost, value);
+/// ```
 #[macro_export]
 macro_rules! basic_treasure {
     ($struct_name:ident, $name:expr, $cost:expr, $value:expr) => {
@@ -119,6 +177,12 @@ macro_rules! basic_treasure {
     };
 }
 
+/// Implementation in one line for a victory card with a fixed points value
+///
+/// Format:
+/// ```
+/// basic_victory!(StructName, card_name, cost, points);
+/// ```
 #[macro_export]
 macro_rules! basic_victory {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
@@ -132,6 +196,13 @@ macro_rules! basic_victory {
     };
 }
 
+/// Implementation in one line for a curse card with a fixed points value
+///
+/// Note that points should be negative
+/// Format:
+/// ```
+/// basic_curse!(StructName, card_name, cost, points);
+/// ```
 #[macro_export]
 macro_rules! basic_curse {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
