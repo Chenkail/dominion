@@ -200,9 +200,14 @@ impl Player {
 
         if self.resources.debt > 0 {
             // Can't buy
-            //TODO: prompt to pay off debt
-            self.resources.debt = max(0, self.resources.debt - self.resources.coins_remaining);
-            return;
+            //TODO: prompt player to acknowledge paying off debt
+            if self.resources.coins_remaining <= self.resources.debt {
+                self.resources.debt -= self.resources.coins_remaining;
+                return;
+            } else {
+                self.resources.coins_remaining -= self.resources.debt;
+                self.resources.debt = 0;
+            }
         }
 
         while self.resources.buys > 0 {
