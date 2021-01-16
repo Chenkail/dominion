@@ -14,8 +14,10 @@ pub struct Resources {
     pub buys: i32,
     pub coins_in_hand: i32,
     pub temp_coins: i32,
+    pub coins_remaining: i32,
     pub potions_in_hand: i32,
     pub temp_potions: i32,
+    pub potions_remaining: i32,
     pub debt: i32,
 }
 
@@ -181,13 +183,13 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>) {
-        let mut coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
-        let mut potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
+        self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
+        self.resources.potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
 
         if self.resources.debt > 0 {
             // Can't buy
             //TODO: prompt to pay off debt
-            self.resources.debt = max(0, self.resources.debt - coins_remaining);
+            self.resources.debt = max(0, self.resources.debt - self.resources.coins_remaining);
             return;
         }
 
@@ -200,13 +202,15 @@ impl Player {
 
     pub fn play_treasure(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) -> Result<(), DominionError> {
         // Remove card from hand
-        let card = self.hand.get(index).unwrap();
-        if card.is_treasure() {
-            self.treasures_in_play.push_back(self.hand.remove(index).unwrap());
+        let c = self.hand.get(index).unwrap();
+        if c.is_treasure() {
+            let card = self.hand.remove(index).unwrap();
+            card.effects_on_play(self, supply, other_players);
+            self.treasures_in_play.push_back(card.clone());
 
             Ok(())
         } else {
-            Err(CardTypeMisMatch { expected: "TreasureCard".to_string() })
+            Err(CardTypeMisMatch { expected: "Treasure".to_string() })
         }
     }
 
@@ -262,10 +266,10 @@ impl Player {
     /// Count up a player's victory points
     pub fn victory_points(&self) -> i32 {
         let mut points = 0;
-        let iter = self.card_iter();
-        for card in iter {
+        for card in self.card_iter() {
             points += card.victory_points(self);
         }
+
         points
     }
 
