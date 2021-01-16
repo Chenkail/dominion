@@ -70,10 +70,14 @@ pub trait Card: Clone {
     fn victory_points(&self, _player: &Player) -> i32 { 0 }
     /// The number of points the card is worth (if it is a curse card) - this should be negative
     fn curse_points(&self, _player: &Player) -> i32 { 0 }
+
+    // Effect triggers
     /// The card's effects when played as an action
-    fn action_effects(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
+    fn effects_on_play(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
     /// The card's effects when used as a reaction
-    fn reaction_effects(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
+    fn effects_on_react(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
+    /// Effects to trigger when this card is gained
+    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &mut Vec<Player>) {}
 }
 
 impl Hash for dyn Card {

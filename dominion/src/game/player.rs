@@ -139,7 +139,7 @@ impl Player {
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
     pub fn action_effects(&mut self, card: &dyn Card, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) {
-        card.action_effects(self, supply, other_players);
+        card.effects_on_play(self, supply, other_players);
     }
 
     /// Action phase
@@ -156,14 +156,27 @@ impl Player {
         }
     }
 
-    /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>) {
+    /// Gain a copy of a card to the discard pile
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
+        card.effects_on_gain(self, supply, other_players);
+        self.discard.push_back(card);
+    }
+
+    /// Gain a copy of a card to hand
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &mut Vec<Player>) {
+        // TODO: check if supply pile is empty
+        *supply.get_mut(&card).unwrap() -= 1;
+        card.effects_on_gain(self, supply, other_players);
+        self.hand.push_back(card);
+    }
+
+    /// Buy a card
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>) {
+
 
         self.resources.temp_coins -= card.coin_cost();
-        self.discard.push_back(card);
-        
     }
 
     /// Buy phase
