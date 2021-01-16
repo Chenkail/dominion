@@ -1,39 +1,47 @@
 //! Defines traits for the various card types
 
+use std::fmt::{Display, Formatter, Result};
 use std::hash::{Hash, Hasher};
+use itertools::Itertools;
 use dyn_clonable::*;
 
 use crate::game::gamedata::*;
 use crate::game::player::Player;
 
 /// Card Types
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub enum CardType {
     // Basic types
-    ActionCard,
-    TreasureCard,
-    VictoryCard,
-    CurseCard,
+    Action,
+    Treasure,
+    Victory,
+    Curse,
     // Multi-set types
-    AttackCard,
-    CommandCard,
-    DurationCard,
-    ReactionCard,
+    Attack,
+    Command,
+    Duration,
+    Reaction,
     // Single-set types
-    CastleCard,
-    DoomCard,
-    FateCard,
-    GatheringCard,
-    HeirloomCard,
-    LooterCard,
-    NightCard,
-    PrizeCard,
-    ReserveCard,
-    RuinsCard,
-    ShelterCard,
-    SpiritCard,
-    TravellerCard,
-    ZombieCard,
+    Castle,
+    Doom,
+    Fate,
+    Gathering,
+    Heirloom,
+    Looter,
+    Night,
+    Prize,
+    Reserve,
+    Ruins,
+    Shelter,
+    Spirit,
+    Traveller,
+    Zombie,
+}
+
+impl Display for CardType {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "{:?}", *self)
+    }
 }
 
 /// The basic Card trait
@@ -56,12 +64,13 @@ pub trait Card: Clone {
     fn debt_cost(&self) -> i32 { 0 }
 
     // Type check methods
-    fn is_action(&self) -> bool { self.types().contains(&CardType::ActionCard) }
-    fn is_attack(&self) -> bool { self.types().contains(&CardType::AttackCard) }
-    fn is_reaction(&self) -> bool { self.types().contains(&CardType::ReactionCard) }
-    fn is_treasure(&self) -> bool { self.types().contains(&CardType::TreasureCard) }
-    fn is_victory(&self) -> bool { self.types().contains(&CardType::VictoryCard) }
-    fn is_curse(&self) -> bool { self.types().contains(&CardType::CurseCard) }
+    fn print_types(&self) { println!("{}", self.types().iter().format(", ")) }
+    fn is_action(&self) -> bool { self.types().contains(&CardType::Action) }
+    fn is_attack(&self) -> bool { self.types().contains(&CardType::Attack) }
+    fn is_reaction(&self) -> bool { self.types().contains(&CardType::Reaction) }
+    fn is_treasure(&self) -> bool { self.types().contains(&CardType::Treasure) }
+    fn is_victory(&self) -> bool { self.types().contains(&CardType::Victory) }
+    fn is_curse(&self) -> bool { self.types().contains(&CardType::Curse) }
 
     /// The number of coins the card is worth (if it is a treasure card)
     fn treasure_value(&self, _player: &Player) -> i32 { 0 }

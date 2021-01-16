@@ -51,7 +51,7 @@ impl Game {
         supply.insert(Box::new(Estate), victory_card_count);
         supply.insert(Box::new(Duchy), victory_card_count);
         supply.insert(Box::new(Province), province_count);
-        supply.insert(Box::new(Curse), curse_count);
+        supply.insert(Box::new(BasicCurse), curse_count);
         
         // If card is victory card, count matches other victory cards
         // Otherwise use 10 copies

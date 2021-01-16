@@ -152,7 +152,7 @@ macro_rules! basic_action {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec![ActionCard]);
+            types!(vec![Action]);
             basic_action_effects!($cards, $actions, $buys, $coins);
         }
     };
@@ -171,7 +171,7 @@ macro_rules! basic_treasure {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec![TreasureCard]);
+            types!(vec![Treasure]);
             treasure_value!($value);
         }
     };
@@ -190,7 +190,7 @@ macro_rules! basic_victory {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec![VictoryCard]);
+            types!(vec![Victory]);
             victory_points!($points);
         }
     };
@@ -210,7 +210,7 @@ macro_rules! basic_curse {
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
-            types!(vec![CurseCard]);
+            types!(vec![Curse]);
             curse_points!($points);
         }
     };

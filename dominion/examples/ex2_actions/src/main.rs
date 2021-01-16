@@ -8,6 +8,10 @@ fn main() {
 
     player1.gain_to_hand(Box::new(Market), &mut game.supply, &others);
     player1.print_hand();
+    for card in &player1.hand {
+        card.print_types();
+    }
+
     player1.play_action_from_hand(5, &mut game.supply, &others);
     player1.print_hand();
 }

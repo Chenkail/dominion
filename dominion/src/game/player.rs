@@ -1,6 +1,6 @@
 //! Defines Player object and associated functions
 
-use std::{cmp::max, collections::VecDeque, mem};
+use std::{collections::VecDeque, mem};
 use crate::cards::base::*;
 use crate::game::{card::*, utils};
 use crate::game::gamedata::*;

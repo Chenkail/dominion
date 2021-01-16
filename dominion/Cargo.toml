@@ -11,5 +11,6 @@ license = "AGPLv3"
 dominion_macros = { path = "../dominion_macros/" }
 
 dyn-clonable = "0.9"
+itertools = "0.10"
 rand = "0.8.x"
 thiserror = "1.0"
