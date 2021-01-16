@@ -1,6 +1,6 @@
 //! Defines traits for the various card types
 
-use std::{collections::HashMap, hash::{Hash, Hasher}};
+use std::hash::{Hash, Hasher};
 use dyn_clonable::*;
 
 use crate::game::gamedata::*;
@@ -74,11 +74,11 @@ pub trait Card: Clone {
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerList) {}
+    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerList) {}
+    fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerList) {}
+    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
 }
 
 impl Hash for dyn Card {

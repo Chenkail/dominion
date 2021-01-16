@@ -7,7 +7,7 @@ impl Card for Artisan {
     name!("Artisan");
     cost!(6);
     types!(vec![ActionCard]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _: &PlayerList) {
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _: &PlayerSlice) {
 
     }
 }

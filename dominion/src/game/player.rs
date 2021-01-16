@@ -121,7 +121,7 @@ impl Player {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerList) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerSlice) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
@@ -141,12 +141,12 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, other_players: &PlayerSlice) {
         card.effects_on_play(self, supply, other_players);
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn action_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -171,7 +171,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players);
@@ -179,7 +179,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players);
@@ -187,14 +187,14 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
         card.effects_on_gain(self, supply, other_players);
 
         self.resources.temp_coins -= card.coin_cost();
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
         self.resources.potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
 
@@ -212,7 +212,7 @@ impl Player {
         }
     }
 
-    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerList) -> Result<(), DominionError> {
+    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerSlice) -> Result<(), DominionError> {
         // Remove card from hand
         let c = self.hand.get(index).unwrap();
         if c.is_treasure() {
@@ -226,7 +226,7 @@ impl Player {
         }
     }
 
-    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerList) -> Result<(), DominionError> {
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerSlice) -> Result<(), DominionError> {
         for i in 0..self.hand.len() {
             let card = self.hand.get(index).unwrap();
             if card.is_treasure() {
@@ -269,7 +269,7 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self, supply: &mut Supply, other_players: &PlayerList) {
+    pub fn turn(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
         self.action_phase(supply, other_players);
         self.buy_phase(supply, other_players);
         self.cleanup();
