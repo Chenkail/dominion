@@ -38,6 +38,8 @@ pub enum CardType {
     Zombie,
 }
 
+impl Eq for CardType {}
+
 impl Display for CardType {
     fn fmt(&self, f: &mut Formatter) -> Result {
         write!(f, "{:?}", *self)
@@ -64,6 +66,7 @@ pub trait Card: Clone {
     fn debt_cost(&self) -> i32 { 0 }
 
     // Type check methods
+    /// Print out all types a card has, separated by commas
     fn print_types(&self) { println!("{}", self.types().iter().format(", ")) }
     fn is_action(&self) -> bool { self.types().contains(&CardType::Action) }
     fn is_attack(&self) -> bool { self.types().contains(&CardType::Attack) }
