@@ -9,7 +9,7 @@ use crate::game::gamedata::*;
 use crate::game::player::Player;
 
 /// Card Types
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub enum CardType {
     // Basic types
     Action,
@@ -37,8 +37,6 @@ pub enum CardType {
     Traveller,
     Zombie,
 }
-
-impl Eq for CardType {}
 
 impl Display for CardType {
     fn fmt(&self, f: &mut Formatter) -> Result {
