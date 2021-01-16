@@ -3,6 +3,7 @@
 use std::{collections::HashMap, hash::{Hash, Hasher}};
 use dyn_clonable::*;
 
+use crate::game::gamedata::*;
 use crate::game::player::Player;
 
 /// Card Types
@@ -73,11 +74,11 @@ pub trait Card: Clone {
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &[&mut Player]) {}
+    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerList) {}
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &[&mut Player]) {}
+    fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerList) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut HashMap<Box<dyn Card>, u8>, _other_players: &[&mut Player]) {}
+    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerList) {}
 }
 
 impl Hash for dyn Card {

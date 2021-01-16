@@ -3,6 +3,7 @@
 use std::{cmp::max, collections::{HashMap, VecDeque}, mem};
 use crate::cards::base::*;
 use crate::game::{card::*, utils};
+use crate::game::gamedata::*;
 use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
@@ -23,11 +24,11 @@ pub struct Resources {
 
 /// Struct representing a player
 pub struct Player { 
-    pub hand: VecDeque<Box<dyn Card>>,
-    pub deck: VecDeque<Box<dyn Card>>,
-    pub discard: VecDeque<Box<dyn Card>>,
-    pub actions_in_play: VecDeque<Box<dyn Card>>,
-    pub treasures_in_play: VecDeque<Box<dyn Card>>,
+    pub hand: CardDeck,
+    pub deck: CardDeck,
+    pub discard: CardDeck,
+    pub actions_in_play: CardDeck,
+    pub treasures_in_play: CardDeck,
     pub resources: Resources,
 }
 
@@ -40,12 +41,12 @@ impl Default for Player {
 }
 
 impl Player {
-    pub fn new (cards: Vec<Box<dyn Card>>) -> Player {
-        let mut hand: VecDeque<Box<dyn Card>> = VecDeque::new();
-        let mut deck: VecDeque<Box<dyn Card>> = VecDeque::from(cards);
-        let discard: VecDeque<Box<dyn Card>> = VecDeque::new();
-        let actions_in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
-        let treasures_in_play: VecDeque<Box<dyn Card>> = VecDeque::new();
+    pub fn new (cards: CardStack) -> Player {
+        let mut hand: CardDeck = VecDeque::new();
+        let mut deck: CardDeck = VecDeque::from(cards);
+        let discard: CardDeck = VecDeque::new();
+        let actions_in_play: CardDeck = VecDeque::new();
+        let treasures_in_play: CardDeck = VecDeque::new();
         let resources = Resources::default();
 
         utils::shuffle(&mut deck);
@@ -94,7 +95,7 @@ impl Player {
     }
 
     /// Trashes cards from hand given an array of indexes of said cards
-    pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, trash: &mut VecDeque<Box<dyn Card>>) {
+    pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, trash: &mut CardDeck) {
         indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
@@ -120,7 +121,7 @@ impl Player {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerList) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
@@ -140,12 +141,12 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, other_players: &PlayerList) {
         card.effects_on_play(self, supply, other_players);
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn action_phase(&mut self, supply: &mut Supply, other_players: &PlayerList) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -170,7 +171,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerList) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players);
@@ -178,7 +179,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerList) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players);
@@ -186,14 +187,14 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerList) {
         card.effects_on_gain(self, supply, other_players);
 
         self.resources.temp_coins -= card.coin_cost();
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerList) {
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
         self.resources.potions_remaining = self.resources.potions_in_hand + self.resources.temp_potions;
 
@@ -211,7 +212,7 @@ impl Player {
         }
     }
 
-    pub fn play_treasure(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) -> Result<(), DominionError> {
+    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerList) -> Result<(), DominionError> {
         // Remove card from hand
         let c = self.hand.get(index).unwrap();
         if c.is_treasure() {
@@ -225,7 +226,7 @@ impl Player {
         }
     }
 
-    pub fn play_all_treasures(&mut self, index: usize, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) -> Result<(), DominionError> {
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, other_players: &PlayerList) -> Result<(), DominionError> {
         for i in 0..self.hand.len() {
             let card = self.hand.get(index).unwrap();
             if card.is_treasure() {
@@ -268,7 +269,7 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self, supply: &mut HashMap<Box<dyn Card>, u8>, other_players: &[&mut Player]) {
+    pub fn turn(&mut self, supply: &mut Supply, other_players: &PlayerList) {
         self.action_phase(supply, other_players);
         self.buy_phase(supply, other_players);
         self.cleanup();

@@ -5,26 +5,31 @@ use crate::cards::all::*;
 use crate::game::{player::Player, card::Card};
 use dominion_macros::*;
 
+pub type PlayerList = Vec<Player>;
+pub type CardStack = Vec<Box<dyn Card>>;
+pub type CardDeck = VecDeque<Box<dyn Card>>;
+pub type Supply = HashMap<Box<dyn Card>, u8>;
+
 pub struct Game {
-    pub players: Vec<Player>,
-    pub supply: HashMap<Box<dyn Card>, u8>,
-    pub trash: VecDeque<Box<dyn Card>>,
+    pub players: PlayerList,
+    pub supply: Supply,
+    pub trash: CardDeck,
 }
 
 impl Default for Game {
     /// Creates a two-player game with the recommended first game set
     fn default() -> Self {
-        let kingdom_cards = card_vec![Cellar, Market, Merchant, Militia, Mine, Moat, Remodel, Smithy, Village, Workshop];
+        let kingdom_cards: CardStack = card_vec![Cellar, Market, Merchant, Militia, Mine, Moat, Remodel, Smithy, Village, Workshop];
         Game::new(2, kingdom_cards)
     }
 }
 
 impl Game {
     /// Create a new [Game] given a list of [Cards](Card) for the supply
-    pub fn new(players: u8, cards: Vec<Box<dyn Card>>) -> Game {
-        let mut player_vec: Vec<Player> = Vec::with_capacity(players as usize);
-        let mut supply: HashMap<Box<dyn Card>, u8> = HashMap::new();
-        let trash = VecDeque::new();
+    pub fn new(players: u8, cards: CardStack) -> Game {
+        let mut player_vec: PlayerList = Vec::with_capacity(players as usize);
+        let mut supply: Supply = HashMap::new();
+        let trash: CardDeck = VecDeque::new();
 
         for _ in 0..players {
             player_vec.push(Player::default())

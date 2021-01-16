@@ -11,7 +11,7 @@
 macro_rules! card_vec {
     ( $( $card:expr ),* ) => {
         {
-            let mut v: Vec<Box<dyn Card>> = Vec::new();
+            let mut v: CardStack = Vec::new();
             $(v.push(Box::new($card));)*
 
             v

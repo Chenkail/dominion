@@ -12,7 +12,7 @@ impl Card for Fortune {
         player.coins_remaining
     }
 
-    fn on_gain(&self, player: &mut Player, _: &mut HashMap<Box<dyn Card>, u8>, _: &mut [Player]) {
+    fn on_gain(&self, player: &mut Player, _: &mut Supply, _: &PlayerList) {
         for card in player.actions_in_play {
             if card.name == "Gladiator" {
                 player.gain(Box::new(Gold));
