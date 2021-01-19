@@ -7,6 +7,8 @@ use crate::game::gamedata::*;
 use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
+use std::io;
+use std::io::*;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 #[derive(Default)]
@@ -212,11 +214,23 @@ impl Player {
                 self.resources.debt = 0;
             }
         }
-
+        
+        let mut fin_buy = false;
         while self.resources.buys > 0 {
             // Buy cards
             // TODO: Figure out how to allow player to declare that they are done buying cards
             self.buy_card(Box::new(Copper), supply, other_players);
+
+            //we prompt the user if they are done? DEBUG ONLY
+            let mut input = String::new();
+            println!("Done buying cards? (y)es/(n)o");
+            io::stdin().read_line(&mut input).expect("error: unable to read user input");
+            if input.make_ascii_lowercase().substring(0, 1).unwrap() == "y" {
+                break;
+            }
+
+            //this block should interop between js later to figure out if fin_buy is true or not
+            
         }
     }
 
