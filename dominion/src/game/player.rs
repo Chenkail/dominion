@@ -226,7 +226,7 @@ impl Player {
             println!("Done buying cards? (y)es/(n)o");
             io::stdin().read_line(&mut input).expect("error: unable to read user input");
             if input.make_ascii_lowercase().substring(0, 1).unwrap() == "y" {
-                break;
+                fin_buy = true;
             }
 
             //this block should interop between js later to figure out if fin_buy is true or not
