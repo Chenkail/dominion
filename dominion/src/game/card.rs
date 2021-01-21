@@ -7,7 +7,8 @@
 //! impl Card for MyCard { ... }
 //! ```
 
-use std::fmt::{Display, Formatter, Result};
+use std::fmt;
+use std::fmt::{Display, Formatter};
 use std::hash::{Hash, Hasher};
 
 use dyn_clonable::*;
@@ -49,7 +50,7 @@ pub enum CardType {
 }
 
 impl Display for CardType {
-    fn fmt(&self, f: &mut Formatter) -> Result {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "{:?}", *self)
     }
 }
@@ -105,6 +106,18 @@ pub trait Card: Clone {
     fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
     /// Effects to trigger when this card is gained
     fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
+}
+
+impl fmt::Display for dyn Card {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.name())
+    }
+}
+
+impl fmt::Debug for dyn Card {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.name())
+    }
 }
 
 impl Hash for dyn Card {

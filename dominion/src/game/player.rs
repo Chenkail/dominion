@@ -11,7 +11,7 @@ use DominionError::*;
 use dominion_macros::card_vec;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Default, Debug, Serialize, Deserialize)]
 pub struct Resources {
     pub actions: i32,
     pub buys: i32,
@@ -25,7 +25,7 @@ pub struct Resources {
 }
 
 /// Struct representing a player
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Player { 
     pub hand: CardDeck,
     pub deck: CardDeck,
