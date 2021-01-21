@@ -1,4 +1,11 @@
 //! Defines traits for the various card types
+//!
+//! Implementing a new card with custom behavior looks like the following:
+//! ```
+//! card!(MyCard);
+//! #[typetag::serde]
+//! impl Card for MyCard { ... }
+//! ```
 
 use std::fmt::{Display, Formatter, Result};
 use std::hash::{Hash, Hasher};
@@ -46,7 +53,8 @@ impl Display for CardType {
 
 /// The basic Card trait
 ///
-/// dyn Card implements [Hash] and [Eq] so that Box\<dyn Card\> can be used as keys for a HashMap
+/// If this trait is manually implemented, `#[typetag::serde]`
+/// must be placed before the line containing `impl Card for`.
 #[clonable]
 #[typetag::serde(tag = "card")]
 pub trait Card: Clone {

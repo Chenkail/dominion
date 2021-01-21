@@ -1,5 +1,5 @@
 //! "Card-shaped objects"
-use super::prelude::*;
+use crate::game::{player::Player, card::Card, gamedata::*};
 
 pub trait Artifact {
 
@@ -30,5 +30,5 @@ pub trait State {
 }
 
 pub trait Way {
-    fn effects(&self, _player: Player, _card: Box<dyn Card>, _supply: HashMap<Box<dyn Card>, u8>);
+    fn effects(&self, _player: Player, _card: Box<dyn Card>, _supply: Supply);
 }
