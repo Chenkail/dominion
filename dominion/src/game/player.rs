@@ -26,7 +26,7 @@ pub struct Resources {
 
 /// Struct representing a player
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Player { 
+pub struct Player {
     pub hand: CardDeck,
     pub deck: CardDeck,
     pub discard: CardDeck,
