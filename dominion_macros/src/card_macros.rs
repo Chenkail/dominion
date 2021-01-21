@@ -95,29 +95,20 @@ macro_rules! treasure_value {
     };
 }
 
-/// Sets a victory card's point value to some fixed amount
+/// Sets a victory/curse card's point value to some fixed amount
 ///
 /// For example, Province would be:
 /// ```
 /// victory_points!(6);
 /// ```
+/// and the basic Curse card would be:
+/// ```
+/// victory_points!(-1);
+/// ```
 #[macro_export]
 macro_rules! victory_points {
     ($points:expr) => {
         fn victory_points(&self, _: &Player) -> i32 { $points }
-    };
-}
-
-/// Sets a curse card's point value to some fixed amount
-///
-/// For example, the basic curse would be:
-/// ```
-/// curse_points!(-1);
-/// ```
-#[macro_export]
-macro_rules! curse_points {
-    ($points:expr) => {
-        fn curse_points(&self, _: &Player) -> i32 { $points }
     };
 }
 
@@ -217,7 +208,7 @@ macro_rules! basic_curse {
             name!($name);
             cost!($cost);
             types!(vec![Curse]);
-            curse_points!($points);
+            victory_points!($points);
         }
     };
 }

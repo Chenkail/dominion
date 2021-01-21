@@ -92,10 +92,8 @@ pub trait Card: Clone {
     fn treasure_value(&self, _player: &Player) -> i32 { 0 }
     /// The number of potions the card is worth (if it is a potion treasure card)
     fn potion_value(&self, _player: &Player) -> i32 { 0 }
-    /// The number of points the card is worth (if it is a victory card)
+    /// The number of points the card is worth (if it is a victory/curse card)
     fn victory_points(&self, _player: &Player) -> i32 { 0 }
-    /// The number of points the card is worth (if it is a curse card) - this should be negative
-    fn curse_points(&self, _player: &Player) -> i32 { 0 }
 
     // Effect triggers
     /// The card's effects when played as an action
