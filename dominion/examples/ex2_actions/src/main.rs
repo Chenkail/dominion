@@ -13,4 +13,7 @@ fn main() {
 
     player1.play_action_from_hand(5, &mut game.supply, &others).unwrap();
     player1.print_hand();
+    player1.cleanup();
+
+    println!("{:?}", game);
 }

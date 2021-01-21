@@ -284,9 +284,9 @@ impl Player {
 
     /// Cleanup phase at end of turn - discard hand and draw five new cards
     pub fn cleanup(&mut self) {
-        for _ in 0..self.hand.len() {
-            self.discard.push_back(self.hand.pop_front().unwrap());
-        }
+        self.discard.append(&mut self.hand);
+        self.discard.append(&mut self.actions_in_play);
+        self.discard.append(&mut self.treasures_in_play);
 
         self.draw_cards(5);
     }
