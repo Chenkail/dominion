@@ -1,16 +1,17 @@
 //! Defines Player object and associated functions
 
-use std::{collections::VecDeque, mem};
+use std::{collections::VecDeque, io, mem};
+use serde::{Serialize, Deserialize};
+
 use crate::cards::base::*;
 use crate::game::{card::*, utils};
 use crate::game::gamedata::*;
 use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
-use std::io;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Resources {
     pub actions: i32,
     pub buys: i32,
@@ -24,6 +25,7 @@ pub struct Resources {
 }
 
 /// Struct representing a player
+#[derive(Serialize, Deserialize)]
 pub struct Player { 
     pub hand: CardDeck,
     pub deck: CardDeck,

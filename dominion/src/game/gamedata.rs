@@ -1,9 +1,11 @@
 //! Defines the Game struct and its behavior
 
 use std::collections::{HashMap, VecDeque};
+use serde::{Serialize, Deserialize};
+
+use dominion_macros::*;
 use crate::cards::all::*;
 use crate::game::{player::Player, card::Card};
-use dominion_macros::*;
 
 pub type PlayerList = Vec<Player>;
 pub type PlayerSlice = [Player];
@@ -11,6 +13,7 @@ pub type CardStack = Vec<Box<dyn Card>>;
 pub type CardDeck = VecDeque<Box<dyn Card>>;
 pub type Supply = HashMap<Box<dyn Card>, u8>;
 
+#[derive(Serialize, Deserialize)]
 pub struct Game {
     pub players: PlayerList,
     pub supply: Supply,
