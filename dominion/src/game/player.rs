@@ -36,7 +36,7 @@ pub struct Player {
 }
 
 impl Default for Player {
-    /// Constructs a new Vec<Player> with 3 estates and 7 copper
+    /// Constructs a new Player with 3 estates and 7 copper
     fn default() -> Player {
         let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
         Player::new(deck)
@@ -44,6 +44,7 @@ impl Default for Player {
 }
 
 impl Player {
+    /// Constructs a new Player with a given deck
     pub fn new (cards: CardStack) -> Player {
         let mut hand: CardDeck = VecDeque::new();
         let mut deck: CardDeck = VecDeque::from(cards);
