@@ -9,14 +9,17 @@
 
 use std::fmt::{Display, Formatter, Result};
 use std::hash::{Hash, Hasher};
-use itertools::Itertools;
+
 use dyn_clonable::*;
+use itertools::Itertools;
+use serde::{Serialize, Deserialize};
 
 use crate::game::gamedata::*;
 use crate::game::player::Player;
 
 /// Card Types
 #[derive(PartialEq, Eq, Debug)]
+#[derive(Serialize, Deserialize)]
 pub enum CardType {
     // Basic types
     Action,
