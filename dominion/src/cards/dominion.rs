@@ -1,6 +1,7 @@
 //! Cards from the original Dominion set (2nd edition)
 
 use super::prelude::*;
+use super::base::*;
 
 card!(Artisan);
 #[typetag::serde]
@@ -8,8 +9,10 @@ impl Card for Artisan {
     name!("Artisan");
     cost!(6);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _: &PlayerSlice) {
-
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, other_players: &PlayerSlice) {
+        // TODO: change to card of choice from supply and put a card from hand back on deck
+        let card = Box::new(Silver);
+        player.gain_to_hand(card, supply, other_players);
     }
 }
 
