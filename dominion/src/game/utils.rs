@@ -2,19 +2,11 @@
 
 use std::collections::VecDeque;
 
-// Slightly modified from https://stackoverflow.com/questions/41208694/how-do-i-shuffle-a-vecdeque
-// Requirement for Fisher-Yates shuffle: has a length and the ability to swap elements
-
-/// Does the struct have a length and a function which swaps the location of two elements
-pub trait LenAndSwap {
-    fn len(&self) -> usize;
-    fn swap(&mut self, i: usize, j: usize);
-    fn is_empty(&self) -> bool { self.len() == 0 }
-}
-
 /// Shuffles anything which implements the associated trait LenAndSwap
 ///
 /// Uses Fisher-Yates shuffle
+// Slightly modified from https://stackoverflow.com/questions/41208694/how-do-i-shuffle-a-vecdeque
+// Requirement for Fisher-Yates shuffle: has a length and the ability to swap elements
 pub fn shuffle<T: LenAndSwap>(values: &mut T) {
     shuffle_with_rng(values, rand::thread_rng());
 }
@@ -31,6 +23,13 @@ fn shuffle_with_rng<T, R>(values: &mut T, mut rng: R)
         // lock element i in place.
         values.swap(i, rng.gen_range(0..i + 1));
     }
+}
+
+/// Does the struct have a length and a function which swaps the location of two elements
+pub trait LenAndSwap {
+    fn len(&self) -> usize;
+    fn swap(&mut self, i: usize, j: usize);
+    fn is_empty(&self) -> bool { self.len() == 0 }
 }
 
 // Implement LenAndSwap for VecDeque

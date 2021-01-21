@@ -5,7 +5,4 @@ authors = ["Chenkail <40770208+Chenkail@users.noreply.github.com>"]
 edition = "2018"
 license = "AGPLv3"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-
