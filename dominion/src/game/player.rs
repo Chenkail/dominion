@@ -213,8 +213,7 @@ impl Player {
                 self.resources.debt = 0;
             }
         }
-        
-        let mut fin_buy = false;
+
         while self.resources.buys > 0 {
             // Buy cards
             // TODO: Figure out how to allow player to declare that they are done buying cards
@@ -225,7 +224,7 @@ impl Player {
             println!("Done buying cards? (y)es/(n)o");
             io::stdin().read_line(&mut input).expect("error: unable to read user input");
             if input.to_ascii_lowercase().starts_with('y') {
-                fin_buy = true;
+                break
             }
 
             //this block should interop between js later to figure out if fin_buy is true or not
