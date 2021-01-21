@@ -45,7 +45,7 @@ impl Default for Player {
 
 impl Player {
     /// Constructs a new Player with a given deck
-    pub fn new (cards: CardStack) -> Player {
+    pub fn new (cards: CardList) -> Player {
         let mut hand: CardDeck = VecDeque::new();
         let mut deck: CardDeck = VecDeque::from(cards);
         let discard: CardDeck = VecDeque::new();
