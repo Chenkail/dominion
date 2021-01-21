@@ -51,7 +51,7 @@ impl Display for CardType {
 pub trait Card: Clone {
     /// The name on the card (e.g. "Throne Room")
     fn name(&self) -> &str;
-    /// The card's types - each type should be title case
+    /// The card's [types](CardType)
     fn types(&self) -> Vec<CardType>;
     /// The card text (this will often be blank, as is the case with all the cards in the base set)
     fn description(&self) -> &str { "" }

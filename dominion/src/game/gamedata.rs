@@ -35,7 +35,7 @@ impl Game {
         for _ in 0..players {
             player_vec.push(Player::default())
         }
-        
+
         let (victory_card_count, province_count, curse_count) = match players {
             2 => (8, 8, 10),
             3 => (12, 12, 20),
