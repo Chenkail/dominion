@@ -48,6 +48,7 @@ impl Display for CardType {
 ///
 /// dyn Card implements [Hash] and [Eq] so that Box\<dyn Card\> can be used as keys for a HashMap
 #[clonable]
+#[typetag::serde(tag = "card")]
 pub trait Card: Clone {
     /// The name on the card (e.g. "Throne Room")
     fn name(&self) -> &str;

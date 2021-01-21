@@ -3,6 +3,7 @@
 use super::prelude::*;
 
 card!(Artisan);
+#[typetag::serde]
 impl Card for Artisan {
     name!("Artisan");
     cost!(6);

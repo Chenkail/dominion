@@ -1,5 +1,4 @@
 use dominion::game::prelude::*;
-use dominion_macros::*;
 
 fn main() {
     let mut game = Game::default();
@@ -12,6 +11,6 @@ fn main() {
         card.print_types();
     }
 
-    player1.play_action_from_hand(5, &mut game.supply, &others);
+    player1.play_action_from_hand(5, &mut game.supply, &others).unwrap();
     player1.print_hand();
 }

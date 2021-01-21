@@ -9,6 +9,7 @@
 macro_rules! card {
     ($struct_name:ident) => {
         #[derive(Clone)]
+        #[derive(Serialize, Deserialize)]
         pub struct $struct_name;
     };
 }
@@ -18,6 +19,7 @@ macro_rules! card {
 macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
         card!($struct_name);
+        #[typetag::serde]
         impl Card for $struct_name {
             fn name(&self) -> &str {
                 $name
@@ -149,6 +151,7 @@ macro_rules! basic_action_effects {
 macro_rules! basic_action {
     ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
         card!($struct_name);
+        #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
@@ -168,6 +171,7 @@ macro_rules! basic_action {
 macro_rules! basic_treasure {
     ($struct_name:ident, $name:expr, $cost:expr, $value:expr) => {
         card!($struct_name);
+        #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
@@ -187,6 +191,7 @@ macro_rules! basic_treasure {
 macro_rules! basic_victory {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
         card!($struct_name);
+        #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
             cost!($cost);
@@ -207,6 +212,7 @@ macro_rules! basic_victory {
 macro_rules! basic_curse {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
         card!($struct_name);
+        #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
             cost!($cost);

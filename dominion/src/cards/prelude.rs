@@ -7,3 +7,4 @@
 pub use std::collections::HashMap;
 pub use crate::game::{gamedata::*, player::Player, card::*, card::CardType::*};
 pub use dominion_macros::*;
+pub use serde::{Serialize, Deserialize};
