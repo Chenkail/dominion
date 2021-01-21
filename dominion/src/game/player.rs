@@ -8,7 +8,6 @@ use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
 use std::io;
-use std::io::*;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 #[derive(Default)]
@@ -225,7 +224,7 @@ impl Player {
             let mut input = String::new();
             println!("Done buying cards? (y)es/(n)o");
             io::stdin().read_line(&mut input).expect("error: unable to read user input");
-            if input.make_ascii_lowercase().substring(0, 1).unwrap() == "y" {
+            if input.to_ascii_lowercase().starts_with('y') {
                 fin_buy = true;
             }
 
