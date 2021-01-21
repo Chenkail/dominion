@@ -1,5 +1,5 @@
 [package]
-name = "create_game"
+name = "actions"
 version = "0.1.0"
 authors = ["chenkail <40770208+Chenkail@users.noreply.github.com>"]
 edition = "2018"
@@ -8,4 +8,4 @@ edition = "2018"
 
 [dependencies]
 dominion = { path = "../../" }
-dominion_macros = { path = "../../../dominion_macros/" }
+dominion_macros = { path = "../../macros/" }
