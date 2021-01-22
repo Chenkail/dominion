@@ -30,16 +30,16 @@ impl Default for Game {
 
 impl Game {
     /// Create a new [Game] given a list of [Cards](Card) for the supply
-    pub fn new(players: u8, cards: CardList) -> Game {
-        let mut player_vec: PlayerList = Vec::with_capacity(players as usize);
+    pub fn new(player_count: usize, cards: CardList) -> Game {
+        let mut player_vec: PlayerList = Vec::with_capacity(player_count);
         let mut supply: Supply = HashMap::new();
         let trash: CardDeck = VecDeque::new();
 
-        for _ in 0..players {
+        for _ in 0..player_count {
             player_vec.push(Player::default())
         }
 
-        let (victory_card_count, province_count, curse_count) = match players {
+        let (victory_card_count, province_count, curse_count) = match player_count {
             2 => (8, 8, 10),
             3 => (12, 12, 20),
             4 => (12, 12, 30),
