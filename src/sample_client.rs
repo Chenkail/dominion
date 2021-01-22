@@ -3,7 +3,7 @@ use std::io;
 use crate::game::player::Player;
 use crate::game::callbacks::*;
 
-pub fn text_client() -> Callbacks {
+pub fn client() -> Callbacks {
     Callbacks {
         prompt_player_done: Box::new(prompt_done),
         prompt_card_from_hand: Box::new(prompt_card_from_hand),
