@@ -1,10 +1,9 @@
 //! Defines Player object and associated functions
 
-use std::{collections::VecDeque, io, mem};
+use std::{collections::VecDeque, mem};
 use serde::{Serialize, Deserialize};
 
-use crate::cards::base::*;
-use crate::game::{card::*, utils};
+use crate::game::prelude::*;
 use crate::game::gamedata::*;
 use crate::error::DominionError;
 use DominionError::*;
@@ -150,7 +149,7 @@ impl Player {
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
+    pub fn action_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -158,16 +157,17 @@ impl Player {
 
         //TODO (much later): Duration cards
 
-        let mut more = "y".to_string();
-        while (self.resources.actions > 0) & (more == "y") {
+        let mut more = true;
+        while (self.resources.actions > 0) & more {
             // TODO: Figure out how to allow player to declare that they are done playing actions
-            more = "".to_string();
-            std::io::stdin().read_line(&mut more).unwrap();
-            if more == "y" {
+            more = (callbacks.prompt_player_done)();
+            if more {
                 for i in 0..self.hand.len() {
                     let card = self.hand.get(i).unwrap();
                     if card.is_action() {
+                        self.resources.actions -= 1;
                         self.play_action_from_hand(i, supply, other_players).unwrap();
+                        break;
                     }
                 }
             }
@@ -193,12 +193,14 @@ impl Player {
     /// Buy a card
     pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
         card.effects_on_gain(self, supply, other_players);
-
         self.resources.temp_coins -= card.coin_cost();
+        self.gain(card, supply, other_players);
+
+        self.resources.buys -= 1;
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
+    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
         // TODO: prompt user to play treasures
 
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
@@ -217,21 +219,14 @@ impl Player {
             }
         }
 
-        while self.resources.buys > 0 {
+        let mut more = true;
+        while (self.resources.buys > 0) & more {
             // Buy cards
-            // TODO: Figure out how to allow player to declare that they are done buying cards
+            // TODO: Figure out how to allow player to choose card they want
+
             self.buy_card(Box::new(Copper), supply, other_players);
 
-            //we prompt the user if they are done? DEBUG ONLY
-            let mut input = String::new();
-            println!("Done buying cards? (y)es/(n)o");
-            io::stdin().read_line(&mut input).expect("error: unable to read user input");
-            if input.to_ascii_lowercase().starts_with('y') {
-                break
-            }
-
-            //this block should interop between js later to figure out if fin_buy is true or not
-            
+            more = (callbacks.prompt_player_done)();
         }
     }
 
@@ -292,9 +287,9 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self, supply: &mut Supply, other_players: &PlayerSlice) {
-        self.action_phase(supply, other_players);
-        self.buy_phase(supply, other_players);
+    pub fn turn(&mut self, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
+        self.action_phase(supply, other_players, callbacks);
+        self.buy_phase(supply, other_players, callbacks);
         self.cleanup();
     }
 
