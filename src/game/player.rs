@@ -10,7 +10,7 @@ use DominionError::*;
 use dominion_macros::card_vec;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
-#[derive(Clone, Default, Debug, Serialize, Deserialize)]
+#[derive(Default, Debug, Serialize, Deserialize)]
 pub struct Resources {
     pub actions: i32,
     pub buys: i32,
@@ -24,9 +24,8 @@ pub struct Resources {
 }
 
 /// Struct representing a player
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Player {
-    pub id: u8,
     pub hand: CardDeck,
     pub deck: CardDeck,
     pub discard: CardDeck,
@@ -35,15 +34,17 @@ pub struct Player {
     pub resources: Resources,
 }
 
-impl Player {
-    /// Constructs a new Player with the default deck
-    pub fn new_with_default_deck(id: u8) -> Player {
+impl Default for Player {
+    /// Constructs a new Player with 3 estates and 7 copper
+    fn default() -> Player {
         let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
-        Player::new(id, deck)
+        Player::new(deck)
     }
+}
 
+impl Player {
     /// Constructs a new Player with a given deck
-    pub fn new (id: u8, cards: CardList) -> Player {
+    pub fn new (cards: CardList) -> Player {
         let mut hand: CardDeck = VecDeque::new();
         let mut deck: CardDeck = VecDeque::from(cards);
         let discard: CardDeck = VecDeque::new();
@@ -58,7 +59,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources }
+        Player { hand, deck, discard, actions_in_play, treasures_in_play, resources }
     }
 
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
