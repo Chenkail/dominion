@@ -20,12 +20,15 @@ mod test_player {
         //draw 5, make sure everything checks out
         player.draw_cards(5);
         assert!(player.hand.len() == 10 && player.deck.is_empty());
-        //draw another 5, make sure everything's checked out
-        player.draw_cards(5);
-        assert!(player.hand.len() == 5 && player.deck.len() == 5);
-
-        //now draw an unreasonable number of cards
-        player.draw_cards(14);
         
+        //test unreasonable draw
+        player.draw_cards(5);
+        assert!(player.hand.len() == 10 && player.deck.is_empty());
+
+        //make a new player
+        player = Player::default();
+        player.draw_cards(14);
+        assert!(player.hand.len() == 10 && player.deck.is_empty());
     }
+
 }
