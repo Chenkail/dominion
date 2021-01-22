@@ -18,5 +18,8 @@ fn prompt_done() -> bool {
 }
 
 fn prompt_card_from_hand(_p: &Player) -> i32 {
-    0
+    let mut input = String::new();
+    println!("Enter a card index from your hand:");
+    io::stdin().read_line(&mut input).expect("error: unable to read user input");
+    input.parse::<i32>().unwrap()
 }
