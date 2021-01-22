@@ -35,8 +35,8 @@ impl Game {
         let mut supply: Supply = HashMap::new();
         let trash: CardDeck = VecDeque::new();
 
-        for _ in 0..player_count {
-            player_vec.push(Player::default())
+        for i in 0..player_count {
+            player_vec.push(Player::new_with_default_deck(i))
         }
 
         let (victory_card_count, province_count, curse_count) = match player_count {
