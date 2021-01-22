@@ -16,7 +16,7 @@ mod test_player {
 
     #[test]
     fn test_player_draw() {
-        let mut player = Player::default();
+        let mut player = Player::new_with_default_deck(0);
         //draw 5, make sure everything checks out
         player.draw_cards(5);
         assert!(player.hand.len() == 10 && player.deck.is_empty());
@@ -25,10 +25,19 @@ mod test_player {
         player.draw_cards(5);
         assert!(player.hand.len() == 10 && player.deck.is_empty());
 
-        //make a new player
-        player = Player::default();
+        
+        player = Player::new_with_default_deck(0);
         player.draw_cards(14);
         assert!(player.hand.len() == 10 && player.deck.is_empty());
+    }
+
+    #[test]
+    fn test_player_discard() {
+        let mut player = Player::new_with_default_deck(0);
+        let first_vec = vec![0,2,4];
+        player.discard_given_indexes(first_vec);
+        assert!(player.hand.len() == 2 && player.discard.len() == 3);
+        
     }
 
 }
