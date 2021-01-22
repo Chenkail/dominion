@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod test_player {
-    use crate::game::player;
-    use game;
+    use dominion::game::player;
+    use dominion::game;
 
     #[test]
     fn test_test() {
