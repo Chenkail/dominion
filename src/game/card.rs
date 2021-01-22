@@ -1,7 +1,7 @@
 //! Defines traits for the various card types
 //!
 //! Implementing a new card with custom behavior looks like the following:
-//! ```
+//! ```ignore
 //! card!(MyCard);
 //! #[typetag::serde]
 //! impl Card for MyCard { ... }
