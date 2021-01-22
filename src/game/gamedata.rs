@@ -35,8 +35,8 @@ impl Game {
         let mut supply: Supply = HashMap::new();
         let trash: CardDeck = VecDeque::new();
 
-        for _ in 0..players {
-            player_vec.push(Player::default())
+        for i in 0..players {
+            player_vec.push(Player::new_with_default_deck(i));
         }
 
         let (victory_card_count, province_count, curse_count) = match players {
@@ -68,6 +68,15 @@ impl Game {
         }
 
         Game { players: player_vec, supply, trash }
+    }
+
+    /// Returns a slice containing all the other players in the game
+    pub fn player_and_others(&mut self, index: u8) -> (Player, PlayerList) {
+        let (front, rest) = self.players.split_at_mut(index as usize);
+        let (player, back) = rest.split_at_mut(1);
+        let others = [front, back].concat();
+        let p = player.to_vec().pop().unwrap();
+        (p, others)
     }
 
     /// Prints out all the cards in the supply and their remaining quantities
