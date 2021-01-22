@@ -26,6 +26,7 @@ pub struct Resources {
 /// Struct representing a player
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Player {
+    pub id: usize,
     pub hand: CardDeck,
     pub deck: CardDeck,
     pub discard: CardDeck,
@@ -34,17 +35,15 @@ pub struct Player {
     pub resources: Resources,
 }
 
-impl Default for Player {
-    /// Constructs a new Player with 3 estates and 7 copper
-    fn default() -> Player {
-        let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
-        Player::new(deck)
-    }
-}
-
 impl Player {
+    /// Constructs a new Player with the default deck (3 estates and 7 copper)
+    pub fn new_with_default_deck(id: usize) -> Player {
+        let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
+        Player::new(id, deck)
+    }
+
     /// Constructs a new Player with a given deck
-    pub fn new (cards: CardList) -> Player {
+    pub fn new (id: usize, cards: CardList) -> Player {
         let mut hand: CardDeck = VecDeque::new();
         let mut deck: CardDeck = VecDeque::from(cards);
         let discard: CardDeck = VecDeque::new();
@@ -59,7 +58,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { hand, deck, discard, actions_in_play, treasures_in_play, resources }
+        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources }
     }
 
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard

@@ -5,7 +5,7 @@ mod test_player {
 
     #[test]
     fn test_player_init() {
-        let player = Player::default();
+        let player = Player::new_with_default_deck(0);
 
         //we check to see if everything is initalized correctly
         assert!(player.hand.len() == 5);
