@@ -80,8 +80,7 @@ impl Game {
             .values()
             .filter(|e| **e == 0)
             .cloned()
-            .collect::<Vec<u8>>()
-            .len() == 3 {
+            .count() == 3 {
             return true;
         };
 
