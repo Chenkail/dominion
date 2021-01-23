@@ -2,7 +2,7 @@
 
 #[cfg(test)]
 pub mod test_game {
-    use dominion::game::{gamedata::*, prelude::*};
+    use dominion::game::prelude::*;
     #[test]
     pub fn test_printsupply() {
         let mut game = Game::default();
