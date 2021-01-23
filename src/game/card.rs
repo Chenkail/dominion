@@ -8,52 +8,16 @@
 //! ```
 
 use std::fmt;
-use std::fmt::{Display, Formatter};
+use std::fmt::Formatter;
 use std::hash::{Hash, Hasher};
 
-use dyn_clonable::*;
 use itertools::Itertools;
-use serde::{Serialize, Deserialize};
+use dyn_clonable::*;
 
-use crate::game::gamedata::*;
 use crate::game::player::Player;
-
-/// Card Types
-#[derive(PartialEq, Eq, Debug)]
-#[derive(Serialize, Deserialize)]
-pub enum CardType {
-    // Basic types
-    Action,
-    Treasure,
-    Victory,
-    Curse,
-    // Multi-set types
-    Attack,
-    Command,
-    Duration,
-    Reaction,
-    // Single-set types
-    Castle,
-    Doom,
-    Fate,
-    Gathering,
-    Heirloom,
-    Looter,
-    Night,
-    Prize,
-    Reserve,
-    Ruins,
-    Shelter,
-    Spirit,
-    Traveller,
-    Zombie,
-}
-
-impl Display for CardType {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "{:?}", *self)
-    }
-}
+use crate::types::*;
+pub use crate::types::CardType;
+pub use crate::types::CardType::*;
 
 /// The basic Card trait
 ///

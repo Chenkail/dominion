@@ -1,5 +1,4 @@
 use dominion::game::prelude::*;
-use dominion_macros::*;
 
 fn main() {
     let mut game = Game::default();

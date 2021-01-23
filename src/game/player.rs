@@ -4,10 +4,10 @@ use std::{collections::VecDeque, mem};
 use serde::{Serialize, Deserialize};
 
 use crate::game::prelude::*;
-use crate::game::gamedata::*;
 use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
+
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct Resources {

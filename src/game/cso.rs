@@ -1,5 +1,6 @@
 //! "Card-shaped objects"
-use crate::game::{player::Player, card::Card, gamedata::*};
+use crate::game::{player::Player, card::Card};
+use crate::types::*;
 
 pub trait Artifact {
 
