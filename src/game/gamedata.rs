@@ -71,10 +71,11 @@ impl Game {
     /// checks game state, used for victory condition.
     /// returns true if the province cards are exhausted OR when 3 stacks in the supply are exhausted.
     pub fn victory_met(&mut self) -> bool {
-        //let a: Box<dyn Card> = Box::new(Province);
-        // if self.supply.get(a).unwrap() == 0 {
-        //     return true;
-        // } else 
+        let province: Box<dyn Card> = Box::new(Province);
+        if *self.supply.get(&province).unwrap() as u32 == 0 {
+            return true;
+        }
+
         if self.supply
             .values()
             .filter(|e| **e == 0)
@@ -83,6 +84,7 @@ impl Game {
             .len() == 3 {
             return true;
         };
-        return false;
+
+        false
     }
 }
