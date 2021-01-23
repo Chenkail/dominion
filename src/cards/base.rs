@@ -3,8 +3,7 @@
 use super::prelude::*;
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Copper)
-#[derive(Clone)]
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Copper;
 
 #[typetag::serde]
