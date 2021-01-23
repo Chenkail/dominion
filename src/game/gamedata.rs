@@ -62,7 +62,9 @@ impl Game {
     }
 
     /// Prints out all the cards in the supply and their remaining quantities
-    pub fn print_supply() {
-        // TODO
+    pub fn print_supply(&mut self) {
+        for (card, count) in &self.supply {
+            println!("{}: {} cards", card, count);
+        }
     }
 }
