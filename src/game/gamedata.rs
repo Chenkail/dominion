@@ -75,7 +75,12 @@ impl Game {
         // if self.supply.get(a).unwrap() == 0 {
         //     return true;
         // } else 
-        if self.supply.values().filter(|e| **e == 0).cloned().collect::<Vec<u8>>().len() == 3 {
+        if self.supply
+            .values()
+            .filter(|e| **e == 0)
+            .cloned()
+            .collect::<Vec<u8>>()
+            .len() == 3 {
             return true;
         };
         return false;
