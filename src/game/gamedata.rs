@@ -79,7 +79,6 @@ impl Game {
         if self.supply
             .values()
             .filter(|e| **e == 0)
-            .cloned()
             .count() == 3 {
             return true;
         };
