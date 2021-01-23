@@ -9,6 +9,7 @@ pub struct Game {
     pub players: PlayerList,
     pub supply: Supply,
     pub trash: CardDeck,
+    pub extras: Supply,
 }
 
 impl Default for Game {
@@ -25,6 +26,7 @@ impl Game {
         let mut player_vec: PlayerList = Vec::with_capacity(player_count);
         let mut supply: Supply = HashMap::new();
         let trash: CardDeck = VecDeque::new();
+        let extras: Supply = HashMap::new();
 
         for i in 0..player_count {
             player_vec.push(Player::new_with_default_deck(i))
@@ -58,7 +60,7 @@ impl Game {
             supply.insert(card, count);
         }
 
-        Game { players: player_vec, supply, trash }
+        Game { players: player_vec, supply, trash , extras }
     }
 
     /// Prints out all the cards in the supply and their remaining quantities
