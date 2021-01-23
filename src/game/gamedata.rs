@@ -1,6 +1,5 @@
 //! Defines the Game struct and its behavior
 
-use std::{collections::{HashMap, VecDeque}};
 use serde::{Serialize, Deserialize};
 
 use crate::game::prelude::*;

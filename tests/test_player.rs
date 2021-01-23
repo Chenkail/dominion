@@ -1,4 +1,5 @@
-//!Tests player-related methods and structs
+//! Tests for player-related methods and structs
+
 #[cfg(test)]
 mod test_player {
     use dominion::game::{gamedata::*, player::*};

@@ -1,4 +1,4 @@
-//! Associated type definitions.
+//! Library type definitions.
 
 use std::{collections::{HashMap, VecDeque}, fmt};
 use std::fmt::{Display, Formatter};
@@ -50,4 +50,3 @@ impl Display for CardType {
         write!(f, "{:?}", *self)
     }
 }
-
