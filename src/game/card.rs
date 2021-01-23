@@ -16,8 +16,6 @@ use dyn_clonable::*;
 
 use crate::game::player::Player;
 use crate::types::*;
-pub use crate::types::CardType;
-pub use crate::types::CardType::*;
 
 /// The basic Card trait
 ///
