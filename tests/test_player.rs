@@ -66,4 +66,10 @@ mod test_player {
         
     }
 
+    #[test]
+    fn test_player_play_action() {
+        let mut game = Game::default();
+        //player.play_action_from_hand(index, supply, other_players)
+    }
+
 }

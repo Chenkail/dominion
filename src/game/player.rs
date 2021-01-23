@@ -9,6 +9,11 @@ use crate::error::DominionError;
 use DominionError::*;
 use dominion_macros::card_vec;
 
+pub type PlayerList = Vec<Player>;
+pub type PlayerSlice = [Player];
+pub type CardList = Vec<Box<dyn Card>>;
+pub type CardDeck = VecDeque<Box<dyn Card>>;
+pub type Supply = HashMap<Box<dyn Card>, u8>;
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct Resources {
