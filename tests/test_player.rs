@@ -56,6 +56,15 @@ mod test_player {
     fn test_player_trash() {
         let mut player = Player::new_with_default_deck(0);
         let mut game = Game::default();
+        player.trash_given_indexes(vec![0,1,2,3], &mut game.trash);
+        assert!(player.hand.len() == 1 && game.trash.len() == 4 && player.discard.is_empty());
+
+        player.trash_given_indexes(vec![0], &mut game.trash);        
+        assert!(player.hand.is_empty() && game.trash.len() == 5 && player.discard.is_empty());
+
+        player.trash_given_indexes(vec![0], &mut game.trash);   
+        assert!(player.hand.is_empty() && game.trash.len() == 5 && player.discard.is_empty());
+        
     }
 
 }

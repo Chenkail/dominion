@@ -110,10 +110,12 @@ impl Player {
         indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
-            trash.push_back(self.hand.remove(i).unwrap());
-            if trash.is_empty() {
+            //if hand is empty, return from function
+            if self.hand.is_empty() {
                 return;
             }
+            trash.push_back(self.hand.remove(i).unwrap());
+            
         }
     }
 
