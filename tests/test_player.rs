@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod test_player {
-    use dominion::game::player::*;
-    //use dominion::game::*;
+    use dominion::game::{self, player::*};
+    use game::gamedata::*;
 
     #[test]
     fn test_player_init() {
@@ -37,7 +37,25 @@ mod test_player {
         let first_vec = vec![0,2,4];
         player.discard_given_indexes(first_vec);
         assert!(player.hand.len() == 2 && player.discard.len() == 3);
+
+        let second_vec = vec![0];
+        player.discard_given_indexes(second_vec);
+        assert!(player.hand.len() == 1 && player.discard.len() == 4);
+
+        let third_vec = vec![0];
+        player.discard_given_indexes(third_vec);
+        assert!(player.hand.is_empty() && player.discard.len() == 5);
+
+        let fourth_vec = vec![0];
+        player.discard_given_indexes(fourth_vec);
+        assert!(player.hand.is_empty() && player.discard.len() == 5);
         
+    }
+
+    #[test]
+    fn test_player_trash() {
+        let mut player = Player::new_with_default_deck(0);
+        let mut game = Game::default();
     }
 
 }

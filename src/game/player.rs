@@ -88,20 +88,32 @@ impl Player {
     }
 
     /// Discards cards from hand given an array of indexes of said cards
-    pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {
+    /// indexes should be valid: it is up to the callee function to make sure.
+    pub fn discard_given_indexes(&mut self, mut indexes: Vec<usize>) {        
+
         indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
+            //if hand is empty, return from function
+            if self.hand.is_empty() {
+                return;
+            }
             self.discard.push_back(self.hand.remove(i).unwrap());
+            
+            
         }
     }
 
     /// Trashes cards from hand given an array of indexes of said cards
+    /// indexes should be valid: it is up to the callee function to make sure.
     pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, trash: &mut CardDeck) {
         indexes.sort_unstable();
         indexes.reverse();
         for i in indexes {
             trash.push_back(self.hand.remove(i).unwrap());
+            if trash.is_empty() {
+                return;
+            }
         }
     }
 
