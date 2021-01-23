@@ -1,3 +1,5 @@
+//! Command line text client for Dominion for demonstrating callbacks
+
 use std::io;
 
 use crate::game::player::Player;

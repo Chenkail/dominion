@@ -1,10 +1,16 @@
 //! Defines traits for the various card types
 //!
-//! Implementing a new card with custom behavior looks like the following:
-//! ```ignore
+//! The most basic implementation of a new card with custom behavior looks like the following:
+//! ```
+//! use dominion::cards::prelude::*;
+//!
 //! card!(MyCard);
 //! #[typetag::serde]
-//! impl Card for MyCard { ... }
+//! impl Card for MyCard {
+//!     name!("My Card");
+//!     cost!(5);
+//!     types!(vec![Victory]);
+//! }
 //! ```
 
 use std::fmt;
