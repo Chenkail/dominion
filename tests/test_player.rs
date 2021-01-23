@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod test_player {
-    use dominion::game::{self, player::*};
-    use game::gamedata::*;
+    use dominion::game::{gamedata::*, player::*};
 
     #[test]
     fn test_player_init() {
