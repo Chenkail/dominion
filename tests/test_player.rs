@@ -3,6 +3,7 @@
 #[cfg(test)]
 mod test_player {
     use dominion::game::{gamedata::*, player::*};
+    use dominion::cards::dominion::*;
 
     #[test]
     fn test_player_init() {
@@ -71,8 +72,12 @@ mod test_player {
     #[test]
     fn test_player_play_action() {
         let mut game = Game::default();
-        //
-        //player.play_action_from_hand(index, supply, other_players)
+        //let a: [Player] = game.players[1..];
+        
+
+        //this doesn't work. i don't know how to pass the playerslice into the method here
+        //game.players[0].gain_to_hand(Box::new(Market), &mut game.supply, &mut game.players[1..3]);
+        
     }
 
     #[test]
