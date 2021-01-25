@@ -76,6 +76,7 @@ mod test_player {
         
 
         //this doesn't work. i don't know how to pass the playerslice into the method here
+        //i also don't know why we're passing in a playerslice isntead of just the entire game but
         //game.players[0].gain_to_hand(Box::new(Market), &mut game.supply, &mut game.players[1..3]);
         
     }
