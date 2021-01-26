@@ -87,4 +87,10 @@ impl Game {
 
         false
     }
+
+    /// returns vector of cards available given a lambda passed in, given a lambda passed in
+    pub fn return_available_cards(&self) -> Vec<Box<dyn Card>> {
+        //TODO: rewrite to not use collect and to use filter() with the lambda passed in
+        return self.supply.keys().cloned().collect::<Vec<_>>();
+    }
 }
