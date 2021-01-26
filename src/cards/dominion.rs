@@ -1,5 +1,6 @@
 //! Cards from the original Dominion set (2nd edition)
 // TODO: provide brief documentation on all effects for each card just for convinience
+// TODO: provide a String representation field in placeholder_card to represent the description of the card
 
 use super::prelude::*;
 use super::base::*;
@@ -21,7 +22,26 @@ placeholder_card!(Bandit, "Bandit", 5);
 
 placeholder_card!(Bureaucrat, "Bureaucrat", 4);
 
-placeholder_card!(Cellar, "Cellar", 2);
+// Cellar
+// +1 Action, discard any number of cards, then draw that many
+card!(Cellar);
+#[typetag::serde]
+impl Card for Cellar {
+    name!("Cellar");
+    cost!(2);
+    types!(vec![Action]);
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, other_players: &PlayerSlice) {
+        let num_discard: i32 = 3; // 3 is placeholder number, we ideally want to prompt the player through callbacks for this value
+        let indexes: Vec<usize> = Vec::new(); 
+        for i in 0..num_discard {
+            //prompt player for indexes to discard
+        }
+
+        //
+        player.discard_given_indexes(indexes);
+        player.draw_cards(num_discard);
+    }
+}
 
 placeholder_card!(Chapel, "Chapel", 2);
 
@@ -37,6 +57,8 @@ placeholder_card!(Laboratory, "Laboratory", 5);
 
 placeholder_card!(Library, "Library", 5);
 
+// Market
+// effects: +1 Action, +1 Buy, +1 temp_coins, +1 Card
 basic_action!(Market, "Market", 5, 1, 1, 1, 1);
 
 placeholder_card!(Merchant, "Merchant", 3);
