@@ -77,8 +77,18 @@ mod test_player {
 
         //this doesn't work. i don't know how to pass the playerslice into the method here
         //i also don't know why we're passing in a playerslice isntead of just the entire game but
-        //game.players[0].gain_to_hand(Box::new(Market), &mut game.supply, &mut game.players[1..3]);
-        
+        // let mut game = Game::default();
+        let (p1v, others) = game.players.split_at_mut(1);
+        let player1 = p1v.get_mut(0).unwrap();
+    
+        player1.gain_to_hand(Box::new(Market), &mut game.supply, &others);  
+        let temp_coinc_b4add = player1.resources.temp_coins;  
+        player1.play_action_from_hand(5, &mut game.supply, &others).unwrap();
+        println!("actions: {}, buys: {}, hand size: {}", player1.resources.actions, player1.resources.buys, player1.hand.len());
+        assert!(player1.resources.actions == 0);
+        assert!(player1.resources.buys == 1);
+        assert!(player1.hand.len() == 6);
+        assert!(player1.resources.temp_coins == temp_coinc_b4add + 1);
     }
 
     #[test]

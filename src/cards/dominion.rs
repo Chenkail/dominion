@@ -1,4 +1,5 @@
 //! Cards from the original Dominion set (2nd edition)
+// TODO: provide brief documentation on all effects for each card just for convinience
 
 use super::prelude::*;
 use super::base::*;
