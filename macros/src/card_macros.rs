@@ -8,8 +8,7 @@
 #[macro_export]
 macro_rules! card {
     ($struct_name:ident) => {
-        #[derive(Clone)]
-        #[derive(Serialize, Deserialize)]
+        #[derive(Clone, Serialize, Deserialize)]
         pub struct $struct_name;
     };
 }

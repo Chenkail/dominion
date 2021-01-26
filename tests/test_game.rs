@@ -20,5 +20,4 @@ pub mod test_game {
         game.supply.insert(Box::new(Moat), 0);
         assert!(game.victory_met());
     }
-
 }
