@@ -15,9 +15,15 @@ macro_rules! card {
     };
 }
 
-/// Create a placeholder for a card - SHOULD NOT BE USED FOR ACTUAL CARDS
+/// Creates a placeholder Card
 ///
 /// Format: `placeholder_card!(StructName, "Card Name", cost);`
+///
+/// For example:
+/// ```
+/// # use dominion::cards::prelude::*;
+/// placeholder_card!(UnimplementedCard, "Unimplemented Card", 0);
+/// ```
 #[macro_export]
 macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
@@ -27,9 +33,16 @@ macro_rules! placeholder_card {
     };
 }
 
-/// Create a placeholder for a card's effects - SHOULD NOT BE USED FOR ACTUAL CARDS
+/// Creates a placeholder for a card's effects
 ///
 /// Format: `placeholder_effects!(StructName, "Card Name", cost);`
+///
+/// For example:
+/// ```
+/// # use dominion::cards::prelude::*;
+/// card!(UnimplementedCard);
+/// placeholder_effects!(UnimplementedCard, "Unimplemented Card", 0);
+/// ```
 #[macro_export]
 macro_rules! placeholder_effects {
     ($struct_name:ident, $name:expr, $cost:expr) => {
@@ -44,20 +57,19 @@ macro_rules! placeholder_effects {
     };
 }
 
-/// Set the card's name to be displayed
+/// Sets the card's name to be displayed
 ///
-/// Format:
+/// For example:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// #
-/// # card!(TestCard);
-/// # #[typetag::serde]
-/// # impl Card for TestCard {
-/// # cost!(0);
-/// # types!(vec![Action]);
-/// #
-/// name!("My Card");
-/// # }
+/// card!(MiningVillage);
+/// #[typetag::serde]
+/// impl Card for MiningVillage {
+///     name!("Mining Village");
+///     cost!(4);
+///     types!(vec![Action]);
+///     // ...
+/// }
 /// ```
 #[macro_export]
 macro_rules! name {
@@ -69,16 +81,19 @@ macro_rules! name {
 /// Set the card's cost
 ///
 /// Format: `cost!(coins, debt, potions);`
-/// (If ``potions`` is present, ``debt`` is required, otherwise both are optional):
-/// ```
-/// use dominion::cards::prelude::*;
+/// (If ``potions`` is present, ``debt`` is required, otherwise both are optional)
 ///
+/// For example:
+/// ```
+/// # use dominion::cards::prelude::*;
+/// // http://wiki.dominionstrategy.com/index.php/Golem
 /// card!(Golem);
 /// #[typetag::serde]
 /// impl Card for Golem {
 ///     name!("Golem");
-///     types!(vec![Action]);
 ///     cost!(4, 0, 1);
+///     types!(vec![Action]);
+///     // ...
 /// }
 /// ```
 #[macro_export]
@@ -103,13 +118,14 @@ macro_rules! cost {
 /// ```
 /// # use dominion::cards::prelude::*;
 /// #
-/// # card!(TestCard);
+/// # card!(MyCard);
 /// # #[typetag::serde]
-/// # impl Card for TestCard {
-/// # name!("Test Card");
+/// impl Card for MyCard {
+/// # name!("My Card");
 /// # cost!(0);
-/// types!(vec![Action, Victory]);
-/// # }
+///     // ...
+///     types!(vec![Action, Victory]);
+/// }
 /// ```
 #[macro_export]
 macro_rules! types {
@@ -120,7 +136,7 @@ macro_rules! types {
 
 /// Sets a treasure card's coin value to some fixed amount
 ///
-/// For example, Gold looks like:
+/// For example, Gold could be declared as follows:
 /// ```
 /// use dominion::cards::prelude::*;
 ///
@@ -142,7 +158,7 @@ macro_rules! treasure_value {
 
 /// Sets a victory/curse card's point value to some fixed amount
 ///
-/// For example, Province would be:
+/// For example, Province could be declared as follows:
 /// ```
 /// use dominion::cards::prelude::*;
 ///
