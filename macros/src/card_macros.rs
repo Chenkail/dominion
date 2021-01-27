@@ -18,6 +18,7 @@ macro_rules! card {
 macro_rules! placeholder_effects {
     ($struct_name:ident, $name:expr, $cost:expr) => {
         #[typetag::serde]
+        /// PLACEHOLDER - NO EFFECTS IMPLEMENTED
         impl Card for $struct_name {
             fn name(&self) -> &str {
                 $name
@@ -38,21 +39,9 @@ macro_rules! placeholder_effects {
 #[macro_export]
 macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
+        /// PLACEHOLDER CARD
         card!($struct_name);
-        #[typetag::serde]
-        impl Card for $struct_name {
-            fn name(&self) -> &str {
-                $name
-            }
-
-            fn types(&self) -> Vec<CardType> {
-                Vec::new()
-            }
-
-            fn coin_cost(&self) -> usize {
-                $cost
-            }
-        }
+        placeholder_effects!($struct_name, $name, $cost);
     };
 }
 

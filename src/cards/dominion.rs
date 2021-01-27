@@ -114,7 +114,13 @@ placeholder_effects!(Harbinger, "Harbinger", 3);
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Laboratory;
 
-placeholder_effects!(Laboratory, "Laboratory", 5);
+#[typetag::serde]
+impl Card for Laboratory {
+    name!("Laboratory");
+    cost!(5);
+    types!(vec![Action]);
+    basic_action_effects!(2, 1, 0, 0);
+}
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Library)
 #[derive(Clone, Serialize, Deserialize)]
