@@ -124,7 +124,18 @@ placeholder_effects!(Library, "Library", 5);
 
 // Market
 // effects: +1 Action, +1 Buy, +1 temp_coins, +1 Card
-basic_action!(Market, "Market", 5, 1, 1, 1, 1);
+/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Market)
+#[derive(Clone, Serialize, Deserialize)]
+pub struct Market;
+
+#[typetag::serde]
+impl Card for Market {
+    name!("Market");
+    cost!(5);
+    types!(vec![Action]);
+    basic_action_effects!(1, 1, 1, 1);
+}
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)
 #[derive(Clone, Serialize, Deserialize)]
