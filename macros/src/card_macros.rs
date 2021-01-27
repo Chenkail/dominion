@@ -13,6 +13,27 @@ macro_rules! card {
     };
 }
 
+/// Create a placeholder for a card's effects - SHOULD NOT BE USED FOR ACTUAL CARDS
+#[macro_export]
+macro_rules! placeholder_effects {
+    ($struct_name:ident, $name:expr, $cost:expr) => {
+        #[typetag::serde]
+        impl Card for $struct_name {
+            fn name(&self) -> &str {
+                $name
+            }
+
+            fn types(&self) -> Vec<CardType> {
+                Vec::new()
+            }
+
+            fn coin_cost(&self) -> usize {
+                $cost
+            }
+        }
+    };
+}
+
 /// Create a placeholder for a card - SHOULD NOT BE USED FOR ACTUAL CARDS
 #[macro_export]
 macro_rules! placeholder_card {
