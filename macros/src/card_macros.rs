@@ -35,21 +35,10 @@ macro_rules! placeholder_effects {
         #[typetag::serde]
         /// PLACEHOLDER - NO EFFECTS IMPLEMENTED
         impl Card for $struct_name {
-            fn name(&self) -> &str {
-                $name
-            }
-
-            fn types(&self) -> Vec<CardType> {
-                Vec::new()
-            }
-
-            fn coin_cost(&self) -> usize {
-                $cost
-            }
-
-            fn description(&self) -> &str {
-                "PLACEHOLDER CARD"
-            }
+            fn name(&self) -> &str { $name }
+            fn types(&self) -> Vec<CardType> { Vec::new() }
+            fn coin_cost(&self) -> usize { $cost }
+            fn description(&self) -> &str { "PLACEHOLDER CARD" }
         }
     };
 }
