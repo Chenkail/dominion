@@ -33,7 +33,7 @@ impl Card for Cellar {
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, other_players: &PlayerSlice) {
         let num_discard: i32 = 3; // 3 is placeholder number, we ideally want to prompt the player through callbacks for this value
         let indexes: Vec<usize> = Vec::new(); 
-        for i in 0..num_discard {
+        for _ in 0..num_discard {
             //prompt player for indexes to discard
         }
 
