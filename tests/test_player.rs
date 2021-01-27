@@ -2,7 +2,7 @@
 
 #[cfg(test)]
 mod test_player {
-    use dominion::game::{gamedata::*, player::*};
+    use dominion::game::{Game, Player};
     use dominion::cards::dominion::*;
 
     #[test]
@@ -72,7 +72,7 @@ mod test_player {
     #[test]
     fn test_player_play_action() {
         let mut game = Game::default();
-        let callbacks = dominion::sample_client::client();
+        let callbacks = dominion::sample_client::callbacks();
         
         let (p1v, others) = game.players.split_at_mut(1);
         let player1 = p1v.get_mut(0).unwrap();

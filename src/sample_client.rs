@@ -3,9 +3,9 @@
 use std::{io, vec};
 
 // use crate::game::player::Player;
-use crate::game::callbacks::*;
+use crate::game::Callbacks;
 
-pub fn client() -> Callbacks {
+pub fn callbacks() -> Callbacks {
     Callbacks {
         prompt_player_done: Box::new(prompt_done),
         prompt_card_from_hand: Box::new(prompt_card_from_hand),

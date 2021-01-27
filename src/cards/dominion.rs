@@ -195,7 +195,13 @@ placeholder_effects!(Sentry, "Sentry", 5);
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Smithy;
 
-placeholder_effects!(Smithy, "Smithy", 4);
+#[typetag::serde]
+impl Card for Smithy {
+    name!("Smithy");
+    cost!(4);
+    types!(vec![Action]);
+    basic_action_effects!(3, 0, 0, 0);
+}
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/ThroneRoom)
 #[derive(Clone, Serialize, Deserialize)]

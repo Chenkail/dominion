@@ -177,7 +177,6 @@ impl Player {
                 for i in 0..self.hand.len() {
                     let card = self.hand.get(i).unwrap();
                     if card.is_action() {
-                        self.resources.actions -= 1;
                         self.play_action_from_hand(i, supply, other_players, callbacks).unwrap();
                         break;
                     }
@@ -187,7 +186,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players, callbacks);
@@ -195,7 +194,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, other_players, callbacks);
@@ -203,7 +202,7 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         card.effects_on_gain(self, supply, other_players, callbacks);
         self.resources.temp_coins -= card.coin_cost();
         self.gain(card, supply, other_players, callbacks);
@@ -212,7 +211,7 @@ impl Player {
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
+    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: prompt user to play treasures
 
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;

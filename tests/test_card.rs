@@ -4,12 +4,13 @@
 #[cfg(test)]
 pub mod test_card {
     
-    use dominion::game::gamedata::*;
+    use dominion::game::Game;
     use dominion::cards::dominion::*;
+
     #[test]
     pub fn test_gardens() {
         let mut game = Game::default();
-        let callbacks = dominion::sample_client::client();
+        let callbacks = dominion::sample_client::callbacks();
         
         let (p1v, others) = game.players.split_at_mut(1);
         let player1 = p1v.get_mut(0).unwrap();

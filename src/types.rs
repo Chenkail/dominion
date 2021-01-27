@@ -5,8 +5,8 @@ use std::fmt::{Display, Formatter};
 
 use serde::{Serialize, Deserialize};
 
-use crate::game::player::Player;
-use crate::game::card::Card;
+use crate::game::Player;
+use crate::game::Card;
 
 pub type PlayerList = Vec<Player>;
 pub type PlayerSlice = [Player];
