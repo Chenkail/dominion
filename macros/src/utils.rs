@@ -2,9 +2,10 @@
 
 /// Easily create a vector of Boxed Card trait objects
 ///
+/// For example:
 /// ```
-/// use dominion_macros::card_vec;
-///
+/// # use dominion::cards::prelude::*;
+/// # use dominion::cards::base::*;
 /// let cards = card_vec![Copper, Silver, Gold];
 /// ```
 #[macro_export]

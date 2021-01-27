@@ -3,6 +3,7 @@
 /// Declares a card struct
 /// Format:
 /// ```
+/// # use dominion::cards::prelude::*;
 /// card!(Market);
 /// ```
 #[macro_export]
@@ -47,7 +48,16 @@ macro_rules! placeholder_card {
 
 /// Set the card's name to be displayed, e.g.:
 /// ```
+/// # use dominion::cards::prelude::*;
+/// # card!(TestCard);
+/// #
+/// # #[typetag::serde]
+/// # impl Card for TestCard {
+/// # cost!(0);
+/// # types!(vec![Action]);
+/// #
 /// name!("Market");
+/// # }
 /// ```
 #[macro_export]
 macro_rules! name {
@@ -59,7 +69,8 @@ macro_rules! name {
 /// Set the card's cost
 ///
 /// Format (If ``potions`` is present, ``debt`` is required, otherwise both are optional):
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// cost!(coins, debt, potions);
 /// ```
 #[macro_export]
@@ -81,7 +92,8 @@ macro_rules! cost {
 /// Sets a card's types
 ///
 /// For example:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// types!(vec![Action, Victory]);
 /// ```
 #[macro_export]
@@ -94,7 +106,8 @@ macro_rules! types {
 /// Sets a treasure card's coin value to some fixed amount
 ///
 /// For example, Gold would be:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// treasure_value!(3);
 /// ```
 #[macro_export]
@@ -107,12 +120,19 @@ macro_rules! treasure_value {
 /// Sets a victory/curse card's point value to some fixed amount
 ///
 /// For example, Province would be:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// victory_points!(6);
 /// ```
 /// and the basic Curse card would be:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
+/// # card!(MyCard);
+/// # impl Card for MyCard {
+/// #     name!("");
+/// #     cost!(0);
 /// victory_points!(-1);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! victory_points {
@@ -125,7 +145,8 @@ macro_rules! victory_points {
 /// and/or adding actions/buys/coins for the turn
 ///
 /// Format:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// basic_action!(cards, actions, buys, coins);
 /// ```
 #[macro_export]
@@ -144,7 +165,14 @@ macro_rules! basic_action_effects {
 /// drawing cards and/or adding actions/buys/coins for the turn
 ///
 /// Format:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
+/// # let card_name = "My Card";
+/// # let cost = 0;
+/// # let cards = 0;
+/// # let actions = 0;
+/// # let buys = 0;
+/// # let coins = 0;
 /// basic_action!(StructName, card_name, cost, cards, actions, buys, coins);
 /// ```
 #[macro_export]
@@ -164,7 +192,8 @@ macro_rules! basic_action {
 /// Implementation in one line for a treasure card with a fixed coin value
 ///
 /// Format:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// basic_treasure!(StructName, card_name, cost, value);
 /// ```
 #[macro_export]
@@ -184,7 +213,8 @@ macro_rules! basic_treasure {
 /// Implementation in one line for a victory card with a fixed points value
 ///
 /// Format:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
 /// basic_victory!(StructName, card_name, cost, points);
 /// ```
 #[macro_export]
@@ -205,7 +235,11 @@ macro_rules! basic_victory {
 ///
 /// Note that points should be negative
 /// Format:
-/// ```
+/// ```ignore
+/// # use dominion::cards::prelude::*;
+/// # let card_name = "";
+/// # let cost = 0;
+/// # let points = 0;
 /// basic_curse!(StructName, card_name, cost, points);
 /// ```
 #[macro_export]

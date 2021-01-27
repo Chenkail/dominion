@@ -6,3 +6,8 @@ edition = "2018"
 license = "AGPLv3"
 
 [dependencies]
+
+[dev-dependencies]
+dominion = { path = "../" }
+serde = { version = "1.0", features = ["derive"] }
+typetag = "0.1"
