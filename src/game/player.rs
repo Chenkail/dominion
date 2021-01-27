@@ -11,15 +11,15 @@ use dominion_macros::card_vec;
 /// Struct to keep track of a Player's actions/buys/coins for each turn
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct Resources {
-    pub actions: i32,
-    pub buys: i32,
-    pub coins_in_hand: i32,
-    pub temp_coins: i32,
-    pub coins_remaining: i32,
-    pub potions_in_hand: i32,
-    pub temp_potions: i32,
-    pub potions_remaining: i32,
-    pub debt: i32,
+    pub actions: usize,
+    pub buys: usize,
+    pub coins_in_hand: usize,
+    pub temp_coins: usize,
+    pub coins_remaining: usize,
+    pub potions_in_hand: usize,
+    pub temp_potions: usize,
+    pub potions_remaining: usize,
+    pub debt: usize,
 }
 
 /// Struct representing a player
@@ -69,7 +69,7 @@ impl Player {
     }
 
     /// Draws x cards for the player
-    pub fn draw_cards(&mut self, cards: i32) {
+    pub fn draw_cards(&mut self, cards: usize) {
         for _ in 0..cards {
             // If deck is empty, shuffle discard and swap it with the empty deck
             if self.deck.is_empty() {
@@ -119,24 +119,24 @@ impl Player {
     }
 
     /// Gives the player extra actions for this turn
-    pub fn add_actions(&mut self, actions: i32) {
+    pub fn add_actions(&mut self, actions: usize) {
         self.resources.actions += actions;
     }
 
     /// Gives the player extra buys for this turn
-    pub fn add_buys(&mut self, buys: i32) {
+    pub fn add_buys(&mut self, buys: usize) {
         self.resources.buys += buys;
     }
 
     /// Gives the player extra coins for this turn
-    pub fn add_coins(&mut self, coins: i32) {
+    pub fn add_coins(&mut self, coins: usize) {
         self.resources.temp_coins += coins;
     }
 
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
@@ -144,7 +144,7 @@ impl Player {
             self.actions_in_play.push_back(card.clone());
 
             self.resources.actions -= 1;
-            self.action_effects(&*card, supply, other_players);
+            self.action_effects(&*card, supply, other_players, callbacks);
 
             Ok(())
         } else {
@@ -156,8 +156,8 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, other_players: &mut PlayerSlice) {
-        card.effects_on_play(self, supply, other_players);
+    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        card.effects_on_play(self, supply, other_players, callbacks);
     }
 
     /// Action phase
@@ -178,7 +178,7 @@ impl Player {
                     let card = self.hand.get(i).unwrap();
                     if card.is_action() {
                         self.resources.actions -= 1;
-                        self.play_action_from_hand(i, supply, other_players).unwrap();
+                        self.play_action_from_hand(i, supply, other_players, callbacks).unwrap();
                         break;
                     }
                 }
@@ -187,26 +187,26 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, supply, other_players);
+        card.effects_on_gain(self, supply, other_players, callbacks);
         self.discard.push_back(card);
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, supply, other_players);
+        card.effects_on_gain(self, supply, other_players, callbacks);
         self.hand.push_back(card);
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice) {
-        card.effects_on_gain(self, supply, other_players);
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &PlayerSlice, callbacks: &Callbacks) {
+        card.effects_on_gain(self, supply, other_players, callbacks);
         self.resources.temp_coins -= card.coin_cost();
-        self.gain(card, supply, other_players);
+        self.gain(card, supply, other_players, callbacks);
 
         self.resources.buys -= 1;
     }
@@ -236,18 +236,18 @@ impl Player {
             // Buy cards
             // TODO: Figure out how to allow player to choose card they want
 
-            self.buy_card(Box::new(Copper), supply, other_players);
+            self.buy_card(Box::new(Copper), supply, other_players, callbacks);
 
             more = (callbacks.prompt_player_done)();
         }
     }
 
-    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice) -> Result<(), DominionError> {
+    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
         // Remove card from hand
         let c = self.hand.get(index).unwrap();
         if c.is_treasure() {
             let card = self.hand.remove(index).unwrap();
-            card.effects_on_play(self, supply, other_players);
+            card.effects_on_play(self, supply, other_players, callbacks);
             self.treasures_in_play.push_back(card.clone());
 
             Ok(())
@@ -256,11 +256,11 @@ impl Player {
         }
     }
 
-    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice) -> Result<(), DominionError> {
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
         for i in 0..self.hand.len() {
             let card = self.hand.get(index).unwrap();
             if card.is_treasure() {
-                self.play_treasure(i, supply, other_players)?;
+                self.play_treasure(i, supply, other_players, callbacks)?;
             }
         }
 
@@ -306,7 +306,7 @@ impl Player {
     }
 
     /// Count up a player's victory points
-    pub fn victory_points(&self) -> i32 {
+    pub fn victory_points(&self) -> isize {
         let mut points = 0;
         for card in self.card_iter() {
             points += card.victory_points(self);

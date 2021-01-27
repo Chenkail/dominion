@@ -9,5 +9,6 @@ pub use serde::{Serialize, Deserialize};
 
 pub use dominion_macros::*;
 pub use crate::game::{card::Card, gamedata::Game, player::Player};
+pub use crate::game::prelude::Callbacks;
 pub use crate::types::*;
 pub use CardType::*;

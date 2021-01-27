@@ -21,6 +21,7 @@ use itertools::Itertools;
 use dyn_clonable::*;
 
 use crate::game::player::Player;
+use crate::game::callbacks::Callbacks;
 use crate::types::*;
 
 /// The basic Card trait
@@ -38,11 +39,11 @@ pub trait Card: Clone {
     fn description(&self) -> &str { "" }
 
     /// How much the card costs to buy, in coins
-    fn coin_cost(&self) -> i32;
+    fn coin_cost(&self) -> usize;
     /// Debt in the card cost
-    fn debt_cost(&self) -> i32 { 0 }
+    fn debt_cost(&self) -> usize { 0 }
     /// Potions needed to buy the card
-    fn potion_cost(&self) -> i32 { 0 }
+    fn potion_cost(&self) -> usize { 0 }
 
     // Type check methods
     /// Print out all types a card has, separated by commas
@@ -61,19 +62,20 @@ pub trait Card: Clone {
     fn is_curse(&self) -> bool { self.types().contains(&CardType::Curse) }
 
     /// The number of coins the card is worth (if it is a treasure card)
-    fn treasure_value(&self, _player: &Player) -> i32 { 0 }
+    fn treasure_value(&self, _player: &Player) -> usize { 0 }
     /// The number of potions the card is worth (if it is a potion treasure card)
-    fn potion_value(&self, _player: &Player) -> i32 { 0 }
+    fn potion_value(&self, _player: &Player) -> usize { 0 }
+
     /// The number of points the card is worth (if it is a victory/curse card)
-    fn victory_points(&self, _player: &Player) -> i32 { 0 }
+    fn victory_points(&self, _player: &Player) -> isize { 0 }
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice) {}
+    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
+    fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice, _callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice) {}
+    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &PlayerSlice, _callbacks: &Callbacks) {}
 }
 
 impl fmt::Display for dyn Card {

@@ -28,8 +28,8 @@ macro_rules! placeholder_card {
                 Vec::new()
             }
 
-            fn coin_cost(&self) -> i32 {
-                $cost as i32
+            fn coin_cost(&self) -> usize {
+                $cost
             }
         }
     };
@@ -55,16 +55,16 @@ macro_rules! name {
 #[macro_export]
 macro_rules! cost {
     ($coins:expr) => {
-        fn coin_cost(&self) -> i32 { $coins }
+        fn coin_cost(&self) -> usize { $coins }
     };
     ($coins:expr, $debt:expr) => {
-        fn coin_cost(&self) -> i32 { $coins }
-        fn debt_cost(&self) -> i32 { $debt }
+        fn coin_cost(&self) -> usize { $coins }
+        fn debt_cost(&self) -> usize { $debt }
     };
     ($coins:expr, $debt:expr, $potions:expr) => {
-        fn coin_cost(&self) -> i32 { $coins }
-        fn debt_cost(&self) -> i32 { $debt }
-        fn potion_cost(&self) -> i32 { $potions }
+        fn coin_cost(&self) -> usize { $coins }
+        fn debt_cost(&self) -> usize { $debt }
+        fn potion_cost(&self) -> usize { $potions }
     };
 }
 
@@ -90,7 +90,7 @@ macro_rules! types {
 #[macro_export]
 macro_rules! treasure_value {
     ($value:expr) => {
-        fn treasure_value(&self, _: &Player) -> i32 { $value }
+        fn treasure_value(&self, _: &Player) -> usize { $value }
     };
 }
 
@@ -107,7 +107,7 @@ macro_rules! treasure_value {
 #[macro_export]
 macro_rules! victory_points {
     ($points:expr) => {
-        fn victory_points(&self, _: &Player) -> i32 { $points }
+        fn victory_points(&self, _: &Player) -> isize { $points }
     };
 }
 
@@ -121,7 +121,7 @@ macro_rules! victory_points {
 #[macro_export]
 macro_rules! basic_action_effects {
     ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
-        fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut PlayerSlice) {
+        fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut PlayerSlice, _: &Callbacks) {
             player.draw_cards($cards);
             player.add_actions($actions);
             player.add_buys($buys);
