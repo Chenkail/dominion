@@ -1,6 +1,6 @@
 //! Cards from the original Dominion set (2nd edition)
-// TODO: provide brief documentation on all effects for each card just for convinience
-// TODO: provide a String representation field in placeholder_effects to represent the description of the card
+// TODO: provide brief documentation on all effects for each card just for convenience
+// TODO: Add description fn for cards that have it
 
 use super::prelude::*;
 use super::base::*;

@@ -46,6 +46,10 @@ macro_rules! placeholder_effects {
             fn coin_cost(&self) -> usize {
                 $cost
             }
+
+            fn description(&self) -> &str {
+                "PLACEHOLDER CARD"
+            }
         }
     };
 }
