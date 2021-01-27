@@ -72,12 +72,7 @@ mod test_player {
     #[test]
     fn test_player_play_action() {
         let mut game = Game::default();
-        //let a: [Player] = game.players[1..];
         
-
-        //this doesn't work. i don't know how to pass the playerslice into the method here
-        //i also don't know why we're passing in a playerslice isntead of just the entire game but
-        // let mut game = Game::default();
         let (p1v, others) = game.players.split_at_mut(1);
         let player1 = p1v.get_mut(0).unwrap();
     

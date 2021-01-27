@@ -30,7 +30,7 @@ impl Card for Cellar {
     name!("Cellar");
     cost!(2);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _other_players: &mut PlayerSlice) {
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice) {
         let num_discard: i32 = 3; // 3 is placeholder number, we ideally want to prompt the player through callbacks for this value
         let indexes: Vec<usize> = Vec::new(); 
         for _ in 0..num_discard {
@@ -53,7 +53,7 @@ impl Card for CouncilRoom {
     name!("Council Room");
     cost!(5);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, other_players: &mut PlayerSlice) {
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, other_players: &mut PlayerSlice) {
         player.draw_cards(4);
         player.add_buys(1);
 
