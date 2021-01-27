@@ -37,7 +37,9 @@ use crate::types::*;
 /// All other methods are optional, though for certain card types it doesn't
 /// make sense not to have custom implementations for some of these methods.
 /// For example, all action cards should implement `action_effects()`, and all
-/// victory cards should implement `victory_points()`.
+/// victory cards should implement `victory_points()`. Several macros exist
+/// for quickly defining simple cards or effects; see the `dominion_macros`
+/// crate documentation for those.
 
 #[clonable]
 #[typetag::serde(tag = "card")]
