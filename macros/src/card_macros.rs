@@ -14,7 +14,21 @@ macro_rules! card {
     };
 }
 
+/// Create a placeholder for a card - SHOULD NOT BE USED FOR ACTUAL CARDS
+///
+/// Format: `placeholder_card!(StructName, "Card Name", cost);`
+#[macro_export]
+macro_rules! placeholder_card {
+    ($struct_name:ident, $name:expr, $cost:expr) => {
+        /// PLACEHOLDER CARD
+        card!($struct_name);
+        placeholder_effects!($struct_name, $name, $cost);
+    };
+}
+
 /// Create a placeholder for a card's effects - SHOULD NOT BE USED FOR ACTUAL CARDS
+///
+/// Format: `placeholder_effects!(StructName, "Card Name", cost);`
 #[macro_export]
 macro_rules! placeholder_effects {
     ($struct_name:ident, $name:expr, $cost:expr) => {
@@ -36,16 +50,6 @@ macro_rules! placeholder_effects {
     };
 }
 
-/// Create a placeholder for a card - SHOULD NOT BE USED FOR ACTUAL CARDS
-#[macro_export]
-macro_rules! placeholder_card {
-    ($struct_name:ident, $name:expr, $cost:expr) => {
-        /// PLACEHOLDER CARD
-        card!($struct_name);
-        placeholder_effects!($struct_name, $name, $cost);
-    };
-}
-
 /// Set the card's name to be displayed, e.g.:
 /// ```
 /// # use dominion::cards::prelude::*;
@@ -56,7 +60,7 @@ macro_rules! placeholder_card {
 /// # cost!(0);
 /// # types!(vec![Action]);
 /// #
-/// name!("Market");
+/// # name!("Test Card");
 /// # }
 /// ```
 #[macro_export]
@@ -68,10 +72,18 @@ macro_rules! name {
 
 /// Set the card's cost
 ///
-/// Format (If ``potions`` is present, ``debt`` is required, otherwise both are optional):
-/// ```ignore
-/// # use dominion::cards::prelude::*;
-/// cost!(coins, debt, potions);
+/// Format: `cost!(coins, debt, potions);`
+/// (If ``potions`` is present, ``debt`` is required, otherwise both are optional):
+/// ```
+/// use dominion::cards::prelude::*;
+/// card!(Golem);
+///
+/// #[typetag::serde]
+/// impl Card for Golem {
+///     name!("Golem");
+///     types!(vec![Action]);
+///     cost!(4, 0, 1);
+/// }
 /// ```
 #[macro_export]
 macro_rules! cost {
@@ -92,9 +104,16 @@ macro_rules! cost {
 /// Sets a card's types
 ///
 /// For example:
-/// ```ignore
+/// ```
 /// # use dominion::cards::prelude::*;
+/// # card!(TestCard);
+/// #
+/// # #[typetag::serde]
+/// # impl Card for TestCard {
+/// # name!("Test Card");
+/// # cost!(0);
 /// types!(vec![Action, Victory]);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! types {
@@ -106,9 +125,17 @@ macro_rules! types {
 /// Sets a treasure card's coin value to some fixed amount
 ///
 /// For example, Gold would be:
-/// ```ignore
+/// ```
 /// # use dominion::cards::prelude::*;
+/// # card!(TestCard);
+/// #
+/// # #[typetag::serde]
+/// # impl Card for TestCard {
+/// # name!("Test Card");
+/// # cost!(0);
+/// # types!(vec![Treasure]);
 /// treasure_value!(3);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! treasure_value {
@@ -120,17 +147,28 @@ macro_rules! treasure_value {
 /// Sets a victory/curse card's point value to some fixed amount
 ///
 /// For example, Province would be:
-/// ```ignore
+/// ```
 /// # use dominion::cards::prelude::*;
+/// # card!(TestCard);
+/// #
+/// # #[typetag::serde]
+/// # impl Card for TestCard {
+/// # name!("Test Card");
+/// # cost!(0);
+/// # types!(vec![Victory]);
 /// victory_points!(6);
+/// # }
 /// ```
 /// and the basic Curse card would be:
-/// ```ignore
+/// ```
 /// # use dominion::cards::prelude::*;
-/// # card!(MyCard);
-/// # impl Card for MyCard {
-/// #     name!("");
-/// #     cost!(0);
+/// # card!(TestCard);
+/// #
+/// # #[typetag::serde]
+/// # impl Card for TestCard {
+/// # name!("Test Card");
+/// # cost!(0);
+/// # types!(vec![Curse]);
 /// victory_points!(-1);
 /// # }
 /// ```
@@ -144,10 +182,18 @@ macro_rules! victory_points {
 /// Effects for an action with no effects other than drawing cards
 /// and/or adding actions/buys/coins for the turn
 ///
-/// Format:
-/// ```ignore
-/// # use dominion::cards::prelude::*;
-/// basic_action!(cards, actions, buys, coins);
+/// Format: `basic_action_effects!(cards, actions, buys, coins);`
+/// ```
+/// use dominion::cards::prelude::*;
+/// card!(Market);
+///
+/// #[typetag::serde]
+/// impl Card for Market {
+///     name!("Market");
+///     cost!(5);
+///     types!(vec![Action]);
+///     basic_action_effects!(1, 1, 1, 1);
+/// }
 /// ```
 #[macro_export]
 macro_rules! basic_action_effects {
@@ -164,17 +210,7 @@ macro_rules! basic_action_effects {
 /// Implementation in one line for an action which has no effects other than
 /// drawing cards and/or adding actions/buys/coins for the turn
 ///
-/// Format:
-/// ```ignore
-/// # use dominion::cards::prelude::*;
-/// # let card_name = "My Card";
-/// # let cost = 0;
-/// # let cards = 0;
-/// # let actions = 0;
-/// # let buys = 0;
-/// # let coins = 0;
-/// basic_action!(StructName, card_name, cost, cards, actions, buys, coins);
-/// ```
+/// Format: `basic_action!(StructName, "Card Name", cost, cards, actions, buys, coins);`
 #[macro_export]
 macro_rules! basic_action {
     ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
@@ -191,11 +227,7 @@ macro_rules! basic_action {
 
 /// Implementation in one line for a treasure card with a fixed coin value
 ///
-/// Format:
-/// ```ignore
-/// # use dominion::cards::prelude::*;
-/// basic_treasure!(StructName, card_name, cost, value);
-/// ```
+/// Format: `basic_treasure!(StructName, "Card Name", cost, value);`
 #[macro_export]
 macro_rules! basic_treasure {
     ($struct_name:ident, $name:expr, $cost:expr, $value:expr) => {
@@ -212,11 +244,7 @@ macro_rules! basic_treasure {
 
 /// Implementation in one line for a victory card with a fixed points value
 ///
-/// Format:
-/// ```ignore
-/// # use dominion::cards::prelude::*;
-/// basic_victory!(StructName, card_name, cost, points);
-/// ```
+/// Format: `basic_victory!(StructName, "Card Name", cost, points);`
 #[macro_export]
 macro_rules! basic_victory {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
@@ -234,14 +262,7 @@ macro_rules! basic_victory {
 /// Implementation in one line for a curse card with a fixed points value
 ///
 /// Note that points should be negative
-/// Format:
-/// ```ignore
-/// # use dominion::cards::prelude::*;
-/// # let card_name = "";
-/// # let cost = 0;
-/// # let points = 0;
-/// basic_curse!(StructName, card_name, cost, points);
-/// ```
+/// Format: `basic_curse!(StructName, card_name, cost, points);`
 #[macro_export]
 macro_rules! basic_curse {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {

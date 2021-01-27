@@ -4,8 +4,9 @@
 ///
 /// For example:
 /// ```
-/// # use dominion::cards::prelude::*;
-/// # use dominion::cards::base::*;
+/// use dominion::game::prelude::*;
+/// use dominion::cards::base::*;
+///
 /// let cards = card_vec![Copper, Silver, Gold];
 /// ```
 #[macro_export]
