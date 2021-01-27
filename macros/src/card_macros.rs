@@ -44,7 +44,9 @@ macro_rules! placeholder_effects {
     };
 }
 
-/// Set the card's name to be displayed, e.g.:
+/// Set the card's name to be displayed
+///
+/// Format:
 /// ```
 /// # use dominion::cards::prelude::*;
 /// #
