@@ -81,9 +81,9 @@ mod test_player {
         let (p1v, others) = game.players.split_at_mut(1);
         let player1 = p1v.get_mut(0).unwrap();
     
-        player1.gain_to_hand(Box::new(Market), &mut game.supply, &others);  
+        player1.gain_to_hand(Box::new(Market), &mut game.supply, others);  
         let temp_coinc_b4add = player1.resources.temp_coins;  
-        player1.play_action_from_hand(5, &mut game.supply, &others).unwrap();
+        player1.play_action_from_hand(5, &mut game.supply, others).unwrap();
         println!("actions: {}, buys: {}, hand size: {}", player1.resources.actions, player1.resources.buys, player1.hand.len());
         assert!(player1.resources.actions == 0);
         assert!(player1.resources.buys == 1);
