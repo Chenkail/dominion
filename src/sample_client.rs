@@ -29,8 +29,17 @@ fn prompt_card_from_hand() -> usize {
 
 fn prompt_indices_from_hand() -> Vec<usize> {
     let mut input = String::new();
-    println!("Enter a card index from your hand:");
+    let mut output = vec![];
+    let prompt = "Enter a card index from your hand, or -1 to stop:";
+    println!("{}", prompt);
     io::stdin().read_line(&mut input).expect("error: unable to read user input");
-    input.parse::<i32>().unwrap();
-    vec![0]
+    let mut i = input.parse::<isize>().unwrap();
+    while i >= 0 {
+        output.push(i as usize);
+        println!("{}", prompt);
+        io::stdin().read_line(&mut input).expect("error: unable to read user input");
+        i = input.parse::<isize>().unwrap();
+    }
+
+    output
 }
