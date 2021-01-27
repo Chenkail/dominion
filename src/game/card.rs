@@ -1,17 +1,6 @@
-//! Defines traits for the various card types
+//! Defines the Card trait
 //!
-//! The most basic implementation of a new card with custom behavior looks like the following:
-//! ```
-//! use dominion::cards::prelude::*;
-//!
-//! card!(MyCard);
-//! #[typetag::serde]
-//! impl Card for MyCard {
-//!     name!("My Card");
-//!     cost!(5);
-//!     types!(vec![Victory]);
-//! }
-//! ```
+//! For
 
 use std::fmt;
 use std::fmt::Formatter;
@@ -28,6 +17,28 @@ use crate::types::*;
 ///
 /// If this trait is manually implemented, `#[typetag::serde]`
 /// must be placed before the line containing `impl Card for`.
+///
+/// The most basic implementation of a new card with custom behavior looks
+/// like the following:
+/// ```
+/// use dominion::cards::prelude::*;
+///
+/// card!(MyCard);
+/// #[typetag::serde]
+/// impl Card for MyCard {
+///     name!("My Card");
+///     cost!(5);
+///     types!(vec![Action]);
+///
+///     // TODO: Add your custom behavior here
+/// }
+/// ```
+///
+/// All other methods are optional, though for certain card types it doesn't
+/// make sense not to have custom implementations for some of these methods.
+/// For example, all action cards should implement `action_effects()`, and all
+/// victory cards should implement `victory_points()`.
+
 #[clonable]
 #[typetag::serde(tag = "card")]
 pub trait Card: Clone {
@@ -45,7 +56,7 @@ pub trait Card: Clone {
     /// Potions needed to buy the card
     fn potion_cost(&self) -> usize { 0 }
 
-    // Type check methods
+    // Type check methods - these should generally not be overridden
     /// Print out all types a card has, separated by commas
     fn print_types(&self) { println!("{}", self.types().iter().format(", ")) }
     /// Check if this card is an Action
