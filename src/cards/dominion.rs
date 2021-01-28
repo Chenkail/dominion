@@ -336,8 +336,8 @@ impl Card for Workshop {
     types!(vec![Action]);
 
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, callbacks: &Callbacks) {
-        //this is really bad. we need to import game if return_avail... is an struct method.
-        //otherweise we make treturn_avail_cards static, but we need to make a new mod with the functions.
-        //let potential_cards = return_avail_cards_ucost(supply, 4);
+        // this is really bad. we need to import game if return_avail... is an struct method.
+        // otherwise we make it return_avail_cards static, but we need to make a new mod with the functions.
+        // let potential_cards = return_avail_cards_ucost(supply, 4);
     }
 }
