@@ -4,7 +4,6 @@
 
 use super::prelude::*;
 use super::base::*;
-//use crate::game::Game::*;
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)
 #[derive(Clone, Serialize, Deserialize)]
