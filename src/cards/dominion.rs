@@ -160,8 +160,9 @@ impl Card for Harbinger {
 
         //TODO:
         //create callback for prompt_indexes from discard
+        let indexes = vec![0, 1, 2];
         //create method for moving from discard to hand
-
+        player.move_discard_given_indexes_to_hand(indexes)
     }
 }
 
@@ -181,7 +182,25 @@ impl Card for Laboratory {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Library;
 
-placeholder_effects!(Library, "Library", 5);
+#[typetag::serde]
+impl Card for Library {
+    name!("Library");
+    cost!(5);
+    types!(vec![Action]);
+    
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
+        while player.hand.len() < 7 {
+
+            if player.deck.front().unwrap().types().contains(&Action) {
+                //TODO: get player consent to draw or discard the card
+            } else {
+                player.draw_cards(1);
+            }
+
+        }
+
+    }
+}
 
 // Market
 // effects: +1 Action, +1 Buy, +1 temp_coins, +1 Card

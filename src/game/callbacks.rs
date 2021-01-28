@@ -32,5 +32,11 @@ pub struct Callbacks {
     /// if reveal whole draw pile, just pass in draw.len()
     pub reveal_top_draw_pile: FnPlayerUsize,
 
+    // future callbacks to be implemented:
+    // callback to get player consent (yes / no)
+    // callback to prompt card from discard,
+    // callback to prompt list of indexes from discard
+    // callback to prompt list of cards from trash
+    // and more as i think of them
     
 }
