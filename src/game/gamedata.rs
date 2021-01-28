@@ -90,10 +90,10 @@ impl Game {
 
     /// returns vector of cards available under a certain cost
     /// hopefully we can combine this and related methods into one generic one
-    pub fn return_avail_cards_ucost(&self, cost: usize) -> Vec<Box<dyn Card>> {
+    fn return_avail_cards_ucost(supply: Supply, cost: usize) -> Vec<Box<dyn Card>> {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
-        return self.supply.keys()
-            .filter(|a| *self.supply.get(*a).unwrap() > 0)
+        return supply.keys()
+            .filter(|a| *supply.get(*a).unwrap() > 0)
             .filter(|a| a.coin_cost() < cost)
             .cloned()
             .collect();
@@ -101,10 +101,10 @@ impl Game {
 
     /// returns vector of cards available above a certain cost
     /// hopefully we can combine this and related methods into one generic one
-    pub fn return_avail_cards_acost(&self, cost: usize) -> Vec<Box<dyn Card>> {
+    fn return_avail_cards_acost(supply: Supply, cost: usize) -> Vec<Box<dyn Card>> {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
-        return self.supply.keys()
-            .filter(|a| *self.supply.get(*a).unwrap() > 0)
+        return supply.keys()
+            .filter(|a| *supply.get(*a).unwrap() > 0)
             .filter(|a| a.coin_cost() > cost)
             .cloned()
             .collect();
@@ -112,10 +112,10 @@ impl Game {
 
      /// returns vector of cards available of a certain type
     /// hopefully we can combine this and related methods into one generic one
-    pub fn return_avail_cards_type(&self, t: CardType) -> Vec<Box<dyn Card>> {
+    fn return_avail_cards_type(supply: Supply, t: CardType) -> Vec<Box<dyn Card>> {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
-        return self.supply.keys()
-            .filter(|a| *self.supply.get(*a).unwrap() > 0)
+        return supply.keys()
+            .filter(|a| *supply.get(*a).unwrap() > 0)
             .filter(|a| a.types().contains(&t))
             .cloned()
             .collect();

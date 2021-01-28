@@ -4,6 +4,7 @@
 
 use super::prelude::*;
 use super::base::*;
+//use crate::game::Game::*;
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)
 #[derive(Clone, Serialize, Deserialize)]
@@ -306,10 +307,36 @@ impl Card for Village {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Witch;
 
-placeholder_effects!(Witch, "Witch", 5);
+#[typetag::serde]
+impl Card for Witch {
+    name!("Witch");
+    cost!(5);
+    types!(vec![Action, Attack]);
+    
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        player.draw_cards(1);
+        
+        for p in other_players {
+            // there are big ass problems with this line, we cant guarantee other_players won't overlap.
+            // we need to create a new PlayerSlice every time the loop iterates.
+            //p.gain(Box::new(Curse), supply, other_players, callbacks);
+        }
+    }
+}
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Workshop;
 
-placeholder_effects!(Workshop, "Workshop", 3);
+#[typetag::serde]
+impl Card for Workshop {
+    name!("Workshop");
+    cost!(3);
+    types!(vec![Action]);
+
+    fn effects_on_play(&self, _player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
+        //this is really bad. we need to import game if return_avail... is an struct method.
+        //otherweise we make treturn_avail_cards static, but we need to make a new mod with the functions.
+        //let potential_cards = return_avail_cards_ucost(supply, 4);
+    }
+}
