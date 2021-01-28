@@ -15,7 +15,7 @@
 			"}"
 		]
 	},
-	"impl card": {
+	"implcard": {
 		"prefix": "implcard",
 		"description": "Template for implementing a Dominion card",
 		"body": [
