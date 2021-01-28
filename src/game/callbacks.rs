@@ -20,7 +20,7 @@ pub struct Callbacks {
     /// Get a list of indices of cards from hand -- up to a certan size
     pub prompt_indices_from_hand_u: FnUsizeToVecUsize,
 
-    
+
     /// reveal top x cards of player's discard pile
     /// if reveal whole discard, just pass in discard.len()
     pub reveal_top_discard_pile: FnPlayerUsize,
@@ -42,5 +42,5 @@ pub struct Callbacks {
     // i'm wondering if we want to collapse all FnPlayerUsize functions 
     // into one function that just gets indexes and nothing else considering 
     // there's a lot of repeated code here
-    
+
 }

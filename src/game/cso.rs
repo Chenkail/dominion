@@ -11,23 +11,23 @@ pub trait Boon {
 }
 
 pub trait Event {
-    
+
 }
 
 pub trait Hex {
-    
+
 }
 
 pub trait Landmark {
-    
+
 }
 
 pub trait Project {
-    
+
 }
 
 pub trait State {
-    
+
 }
 
 pub trait Way {

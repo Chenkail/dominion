@@ -192,7 +192,7 @@ impl Card for Library {
     fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
         while player.hand.len() < 7 {
 
-            if player.deck.front().unwrap().types().contains(&Action) {
+            if player.deck.front().unwrap().is_action() {
                 //TODO: get player consent to draw or discard the card
             } else {
                 player.draw_cards(1);
@@ -314,12 +314,13 @@ impl Card for Witch {
     types!(vec![Action, Attack]);
     
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        player.draw_cards(1);
-        
+        player.draw_cards(2);
         for p in other_players {
-            // there are big ass problems with this line, we cant guarantee other_players won't overlap.
-            // we need to create a new PlayerSlice every time the loop iterates.
-            //p.gain(Box::new(Curse), supply, other_players, callbacks);
+            // CODE DEBT: This doesn't actually pass in other_players but I'm
+            // not sure how we can make that work. There are (as of jan 2021)
+            // no reaction cards that both care about being given a curse
+            // AND have effects that impact other players
+            p.gain(Box::new(BasicCurse), supply, &mut Vec::new(), callbacks);
         }
     }
 }
@@ -334,7 +335,7 @@ impl Card for Workshop {
     cost!(3);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, _player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, callbacks: &Callbacks) {
         //this is really bad. we need to import game if return_avail... is an struct method.
         //otherweise we make treturn_avail_cards static, but we need to make a new mod with the functions.
         //let potential_cards = return_avail_cards_ucost(supply, 4);
