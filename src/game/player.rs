@@ -103,6 +103,17 @@ impl Player {
         }
     }
 
+    /// Moves cards given indexes to hand
+    ///these should all be valid
+    pub fn move_discard_given_indexes_to_hand(&mut self, indexes: Vec<usize>) {
+        for i in indexes {
+            if self.discard.is_empty() {
+                return
+            }
+            self.hand.push_back(self.discard.remove(i).unwrap())
+        }
+    }
+
     /// Trashes cards from hand given an array of indexes of said cards
     /// indexes should be valid: it is up to the callee function to make sure.
     pub fn trash_given_indexes(&mut self, mut indexes: Vec<usize>, trash: &mut CardDeck) {
