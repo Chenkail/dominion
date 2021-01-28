@@ -10,6 +10,7 @@ pub fn callbacks() -> Callbacks {
         prompt_player_done: Box::new(prompt_done),
         prompt_card_from_hand: Box::new(prompt_card_from_hand),
         prompt_indices_from_hand: Box::new(prompt_indices_from_hand),
+        prompt_indices_from_hand_u: Box::new(prompt_indices_from_hand_u)
     }
 }
 
@@ -41,5 +42,24 @@ fn prompt_indices_from_hand() -> Vec<usize> {
         i = input.parse::<isize>().unwrap();
     }
 
+    output
+}
+
+//TODO::implementation
+fn prompt_indices_from_hand_u(num_cards: usize) -> Vec<usize> {
+    let mut input = String::new();
+    let mut output = vec![];
+    let prompt = "Enter a card index from your hand, or -1 to stop:";
+    println!("{}", prompt);
+    io::stdin().read_line(&mut input).expect("error: unable to read user input");
+    let mut i = input.parse::<isize>().unwrap();
+    let mut j = 0;
+    while i >= 0 && j < num_cards {
+        output.push(i as usize);
+        println!("{}", prompt);
+        io::stdin().read_line(&mut input).expect("error: unable to read user input");
+        i = input.parse::<isize>().unwrap();
+        j += 1;
+    }
     output
 }

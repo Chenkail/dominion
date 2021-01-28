@@ -76,8 +76,20 @@ impl Card for Cellar {
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Chapel;
+#[typetag::serde]
+impl Card for Chapel {
+    name!("Chapel");
+    cost!(2);
+    types!(vec![Action]);
 
-placeholder_effects!(Chapel, "Chapel", 2);
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
+        player.trash_given_indexes(indexes, trash);
+    }
+
+}
+
+//placeholder_effects!(Chapel, "Chapel", 2);
 
 // Council Room
 // +4 cards, +1 buy, each other player draws a card
