@@ -116,7 +116,13 @@ impl Card for CouncilRoom {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Festival;
 
-placeholder_effects!(Festival, "Festival", 5);
+#[typetag::serde]
+impl Card for Festival {
+    name!("Festival");
+    cost!(5);
+    types!(vec![Action]);
+    basic_action_effects!(0, 2, 1, 2);
+}
 
 // Gardens
 // effect: victory card, worth 1 per 10 cards you have(round down)
@@ -140,7 +146,24 @@ impl Card for Gardens {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Harbinger;
 
-placeholder_effects!(Harbinger, "Harbinger", 3);
+#[typetag::serde]
+impl Card for Harbinger {
+    name!("Harbringer");
+    cost!(3);
+    types!(vec![Action]);
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        player.add_actions(1);
+        player.draw_cards(1);
+
+        //look through discard and pick
+        (callbacks.reveal_top_discard_pile)(player, player.discard.len());
+
+        //TODO:
+        //create callback for prompt_indexes from discard
+        //create method for moving from discard to hand
+
+    }
+}
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Laboratory)
 #[derive(Clone, Serialize, Deserialize)]

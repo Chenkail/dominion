@@ -3,14 +3,17 @@
 use std::{io, vec};
 
 // use crate::game::player::Player;
-use crate::game::Callbacks;
+use crate::game::{Callbacks, Player};
 
 pub fn callbacks() -> Callbacks {
     Callbacks {
         prompt_player_done: Box::new(prompt_done),
         prompt_card_from_hand: Box::new(prompt_card_from_hand),
         prompt_indices_from_hand: Box::new(prompt_indices_from_hand),
-        prompt_indices_from_hand_u: Box::new(prompt_indices_from_hand_u)
+        prompt_indices_from_hand_u: Box::new(prompt_indices_from_hand_u),
+        reveal_hand: Box::new(reveal_hand),
+        reveal_top_discard_pile: Box::new(reveal_top_discard_pile),
+        reveal_top_draw_pile: Box::new(reveal_top_draw_pile)
     }
 }
 
@@ -45,7 +48,7 @@ fn prompt_indices_from_hand() -> Vec<usize> {
     output
 }
 
-//TODO::implementation
+
 fn prompt_indices_from_hand_u(num_cards: usize) -> Vec<usize> {
     let mut input = String::new();
     let mut output = vec![];
@@ -62,4 +65,20 @@ fn prompt_indices_from_hand_u(num_cards: usize) -> Vec<usize> {
         j += 1;
     }
     output
+}
+
+fn reveal_hand(player: &Player) {
+    player.print_hand()
+}
+
+fn reveal_top_discard_pile(player: &Player, n: usize) {
+    for i in 0..n {
+        println!("{}", player.discard.get(i).unwrap().name())
+    }
+}
+
+fn reveal_top_draw_pile(player: &Player, n: usize) {
+    for i in 0..n {
+        println!("{}: {}",n , player.deck.get(i).unwrap().name())
+    }
 }
