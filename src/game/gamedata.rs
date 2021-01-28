@@ -110,7 +110,7 @@ impl Game {
             .collect();
     }
 
-     /// returns vector of cards available of a certain type
+    /// returns vector of cards available of a certain type
     /// hopefully we can combine this and related methods into one generic one
     fn return_avail_cards_type(supply: Supply, t: CardType) -> Vec<Box<dyn Card>> {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
