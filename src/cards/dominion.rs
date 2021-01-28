@@ -36,12 +36,12 @@ impl Card for Bandit {
 
         for p in other_players {
             //callback to reveal top 2 cards in their hand
-            
+
             // we need more callbacks? I'll think about what to do here for incredibly specific card descs
             // we want to be able to send a list of allowed indexes to the user to pick from here.
             let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
-            
-            
+
+
             p.trash_given_indexes(indexes, trash)
 
         }

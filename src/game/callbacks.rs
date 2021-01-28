@@ -17,9 +17,8 @@ pub struct Callbacks {
     pub prompt_card_from_hand: FnToUsize,
     /// Get a list of indices of cards from hand
     pub prompt_indices_from_hand: FnToVecUsize,
-    /// Get a list of indices of cards from hand -- up to a certan size
+    /// Get a list of indices of cards from hand -- up to a certain size
     pub prompt_indices_from_hand_u: FnUsizeToVecUsize,
-
 
     /// reveal top x cards of player's discard pile
     /// if reveal whole discard, just pass in discard.len()
@@ -31,7 +30,6 @@ pub struct Callbacks {
     /// reveal top x cards of the player's draw pile
     /// if reveal whole draw pile, just pass in draw.len()
     pub reveal_top_draw_pile: FnPlayerUsize,
-
     // future callbacks to be implemented:
     // callback to get player consent (yes / no)
     // callback to prompt card from discard,
@@ -39,8 +37,7 @@ pub struct Callbacks {
     // callback to prompt list of cards from trash
     // and more as i think of them
     //
-    // i'm wondering if we want to collapse all FnPlayerUsize functions 
-    // into one function that just gets indexes and nothing else considering 
+    // i'm wondering if we want to collapse all FnPlayerUsize functions
+    // into one function that just gets indexes and nothing else considering
     // there's a lot of repeated code here
-
 }
