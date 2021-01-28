@@ -14,7 +14,7 @@ impl Card for Artisan {
     name!("Artisan");
     cost!(6);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: change to card of choice from supply and put a card from hand back on deck
         let card = Box::new(Silver);
         player.gain_to_hand(card, supply, other_players, callbacks);
@@ -25,7 +25,27 @@ impl Card for Artisan {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Bandit;
 
-placeholder_effects!(Bandit, "Bandit", 5);
+#[typetag::serde]
+impl Card for Bandit {
+    name!("Bandit");
+    cost!(5);
+    types!(vec![Action, Attack]);
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        player.gain(Box::new(Gold), supply, other_players, callbacks);
+
+        for p in other_players {
+            //callback to reveal top 2 cards in their hand
+            
+            // we need more callbacks? I'll think about what to do here for incredibly specific card descs
+            // we want to be able to send a list of allowed indexes to the user to pick from here.
+            let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
+            
+            
+            p.trash_given_indexes(indexes, trash)
+
+        }
+    }
+}
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Bureaucrat)
 #[derive(Clone, Serialize, Deserialize)]
@@ -44,7 +64,7 @@ impl Card for Cellar {
     name!("Cellar");
     cost!(2);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
         let count = indexes.len();
 
@@ -70,7 +90,7 @@ impl Card for CouncilRoom {
     name!("Council Room");
     cost!(5);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, other_players: &mut PlayerSlice, _: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
         player.draw_cards(4);
         player.add_buys(1);
 

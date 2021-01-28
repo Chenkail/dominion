@@ -136,7 +136,7 @@ impl Player {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
@@ -144,7 +144,7 @@ impl Player {
             self.actions_in_play.push_back(card.clone());
 
             self.resources.actions -= 1;
-            self.action_effects(&*card, supply, other_players, callbacks);
+            self.action_effects(&*card, supply, trash, other_players, callbacks);
 
             Ok(())
         } else {
@@ -156,12 +156,12 @@ impl Player {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        card.effects_on_play(self, supply, other_players, callbacks);
+    pub fn action_effects(&mut self, card: &dyn Card, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        card.effects_on_play(self, supply, trash, other_players, callbacks);
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    pub fn action_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
@@ -177,7 +177,7 @@ impl Player {
                 for i in 0..self.hand.len() {
                     let card = self.hand.get(i).unwrap();
                     if card.is_action() {
-                        self.play_action_from_hand(i, supply, other_players, callbacks).unwrap();
+                        self.play_action_from_hand(i, supply, trash, other_players, callbacks).unwrap();
                         break;
                     }
                 }
@@ -241,12 +241,12 @@ impl Player {
         }
     }
 
-    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
         // Remove card from hand
         let c = self.hand.get(index).unwrap();
         if c.is_treasure() {
             let card = self.hand.remove(index).unwrap();
-            card.effects_on_play(self, supply, other_players, callbacks);
+            card.effects_on_play(self, supply, trash, other_players, callbacks);
             self.treasures_in_play.push_back(card.clone());
 
             Ok(())
@@ -255,11 +255,11 @@ impl Player {
         }
     }
 
-    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
         for i in 0..self.hand.len() {
             let card = self.hand.get(index).unwrap();
             if card.is_treasure() {
-                self.play_treasure(i, supply, other_players, callbacks)?;
+                self.play_treasure(i, supply, trash, other_players, callbacks)?;
             }
         }
 
@@ -298,8 +298,8 @@ impl Player {
     }
 
     /// Take a turn
-    pub fn turn(&mut self, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        self.action_phase(supply, other_players, callbacks);
+    pub fn turn(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        self.action_phase(supply, trash, other_players, callbacks);
         self.buy_phase(supply, other_players, callbacks);
         self.cleanup();
     }

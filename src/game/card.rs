@@ -92,7 +92,7 @@ pub trait Card: Clone {
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
+    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck,_other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
     fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained

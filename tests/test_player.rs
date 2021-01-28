@@ -80,7 +80,7 @@ mod test_player {
         player1.gain_to_hand(Box::new(Market), &mut game.supply, others, &callbacks);
         let temp_coinc_b4add = player1.resources.temp_coins;
         player1.resources.actions = 1; 
-        player1.play_action_from_hand(5, &mut game.supply, others, &callbacks).unwrap();
+        player1.play_action_from_hand(5, &mut game.supply, &mut game.trash, others, &callbacks).unwrap();
         println!("actions: {}, buys: {}, hand size: {}", player1.resources.actions, player1.resources.buys, player1.hand.len());
         assert!(player1.resources.actions == 1);
         assert!(player1.resources.buys == 1);
