@@ -83,7 +83,7 @@ impl Card for Chapel {
     types!(vec![Action]);
 
     fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
+        let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand_u)(4);
         player.trash_given_indexes(indexes, trash);
     }
 
