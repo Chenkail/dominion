@@ -38,5 +38,9 @@ pub struct Callbacks {
     // callback to prompt list of indexes from discard
     // callback to prompt list of cards from trash
     // and more as i think of them
+    //
+    // i'm wondering if we want to collapse all FnPlayerUsize functions 
+    // into one function that just gets indexes and nothing else considering 
+    // there's a lot of repeated code here
     
 }

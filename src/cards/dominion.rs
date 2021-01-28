@@ -293,7 +293,14 @@ placeholder_effects!(Vassal, "Vassal", 3);
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Village;
 
-placeholder_effects!(Village, "Village", 3);
+#[typetag::serde]
+impl Card for Village {
+    name!("Village");
+    cost!(3);
+    types!(vec![Action]);
+    basic_action_effects!(1, 2, 0, 0);
+}
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)
 #[derive(Clone, Serialize, Deserialize)]
