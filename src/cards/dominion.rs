@@ -149,7 +149,7 @@ pub struct Harbinger;
 
 #[typetag::serde]
 impl Card for Harbinger {
-    name!("Harbringer");
+    name!("Harbinger");
     cost!(3);
     types!(vec![Action]);
     fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
