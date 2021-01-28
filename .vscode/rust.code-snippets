@@ -163,7 +163,21 @@
 			"impl Card for ${1:NewCard} {",
 			"    name!(\"${2:Card Name}\");",
 			"    cost!(${3:Cost});",
-			"    types!(vec![${0:Action}]);",
+			"    types!(vec![${4:Action}]);",
+			"    $0",
+			"}"
+		]
+	},
+	"impl card": {
+		"prefix": "implcard",
+		"description": "Template for implementing a Dominion card",
+		"body": [
+			"#[typetag::serde]",
+			"impl Card for ${1:NewCard} {",
+			"    name!(\"${2:Card Name}\");",
+			"    cost!(${3:Cost});",
+			"    types!(vec![${4:Action}]);",
+			"    $0",
 			"}"
 		]
 	}
