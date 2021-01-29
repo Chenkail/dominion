@@ -143,7 +143,7 @@ impl Hash for dyn Card {
 
 impl PartialEq for dyn Card {
     fn eq(&self, other: &Self) -> bool {
-        self.name().to_ascii_lowercase().eq(&other.name().to_ascii_lowercase())
+        self.name().to_lowercase().eq(&other.name().to_lowercase())
     }
 }
 
@@ -151,7 +151,7 @@ impl Eq for dyn Card {}
 
 impl Ord for dyn Card {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.name().to_ascii_lowercase().cmp(&other.name().to_ascii_lowercase())
+        self.name().to_lowercase().cmp(&other.name().to_lowercase())
     }
 }
 
