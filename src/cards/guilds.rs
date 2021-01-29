@@ -16,14 +16,14 @@ impl Card for Soothsayer {
         // If there are no more Golds, we don't care so we move on
         let _ = game.gain(player_index, Box::new(Gold), callbacks);
 
-        for i in 0..game.players.len() {
-            if i != player_index {
-                let index = (i+game.players.len()) % game.players.len();
-                let r = game.gain(index, Box::new(BasicCurse), callbacks);
-                if r.is_ok() {
-                    let player = &mut game.players[index];
-                    player.draw_cards(1);
-                }
+        let player_count = game.players.len();
+
+        for i in 1..player_count {
+            let index = (i + player_index) % player_count;
+            let r = game.gain(index, Box::new(BasicCurse), callbacks);
+            if r.is_ok() {
+                let player = &mut game.players[index];
+                player.draw_cards(1);
             }
         }
     }

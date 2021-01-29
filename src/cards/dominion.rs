@@ -32,20 +32,18 @@ impl Card for Bandit {
     types!(vec![Action, Attack]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         let _ = game.gain(player_index, Box::new(Gold), callbacks);
+        let player_count = game.players.len();
 
+        for i in 1..player_count {
+            let index = (i + player_index) % player_count;
+            let player = &mut game.players[index];
+            //callback to reveal top 2 cards in their hand
 
-        for i in 0..game.players.len() {
-            if i != player_index {
-                let index = (i+game.players.len()) % game.players.len();
-                let player = &mut game.players[index];
-                //callback to reveal top 2 cards in their hand
-
-                // we need more callbacks? I'll think about what to do here for
-                // incredibly specific card descriptions. we want to be able to
-                // send a list of allowed indexes to the user to pick from here.
-                let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
-                player.trash_given_indexes(indexes, &mut game.trash);
-            }
+            // we need more callbacks? I'll think about what to do here for
+            // incredibly specific card descriptions. we want to be able to
+            // send a list of allowed indexes to the user to pick from here.
+            let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
+            player.trash_given_indexes(indexes, &mut game.trash);
         }
     }
 }
@@ -109,12 +107,12 @@ impl Card for CouncilRoom {
         player.draw_cards(4);
         player.add_buys(1);
 
-        for i in 0..game.players.len() {
-            if i != player_index {
-                let index = (i+game.players.len()) % game.players.len();
-                let player = &mut game.players[index];
-                player.draw_cards(1);
-            }
+        let player_count = game.players.len();
+
+        for i in 1..player_count {
+            let index = (i + player_index) % player_count;
+            let player = &mut game.players[index];
+            player.draw_cards(1);
         }
     }
 }
@@ -326,11 +324,11 @@ impl Card for Witch {
         let player = &mut game.players[player_index];
         player.draw_cards(2);
 
-        for i in 0..game.players.len() {
-            if i != player_index {
-                let index = (i+game.players.len()) % game.players.len();
-                let _ = game.gain(index, Box::new(BasicCurse), callbacks);
-            }
+        let player_count = game.players.len();
+
+        for i in 1..player_count {
+            let index = (i + player_index) % player_count;
+            let _ = game.gain(index, Box::new(BasicCurse), callbacks);
         }
     }
 }
