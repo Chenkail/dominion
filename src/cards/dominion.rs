@@ -89,8 +89,6 @@ impl Card for Chapel {
 
 }
 
-//placeholder_effects!(Chapel, "Chapel", 2);
-
 // Council Room
 // +4 cards, +1 buy, each other player draws a card
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Council_Room)
