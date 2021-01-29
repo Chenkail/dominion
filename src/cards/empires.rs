@@ -28,7 +28,7 @@ impl Card for Fortune {
     }
 
     fn effects_on_gain(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        let in_play = player.actions_in_play.clone();
+        let in_play = player.in_play.clone();
         for card in in_play {
             if card.name() == "Gladiator" {
                 let _ = player.gain(Box::new(Gold), supply, trash, other_players, callbacks);

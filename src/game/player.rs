@@ -44,8 +44,7 @@ pub struct Player {
     pub hand: CardDeck,
     pub deck: CardDeck,
     pub discard: CardDeck,
-    pub actions_in_play: CardDeck,
-    pub treasures_in_play: CardDeck,
+    pub in_play: CardDeck,
     pub resources: Resources,
     pub state: State,
     pub phase: Phase,
@@ -63,8 +62,7 @@ impl Player {
         let mut hand: CardDeck = VecDeque::new();
         let mut deck: CardDeck = VecDeque::from(cards);
         let discard: CardDeck = VecDeque::new();
-        let actions_in_play: CardDeck = VecDeque::new();
-        let treasures_in_play: CardDeck = VecDeque::new();
+        let in_play: CardDeck = VecDeque::new();
         let resources = Resources::default();
         let state = State::default();
         let phase = Phase::OutOfTurn;
@@ -76,7 +74,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources, state, phase }
+        Player { id, hand, deck, discard, in_play, resources, state, phase }
     }
 
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
@@ -84,7 +82,7 @@ impl Player {
         return self.hand.iter()
                 .chain(self.deck.iter())
                 .chain(self.discard.iter())
-                .chain(self.actions_in_play.iter());
+                .chain(self.in_play.iter());
     }
 
     /// Draws x cards for the player
@@ -171,7 +169,7 @@ impl Player {
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
             let card = self.hand.remove(index).unwrap();
-            self.actions_in_play.push_back(card.clone());
+            self.in_play.push_back(card.clone());
 
             self.resources.actions -= 1;
             self.action_effects(&*card, supply, trash, other_players, callbacks);
@@ -326,7 +324,7 @@ impl Player {
         if c.is_treasure() {
             let card = self.hand.remove(index).unwrap();
             card.effects_on_play(self, supply, trash, other_players, callbacks);
-            self.treasures_in_play.push_back(card.clone());
+            self.in_play.push_back(card.clone());
 
             Ok(())
         } else {
@@ -370,8 +368,7 @@ impl Player {
     /// Cleanup phase at end of turn - discard hand and draw five new cards
     pub fn cleanup(&mut self) {
         self.discard.append(&mut self.hand);
-        self.discard.append(&mut self.actions_in_play);
-        self.discard.append(&mut self.treasures_in_play);
+        self.discard.append(&mut self.in_play);
 
         self.draw_cards(5);
     }
