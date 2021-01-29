@@ -196,32 +196,32 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, supply, other_players, callbacks);
+        card.effects_on_gain(self, supply, trash, other_players, callbacks);
         self.discard.push_back(card);
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: check if supply pile is empty
         *supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, supply, other_players, callbacks);
+        card.effects_on_gain(self, supply, trash, other_players, callbacks);
         self.hand.push_back(card);
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        card.effects_on_gain(self, supply, other_players, callbacks);
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        card.effects_on_gain(self, supply, trash, other_players, callbacks);
         self.resources.temp_coins -= card.coin_cost();
-        self.gain(card, supply, other_players, callbacks);
+        self.gain(card, supply, trash, other_players, callbacks);
 
         self.resources.buys -= 1;
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, supply: &mut Supply, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    pub fn buy_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: prompt user to play treasures
 
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
@@ -245,7 +245,7 @@ impl Player {
             // Buy cards
             // TODO: Figure out how to allow player to choose card they want
 
-            self.buy_card(Box::new(Copper), supply, other_players, callbacks);
+            self.buy_card(Box::new(Copper), supply, trash, other_players, callbacks);
 
             more = (callbacks.prompt_player_done)();
         }
@@ -310,7 +310,7 @@ impl Player {
     /// Take a turn
     pub fn turn(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         self.action_phase(supply, trash, other_players, callbacks);
-        self.buy_phase(supply, other_players, callbacks);
+        self.buy_phase(supply, trash, other_players, callbacks);
         self.cleanup();
     }
 

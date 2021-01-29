@@ -1,21 +1,31 @@
 //! Cards from the Empires set
 
 use super::prelude::*;
+use super::base::*;
 
-card!(Fortune);
+/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Fortune)
+#[derive(Clone, Serialize, Deserialize)]
+pub struct Fortune;
+
+#[typetag::serde]
 impl Card for Fortune {
     name!("Fortune");
-    cost!(6, 1);
-    types!(vec![TreasureCard]);
+    cost!(8, 8);
+    types!(vec![Treasure]);
 
-    fn treasure_value(&self, player: &mut Player) -> i32 {
-        player.coins_remaining
+    fn treasure_value(&self, player: &Player) -> usize {
+        player.resources.coins_remaining
     }
 
-    fn on_gain(&self, player: &mut Player, _: &mut Supply, _: &PlayerList) {
-        for card in player.actions_in_play {
-            if card.name == "Gladiator" {
-                player.gain(Box::new(Gold));
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, _: &Callbacks) {
+        player.resources.buys += 1;
+    }
+
+    fn effects_on_gain(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        let in_play = player.actions_in_play.clone();
+        for card in in_play {
+            if card.name() == "Gladiator" {
+                player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
             }
         }
     }

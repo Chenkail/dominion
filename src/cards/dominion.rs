@@ -14,10 +14,10 @@ impl Card for Artisan {
     name!("Artisan");
     cost!(6);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         // TODO: change to card of choice from supply and put a card from hand back on deck
         let card = Box::new(Silver);
-        player.gain_to_hand(card, supply, other_players, callbacks);
+        player.gain_to_hand(card, supply, trash, other_players, callbacks);
     }
 }
 
@@ -31,7 +31,7 @@ impl Card for Bandit {
     cost!(5);
     types!(vec![Action, Attack]);
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        player.gain(Box::new(Gold), supply, other_players, callbacks);
+        player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
 
         for p in other_players {
             //callback to reveal top 2 cards in their hand
@@ -64,7 +64,7 @@ impl Card for Cellar {
     name!("Cellar");
     cost!(2);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, callbacks: &Callbacks) {
         let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
         let count = indexes.len();
 
@@ -82,11 +82,10 @@ impl Card for Chapel {
     cost!(2);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, trash: &mut CardDeck, _: &mut PlayerSlice, callbacks: &Callbacks) {
         let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand_u)(4);
         player.trash_given_indexes(indexes, trash);
     }
-
 }
 
 // Council Room
@@ -100,7 +99,7 @@ impl Card for CouncilRoom {
     name!("Council Room");
     cost!(5);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, other_players: &mut PlayerSlice, _: &Callbacks) {
         player.draw_cards(4);
         player.add_buys(1);
 
@@ -149,7 +148,7 @@ impl Card for Harbinger {
     name!("Harbinger");
     cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, callbacks: &Callbacks) {
         player.add_actions(1);
         player.draw_cards(1);
 
@@ -186,7 +185,7 @@ impl Card for Library {
     cost!(5);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, callbacks: &Callbacks) {
         while player.hand.len() < 7 {
             if player.deck.front().unwrap().is_action() {
                 //TODO: get player consent to draw or discard the card
@@ -307,14 +306,14 @@ impl Card for Witch {
     cost!(5);
     types!(vec![Action, Attack]);
 
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         player.draw_cards(2);
         for p in other_players {
             // FIXME: This doesn't actually pass in other_players but I'm
             // not sure how we can make that work. There are (as of jan 2021)
             // no reaction cards that both care about being given a curse
             // AND have effects that impact other players
-            p.gain(Box::new(BasicCurse), supply, &mut Vec::new(), callbacks);
+            p.gain(Box::new(BasicCurse), supply, trash, &mut Vec::new(), callbacks);
         }
     }
 }

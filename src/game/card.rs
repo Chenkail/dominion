@@ -65,6 +65,7 @@ use crate::types::*;
 /// [`dominion_macros`]: ../../dominion_macros/index.html
 
 #[clonable]
+#[allow(unused_variables)]
 #[typetag::serde(tag = "card")]
 pub trait Card: Clone {
     /// The name on the card (e.g. "Throne Room")
@@ -83,20 +84,20 @@ pub trait Card: Clone {
     fn potion_cost(&self) -> usize { 0 }
 
     /// The number of coins the card is worth (if it is a treasure card)
-    fn treasure_value(&self, _player: &Player) -> usize { 0 }
+    fn treasure_value(&self, player: &Player) -> usize { 0 }
     /// The number of potions the card is worth (if it is a potion treasure card)
-    fn potion_value(&self, _player: &Player) -> usize { 0 }
+    fn potion_value(&self, player: &Player) -> usize { 0 }
 
     /// The number of points the card is worth (if it is a victory/curse card)
-    fn victory_points(&self, _player: &Player) -> isize { 0 }
+    fn victory_points(&self, player: &Player) -> isize { 0 }
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, _player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck,_other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
+    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
+    fn effects_on_react(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, _player: &mut Player, _supply: &mut Supply, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {}
+    fn effects_on_gain(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
 
     // Type check methods - these should generally not be overridden
     /// Print out all types a card has, separated by commas

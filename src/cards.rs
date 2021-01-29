@@ -8,3 +8,4 @@ pub mod prelude;
 pub mod base;
 pub mod dominion;
 pub mod intrigue;
+pub mod empires;
