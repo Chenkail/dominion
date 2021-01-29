@@ -37,7 +37,9 @@ pub struct Callbacks {
     pub get_player_consent: FnPlayerToBool,
 
     // future callbacks to be implemented:
-    
+
+    // Callback for "choose one" effects that takes a vec of strings with descriptions
+    // as an argument and returns a usize for the chosen option
     // callback to prompt card from discard,
     // callback to prompt list of indexes from discard
     // callback to prompt list of cards from trash
