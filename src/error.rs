@@ -1,3 +1,5 @@
+//! Dominion error types
+
 use thiserror::Error;
 
 #[derive(Debug, Error)]

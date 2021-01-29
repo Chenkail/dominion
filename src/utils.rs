@@ -11,13 +11,15 @@ use crate::types::*;
 /// # use dominion::types::*;
 /// # use dominion::cards::base::*;
 /// # use dominion_macros::*;
-/// # use dominion::utils::map_to_list;
+/// use dominion::utils::map_to_list;
+///
 /// let mut map = Supply::new();
-/// map.insert(Box::new(Copper), 7);
-/// map.insert(Box::new(Estate), 3);
+/// map.insert(Box::new(Copper), 1);
+/// map.insert(Box::new(Gold), 3);
+/// map.insert(Box::new(Estate), 2);
 /// let mut deck = map_to_list(map);
 /// deck.sort_unstable();
-/// assert_eq!(deck, card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate]);
+/// assert_eq!(deck, card_vec![Copper, Estate, Estate, Gold, Gold, Gold]);
 /// ```
 pub fn map_to_list(map: Supply) -> CardList {
     let mut deck = CardList::new();
