@@ -17,7 +17,7 @@ fn main() {
     player1.print_hand();
 
     game.buy_phase(0, &callbacks);
-    
+
     let player1 = &mut game.players[0];
     player1.cleanup();
 
