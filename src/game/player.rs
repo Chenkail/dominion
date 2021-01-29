@@ -182,7 +182,6 @@ impl Player {
 
         let mut more = true;
         while (self.resources.actions > 0) & more {
-            // TODO: Figure out how to allow player to declare that they are done playing actions
             more = (callbacks.prompt_player_done)();
             if more {
                 for i in 0..self.hand.len() {

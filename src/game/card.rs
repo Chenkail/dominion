@@ -32,7 +32,7 @@ use crate::types::*;
 ///     cost!(5);
 ///     types!(vec![Action]);
 ///
-///     // TODO: Add your custom behavior here
+///     // Add your custom behavior here
 /// }
 /// ```
 ///
@@ -51,7 +51,7 @@ use crate::types::*;
 ///     cost!(5);
 ///     types!(vec![Action]);
 ///
-///     // TODO: Add your custom behavior here
+///     // Add your custom behavior here
 /// }
 /// ```
 ///
