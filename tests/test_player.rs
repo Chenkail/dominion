@@ -9,7 +9,7 @@ mod test_player {
     fn test_player_init() {
         let player = Player::new_with_default_deck(0);
 
-        //we check to see if everything is initalized correctly
+        //we check to see if everything is initialized correctly
         assert!(player.hand.len() == 5);
         assert!(player.deck.len() == 5);
         assert!(player.resources.actions == 0);
@@ -78,14 +78,14 @@ mod test_player {
         let player1 = p1v.get_mut(0).unwrap();
 
         let _ = player1.gain_to_hand(Box::new(Market), &mut game.supply, &mut game.trash, others, &callbacks);
-        let temp_coinc_b4add = player1.resources.temp_coins;
+        let temp_coins_b4add = player1.resources.temp_coins;
         player1.resources.actions = 1;
         player1.play_action_from_hand(5, &mut game.supply, &mut game.trash, others, &callbacks).unwrap();
         println!("actions: {}, buys: {}, hand size: {}", player1.resources.actions, player1.resources.buys, player1.hand.len());
         assert!(player1.resources.actions == 1);
         assert!(player1.resources.buys == 1);
         assert!(player1.hand.len() == 6);
-        assert!(player1.resources.temp_coins == temp_coinc_b4add + 1);
+        assert!(player1.resources.temp_coins == temp_coins_b4add + 1);
     }
 
     #[test]
