@@ -254,14 +254,19 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+        if self.resources.coins_remaining < card.coin_cost() {
+            return Err(InsufficientFunds);
+        }
+
         card.effects_on_buy(self, supply, trash, other_players, callbacks);
         card.effects_on_gain(self, supply, trash, other_players, callbacks);
 
+        self.gain(card.clone(), supply, trash, other_players, callbacks)?;
         self.resources.temp_coins -= card.coin_cost();
-        self.gain(card, supply, trash, other_players, callbacks);
 
         self.resources.buys -= 1;
+        Ok(())
     }
 
     /// Buy phase
@@ -288,7 +293,7 @@ impl Player {
         while (self.resources.buys > 0) & more {
             // Buy cards
             // TODO: Figure out how to allow player to choose card they want
-
+            // TODO: If player chooses a card they cannot buy, loop
             self.buy_card(Box::new(Copper), supply, trash, other_players, callbacks);
 
             more = (callbacks.prompt_player_done)();

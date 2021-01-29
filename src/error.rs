@@ -11,4 +11,6 @@ pub enum DominionError {
     CardTypeMisMatch { expected: CardType },
     #[error("Pile is empty: {:?}", .card)]
     EmptyPile { card: Box<dyn Card> },
+    #[error("Not enough money to buy that card!")]
+    InsufficientFunds,
 }
