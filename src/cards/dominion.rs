@@ -196,7 +196,7 @@ impl Card for Library {
     cost!(5);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         let player = &mut game.players[player_index];
         while player.hand.len() < 7 {
             if player.deck.front().unwrap().is_action() {
@@ -342,8 +342,6 @@ impl Card for Workshop {
     types!(vec![Action]);
 
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
-        // this is really bad. we need to import game if return_avail... is an struct method.
-        // otherwise we make it return_avail_cards static, but we need to make a new mod with the functions.
-        // let potential_cards = return_avail_cards_ucost(supply, 4);
+        let potential_cards = game.return_avail_cards_ucost(4);
     }
 }
