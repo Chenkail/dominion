@@ -31,7 +31,7 @@ impl Card for Bandit {
     cost!(5);
     types!(vec![Action, Attack]);
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
+        let _ = player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
 
         for p in other_players {
             //callback to reveal top 2 cards in their hand
@@ -313,7 +313,7 @@ impl Card for Witch {
             // not sure how we can make that work. There are (as of jan 2021)
             // no reaction cards that both care about being given a curse
             // AND have effects that impact other players
-            p.gain(Box::new(BasicCurse), supply, trash, &mut Vec::new(), callbacks);
+            let _ = p.gain(Box::new(BasicCurse), supply, trash, &mut Vec::new(), callbacks);
         }
     }
 }
