@@ -17,7 +17,7 @@ pub mod test_card {
 
         game.supply.insert(Box::new(Gardens), 200);
     
-        player1.gain_to_hand(Box::new(Gardens), &mut game.supply, &mut game.trash, others, &callbacks);
+        let _ = player1.gain_to_hand(Box::new(Gardens), &mut game.supply, &mut game.trash, others, &callbacks);
         
         //println!("{}", player1.hand[5].victory_points(player1));  
         assert_eq!(player1.victory_points(), 4);

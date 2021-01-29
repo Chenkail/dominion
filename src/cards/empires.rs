@@ -31,7 +31,7 @@ impl Card for Fortune {
         let in_play = player.actions_in_play.clone();
         for card in in_play {
             if card.name() == "Gladiator" {
-                player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
+                let _ = player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
             }
         }
     }

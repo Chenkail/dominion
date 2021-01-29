@@ -13,7 +13,9 @@ impl Card for Soothsayer {
     cost!(5);
     types!(vec![Action, Attack]);
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
+        // If there are no more Golds, we don't care so we move on
+        let _ = player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
+
         for p in other_players {
             // FIXME: This doesn't actually pass in other_players but I'm
             // not sure how we can make that work. There are (as of jan 2021)
