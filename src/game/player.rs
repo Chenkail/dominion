@@ -167,7 +167,7 @@ impl Player {
 
             Ok(())
         } else {
-            Err(CardTypeMisMatch { expected: "Action".to_string() })
+            Err(CardTypeMisMatch { expected: Action })
         }
     }
 
@@ -283,7 +283,7 @@ impl Player {
 
             Ok(())
         } else {
-            Err(CardTypeMisMatch { expected: "Treasure".to_string() })
+            Err(CardTypeMisMatch { expected: Treasure })
         }
     }
 
