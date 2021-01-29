@@ -27,5 +27,17 @@
 			"    $0",
 			"}"
 		]
+	},
+	"otherplayers": {
+	  "prefix": "otherplayers",
+	  "description": "Loop over all other players in the game",
+	  "body": [
+		"for i in 0..game.players.len() {",
+		"    if i != player_index {",
+		"        let index = (i + game.players.len()) % game.players.len();",
+		"        $0",
+		"    }",
+		"}"
+	  ]
 	}
 }
