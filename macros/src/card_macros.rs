@@ -214,7 +214,9 @@ macro_rules! victory_points {
 #[macro_export]
 macro_rules! basic_on_play_effects {
     ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
-        fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, _: &Callbacks) {
+        fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
+            let player = &mut game.players[current_player_index];
+
             player.draw_cards($cards);
             player.add_actions($actions);
             player.add_buys($buys);

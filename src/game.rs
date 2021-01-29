@@ -14,5 +14,5 @@ mod player;
 pub use cso::*;
 pub use card::Card;
 pub use gamedata::Game;
-pub use player::Player;
+pub use player::*;
 pub use callbacks::Callbacks;

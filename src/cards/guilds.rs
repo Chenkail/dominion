@@ -12,18 +12,18 @@ impl Card for Soothsayer {
     name!("Soothsayer");
     cost!(5);
     types!(vec![Action, Attack]);
-    fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
         // If there are no more Golds, we don't care so we move on
-        let _ = player.gain(Box::new(Gold), supply, trash, other_players, callbacks);
+        let _ = game.gain(current_player_index, Box::new(Gold), callbacks);
 
-        for p in other_players {
-            // FIXME: This doesn't actually pass in other_players but I'm
-            // not sure how we can make that work. There are (as of jan 2021)
-            // no reaction cards that both care about being given a curse
-            // AND have effects that impact other players
-            let r = p.gain(Box::new(BasicCurse), supply, trash, &mut Vec::new(), callbacks);
-            if r.is_ok() {
-                p.draw_cards(1);
+        for i in 0..game.players.len() {
+            if i != current_player_index {
+                let index = (i+game.players.len()) % game.players.len();
+                let r = game.gain(index, Box::new(BasicCurse), callbacks);
+                if r.is_ok() {
+                    let player = &mut game.players[index];
+                    player.draw_cards(1);
+                }
             }
         }
     }

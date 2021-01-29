@@ -11,7 +11,9 @@ impl Card for Horse {
     name!("Horse");
     cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, _: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, _: &Callbacks) {
+        let player = &mut game.players[current_player_index];
+
         player.draw_cards(2);
         player.add_actions(1);
 

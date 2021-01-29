@@ -3,6 +3,7 @@
 use serde::{Serialize, Deserialize};
 
 use crate::game::prelude::*;
+use crate::error::{DominionError::*, DominionResult};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Game {
@@ -101,6 +102,208 @@ impl Game {
 
         false
     }
+
+
+
+
+    /// Plays an action [card](Card) from the player's hand
+    ///
+    /// This is the function to call when a player plays a card directly
+    pub fn play_action_from_hand(&mut self, current_player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
+        // Remove card from hand
+        let player = &mut self.players[current_player_index];
+        let card = player.hand.get(card_index).unwrap();
+        if card.is_action() {
+            let card = player.hand.remove(card_index).unwrap();
+            player.in_play.push_back(card.clone());
+
+            player.resources.actions -= 1;
+            self.action_effects(current_player_index, card, callbacks);
+
+            Ok(())
+        } else {
+            Err(CardTypeMisMatch { expected: Action })
+        }
+    }
+
+    /// Gives the player the effects of an action card as if they had played it
+    ///
+    /// Does not subtract actions from the player's total. Should only be called
+    /// in the effects() function of other cards (e.g. Throne Room)
+    pub fn action_effects(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) {
+        card.effects_on_play(self, current_player_index, callbacks);
+    }
+
+    /// Take a turn
+    pub fn turn(&mut self, current_player_index: usize, callbacks: &Callbacks) {
+        let player = &mut self.players[current_player_index];
+
+        player.reset_state();
+
+        player.phase = Phase::ActionPhase;
+        self.action_phase(current_player_index, callbacks);
+
+        let player = &mut self.players[current_player_index];
+        player.phase = Phase::BuyPhase;
+        self.buy_phase(current_player_index, callbacks);
+
+        let player = &mut self.players[current_player_index];
+        player.phase = Phase::NightPhase;
+        // TODO: Night phase
+
+        let player = &mut self.players[current_player_index];
+        player.phase = Phase::OutOfTurn;
+        player.cleanup();
+    }
+
+    /// Action phase
+    pub fn action_phase(&mut self, current_player_index: usize, callbacks: &Callbacks) {
+        //TODO (much later): Duration cards
+
+        let mut more = true;
+        while (self.players[current_player_index].resources.actions > 0) && more {
+            let player = &mut self.players[current_player_index];
+
+            more = (callbacks.prompt_player_done)();
+            if more {
+                for i in 0..player.hand.len() {
+                    let card = player.hand.get(i).unwrap();
+                    if card.is_action() {
+                        self.play_action_from_hand(current_player_index, i, callbacks).unwrap();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /// Gain a copy of a card to the discard pile
+    pub fn gain(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+        if *self.supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile{card});
+        }
+
+        *self.supply.get_mut(&card).unwrap() -= 1;
+        card.effects_on_gain(self, current_player_index, callbacks);
+
+        let player = &mut self.players[current_player_index];
+        player.discard.push_back(card);
+        Ok(())
+    }
+
+    /// Gain a copy of a card to hand
+    pub fn gain_to_hand(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+        if *self.supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile{card});
+        }
+
+        *self.supply.get_mut(&card).unwrap() -= 1;
+        card.effects_on_gain(self, current_player_index, callbacks);
+
+        let player = &mut self.players[current_player_index];
+        player.hand.push_back(card);
+        Ok(())
+    }
+
+    /// Gain a copy of a card to hand
+    pub fn gain_to_deck_top(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+        if *self.supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile{card});
+        }
+
+        *self.supply.get_mut(&card).unwrap() -= 1;
+        card.effects_on_gain(self, current_player_index, callbacks);
+
+        let player = &mut self.players[current_player_index];
+        player.deck.push_front(card);
+        Ok(())
+    }
+
+    /// Buy a card
+    pub fn buy_card(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+        let player = &mut self.players[current_player_index];
+
+        if player.resources.coins_remaining < card.coin_cost() {
+            return Err(InsufficientFunds);
+        }
+
+        card.effects_on_buy(self, current_player_index, callbacks);
+        card.effects_on_gain(self, current_player_index, callbacks);
+
+        self.gain(current_player_index, card.clone(), callbacks)?;
+
+        let player = &mut self.players[current_player_index];
+        player.resources.temp_coins -= card.coin_cost();
+
+        player.resources.buys -= 1;
+        Ok(())
+    }
+
+    /// Buy phase
+    pub fn buy_phase(&mut self, current_player_index: usize, callbacks: &Callbacks) {
+        let player = &mut self.players[current_player_index];
+
+        // TODO: prompt user to play treasures
+        player.resources.coins_remaining = player.resources.coins_in_hand + player.resources.temp_coins;
+        player.resources.potions_remaining = player.resources.potions_in_hand + player.resources.temp_potions;
+
+        if player.resources.debt > 0 {
+            // Can't buy
+            // TODO: prompt player to acknowledge paying off debt
+            // If outstanding debt exists after paying, player cannot buy
+            if player.resources.coins_remaining < player.resources.debt {
+                player.resources.debt -= player.resources.coins_remaining;
+                return;
+            } else {
+                player.resources.coins_remaining -= player.resources.debt;
+                player.resources.debt = 0;
+            }
+        }
+
+        let mut more = true;
+        while (self.players[current_player_index].resources.buys > 0) && more {
+            // Buy cards
+            // TODO: Figure out how to allow player to choose card they want
+            // TODO: If player chooses a card they cannot buy, loop
+            self.buy_card(current_player_index, Box::new(Copper), callbacks);
+
+            more = (callbacks.prompt_player_done)();
+        }
+    }
+
+    pub fn play_treasure(&mut self, current_player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
+        let player = &mut self.players[current_player_index];
+
+        // Remove card from hand
+        let c = player.hand.get(card_index).unwrap();
+        if c.is_treasure() {
+            let card = player.hand.remove(card_index).unwrap();
+            card.effects_on_play(self, current_player_index, callbacks);
+            let player = &mut self.players[current_player_index];
+            player.in_play.push_back(card.clone());
+
+            Ok(())
+        } else {
+            Err(CardTypeMisMatch { expected: Treasure })
+        }
+    }
+
+    pub fn play_all_treasures(&mut self, current_player_index: usize, callbacks: &Callbacks) -> DominionResult {
+        let range = self.players[current_player_index].hand.len();
+
+        for i in 0..range {
+            let player = &mut self.players[current_player_index];
+            let card = player.hand.get(i).unwrap();
+            if card.is_treasure() {
+                self.play_treasure(current_player_index, i, callbacks)?;
+            }
+        }
+
+        Ok(())
+    }
+
+
+
 
     /// returns vector of cards available under a certain cost
     /// hopefully we can combine this and related methods into one generic one

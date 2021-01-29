@@ -4,16 +4,21 @@ use dominion::sample_client;
 fn main() {
     let mut game = Game::default();
     let callbacks = sample_client::callbacks();
-    let (p1v, mut others) = game.players.split_at_mut(1);
-    let player1 = p1v.get_mut(0).unwrap();
 
-    player1.gain_to_hand(Box::new(Market), &mut game.supply, &mut game.trash, &mut others, &callbacks);
-    player1.gain_to_hand(Box::new(Smithy), &mut game.supply, &mut game.trash, &mut others, &callbacks);
+    game.gain_to_hand(0, Box::new(Market), &callbacks);
+    game.gain_to_hand(0, Box::new(Smithy), &callbacks);
+
+    let player1 = &game.players[0];
     player1.print_hand();
-    player1.action_phase(&mut game.supply, &mut game.trash, &mut others, &callbacks);
+    game.action_phase(0, &callbacks);
+
+    let player1 = &game.players[0];
     player1.print_status();
     player1.print_hand();
-    player1.buy_phase(&mut game.supply, &mut game.trash, &mut others, &callbacks);
+
+    game.buy_phase(0, &callbacks);
+    
+    let player1 = &mut game.players[0];
     player1.cleanup();
 
     println!("{:?}", game);

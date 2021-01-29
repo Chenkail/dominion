@@ -73,14 +73,14 @@ mod test_player {
     fn test_player_play_action() {
         let mut game = Game::default();
         let callbacks = dominion::sample_client::callbacks();
-        
-        let (p1v, others) = game.players.split_at_mut(1);
-        let player1 = p1v.get_mut(0).unwrap();
 
-        let _ = player1.gain_to_hand(Box::new(Market), &mut game.supply, &mut game.trash, others, &callbacks);
+        let _ = game.gain_to_hand(0, Box::new(Market), &callbacks);
+        let player1 = &mut game.players[0];
         let temp_coins_b4add = player1.resources.temp_coins;
         player1.resources.actions = 1;
-        player1.play_action_from_hand(5, &mut game.supply, &mut game.trash, others, &callbacks).unwrap();
+        game.play_action_from_hand(0, 5, &callbacks).unwrap();
+
+        let player1 = &game.players[0];
         println!("actions: {}, buys: {}, hand size: {}", player1.resources.actions, player1.resources.buys, player1.hand.len());
         assert!(player1.resources.actions == 1);
         assert!(player1.resources.buys == 1);
