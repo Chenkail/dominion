@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "serayuzgur.crates",
+        "matklad.rust-analyzer",
+        "tabnine.tabnine-vscode",
+        "tamasfe.even-better-toml",
+        "usernamehw.errorlens"
+    ]
+}
