@@ -21,21 +21,21 @@ impl Card for Fortune {
         }
     }
 
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, _: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+        let player = &mut game.players[player_index];
 
         // This needs to happen AFTER adding the treasure value
         player.state.fortuned = true;
         player.resources.buys += 1;
     }
 
-    fn effects_on_gain(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &game.players[current_player_index];
+    fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let player = &game.players[player_index];
 
         let in_play = player.in_play.clone();
         for card in in_play {
             if card.name() == "Gladiator" {
-                let _ = game.gain(current_player_index, Box::new(Gold), callbacks);
+                let _ = game.gain(player_index, Box::new(Gold), callbacks);
             }
         }
     }

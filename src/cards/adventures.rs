@@ -12,7 +12,7 @@ impl Card for Port {
     cost!(4);
     types!(vec![Action]);
     basic_on_play_effects!(1, 2, 0, 0);
-    fn effects_on_buy(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let _ = game.gain(current_player_index,Box::new(Port), callbacks);
+    fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let _ = game.gain(player_index,Box::new(Port), callbacks);
     }
 }

@@ -13,8 +13,8 @@ impl Card for PoorHouse {
     name!("Poor House");
     cost!(1);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut game.players[player_index];
 
         player.resources.temp_coins += 4;
         (callbacks.reveal_hand)(player);

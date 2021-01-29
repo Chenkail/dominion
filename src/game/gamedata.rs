@@ -109,16 +109,16 @@ impl Game {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, current_player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
+    pub fn play_action_from_hand(&mut self, player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
         // Remove card from hand
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         let card = player.hand.get(card_index).unwrap();
         if card.is_action() {
             let card = player.hand.remove(card_index).unwrap();
             player.in_play.push_back(card.clone());
 
             player.resources.actions -= 1;
-            self.action_effects(current_player_index, card, callbacks);
+            self.action_effects(player_index, card, callbacks);
 
             Ok(())
         } else {
@@ -130,46 +130,46 @@ impl Game {
     ///
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
-    pub fn action_effects(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) {
-        card.effects_on_play(self, current_player_index, callbacks);
+    pub fn action_effects(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) {
+        card.effects_on_play(self, player_index, callbacks);
     }
 
     /// Take a turn
-    pub fn turn(&mut self, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut self.players[current_player_index];
+    pub fn turn(&mut self, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut self.players[player_index];
 
         player.reset_state();
 
         player.phase = Phase::ActionPhase;
-        self.action_phase(current_player_index, callbacks);
+        self.action_phase(player_index, callbacks);
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.phase = Phase::BuyPhase;
-        self.buy_phase(current_player_index, callbacks);
+        self.buy_phase(player_index, callbacks);
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.phase = Phase::NightPhase;
         // TODO: Night phase
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.phase = Phase::OutOfTurn;
         player.cleanup();
     }
 
     /// Action phase
-    pub fn action_phase(&mut self, current_player_index: usize, callbacks: &Callbacks) {
+    pub fn action_phase(&mut self, player_index: usize, callbacks: &Callbacks) {
         //TODO (much later): Duration cards
 
         let mut more = true;
-        while (self.players[current_player_index].resources.actions > 0) && more {
-            let player = &mut self.players[current_player_index];
+        while (self.players[player_index].resources.actions > 0) && more {
+            let player = &mut self.players[player_index];
 
             more = (callbacks.prompt_player_done)();
             if more {
                 for i in 0..player.hand.len() {
                     let card = player.hand.get(i).unwrap();
                     if card.is_action() {
-                        self.play_action_from_hand(current_player_index, i, callbacks).unwrap();
+                        self.play_action_from_hand(player_index, i, callbacks).unwrap();
                         break;
                     }
                 }
@@ -178,61 +178,61 @@ impl Game {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+    pub fn gain(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
         if *self.supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
         }
 
         *self.supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, current_player_index, callbacks);
+        card.effects_on_gain(self, player_index, callbacks);
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.discard.push_back(card);
         Ok(())
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+    pub fn gain_to_hand(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
         if *self.supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
         }
 
         *self.supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, current_player_index, callbacks);
+        card.effects_on_gain(self, player_index, callbacks);
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.hand.push_back(card);
         Ok(())
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_deck_top(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+    pub fn gain_to_deck_top(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
         if *self.supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
         }
 
         *self.supply.get_mut(&card).unwrap() -= 1;
-        card.effects_on_gain(self, current_player_index, callbacks);
+        card.effects_on_gain(self, player_index, callbacks);
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.deck.push_front(card);
         Ok(())
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, current_player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
-        let player = &mut self.players[current_player_index];
+    pub fn buy_card(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
+        let player = &mut self.players[player_index];
 
         if player.resources.coins_remaining < card.coin_cost() {
             return Err(InsufficientFunds);
         }
 
-        card.effects_on_buy(self, current_player_index, callbacks);
-        card.effects_on_gain(self, current_player_index, callbacks);
+        card.effects_on_buy(self, player_index, callbacks);
+        card.effects_on_gain(self, player_index, callbacks);
 
-        self.gain(current_player_index, card.clone(), callbacks)?;
+        self.gain(player_index, card.clone(), callbacks)?;
 
-        let player = &mut self.players[current_player_index];
+        let player = &mut self.players[player_index];
         player.resources.temp_coins -= card.coin_cost();
 
         player.resources.buys -= 1;
@@ -240,8 +240,8 @@ impl Game {
     }
 
     /// Buy phase
-    pub fn buy_phase(&mut self, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut self.players[current_player_index];
+    pub fn buy_phase(&mut self, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut self.players[player_index];
 
         // TODO: prompt user to play treasures
         player.resources.coins_remaining = player.resources.coins_in_hand + player.resources.temp_coins;
@@ -261,25 +261,25 @@ impl Game {
         }
 
         let mut more = true;
-        while (self.players[current_player_index].resources.buys > 0) && more {
+        while (self.players[player_index].resources.buys > 0) && more {
             // Buy cards
             // TODO: Figure out how to allow player to choose card they want
             // TODO: If player chooses a card they cannot buy, loop
-            self.buy_card(current_player_index, Box::new(Copper), callbacks);
+            self.buy_card(player_index, Box::new(Copper), callbacks);
 
             more = (callbacks.prompt_player_done)();
         }
     }
 
-    pub fn play_treasure(&mut self, current_player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
-        let player = &mut self.players[current_player_index];
+    pub fn play_treasure(&mut self, player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
+        let player = &mut self.players[player_index];
 
         // Remove card from hand
         let c = player.hand.get(card_index).unwrap();
         if c.is_treasure() {
             let card = player.hand.remove(card_index).unwrap();
-            card.effects_on_play(self, current_player_index, callbacks);
-            let player = &mut self.players[current_player_index];
+            card.effects_on_play(self, player_index, callbacks);
+            let player = &mut self.players[player_index];
             player.in_play.push_back(card.clone());
 
             Ok(())
@@ -288,14 +288,14 @@ impl Game {
         }
     }
 
-    pub fn play_all_treasures(&mut self, current_player_index: usize, callbacks: &Callbacks) -> DominionResult {
-        let range = self.players[current_player_index].hand.len();
+    pub fn play_all_treasures(&mut self, player_index: usize, callbacks: &Callbacks) -> DominionResult {
+        let range = self.players[player_index].hand.len();
 
         for i in 0..range {
-            let player = &mut self.players[current_player_index];
+            let player = &mut self.players[player_index];
             let card = player.hand.get(i).unwrap();
             if card.is_treasure() {
-                self.play_treasure(current_player_index, i, callbacks)?;
+                self.play_treasure(player_index, i, callbacks)?;
             }
         }
 

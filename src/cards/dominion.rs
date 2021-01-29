@@ -14,10 +14,10 @@ impl Card for Artisan {
     name!("Artisan");
     cost!(6);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         // TODO: change to card of choice from supply and put a card from hand back on deck
         let card = Box::new(Silver);
-        game.gain_to_hand(current_player_index, card, callbacks);
+        game.gain_to_hand(player_index, card, callbacks);
     }
 }
 
@@ -30,12 +30,12 @@ impl Card for Bandit {
     name!("Bandit");
     cost!(5);
     types!(vec![Action, Attack]);
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let _ = game.gain(current_player_index, Box::new(Gold), callbacks);
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let _ = game.gain(player_index, Box::new(Gold), callbacks);
 
 
         for i in 0..game.players.len() {
-            if i != current_player_index {
+            if i != player_index {
                 let index = (i+game.players.len()) % game.players.len();
                 let player = &mut game.players[index];
                 //callback to reveal top 2 cards in their hand
@@ -67,8 +67,8 @@ impl Card for Cellar {
     name!("Cellar");
     cost!(2);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut game.players[player_index];
         let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand)();
         let count = indexes.len();
 
@@ -86,8 +86,8 @@ impl Card for Chapel {
     cost!(2);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut game.players[player_index];
         let indexes: Vec<usize> = (callbacks.prompt_indices_from_hand_u)(4);
         player.trash_given_indexes(indexes, &mut game.trash);
     }
@@ -104,13 +104,13 @@ impl Card for CouncilRoom {
     name!("Council Room");
     cost!(5);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, _: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+        let player = &mut game.players[player_index];
         player.draw_cards(4);
         player.add_buys(1);
 
         for i in 0..game.players.len() {
-            if i != current_player_index {
+            if i != player_index {
                 let index = (i+game.players.len()) % game.players.len();
                 let player = &mut game.players[index];
                 player.draw_cards(1);
@@ -158,8 +158,8 @@ impl Card for Harbinger {
     name!("Harbinger");
     cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut game.players[player_index];
         player.add_actions(1);
         player.draw_cards(1);
 
@@ -196,8 +196,8 @@ impl Card for Library {
     cost!(5);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, _: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+        let player = &mut game.players[player_index];
         while player.hand.len() < 7 {
             if player.deck.front().unwrap().is_action() {
                 //TODO: get player consent to draw or discard the card
@@ -318,12 +318,12 @@ impl Card for Witch {
     cost!(5);
     types!(vec![Action, Attack]);
 
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
-        let player = &mut game.players[current_player_index];
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let player = &mut game.players[player_index];
         player.draw_cards(2);
 
         for i in 0..game.players.len() {
-            if i != current_player_index {
+            if i != player_index {
                 let index = (i+game.players.len()) % game.players.len();
                 let _ = game.gain(index, Box::new(BasicCurse), callbacks);
             }
@@ -341,7 +341,7 @@ impl Card for Workshop {
     cost!(3);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         // this is really bad. we need to import game if return_avail... is an struct method.
         // otherwise we make it return_avail_cards static, but we need to make a new mod with the functions.
         // let potential_cards = return_avail_cards_ucost(supply, 4);

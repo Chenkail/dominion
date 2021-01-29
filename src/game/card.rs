@@ -98,13 +98,13 @@ pub trait Card: Clone {
 
     // Effect triggers
     /// The card's effects when played as an action
-    fn effects_on_play(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_react(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is bought (but not gained through some other means)
-    fn effects_on_buy(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, game: &mut Game, current_player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
 
     // Type check methods - these should generally not be overridden
     /// Print out all types a card has, separated by commas
