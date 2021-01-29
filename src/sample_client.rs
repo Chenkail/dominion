@@ -84,7 +84,7 @@ fn reveal_top_draw_pile(player: &Player, n: usize) {
     }
 }
 
-fn get_player_consent(player: &Player) -> bool {
+fn get_player_consent(player: &mut Player) -> bool {
     let mut input = String::new();
     println!("(y)es/(n)o");
     io::stdin().read_line(&mut input).expect("error: unable to read user input");

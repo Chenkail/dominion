@@ -10,7 +10,7 @@ pub type FnPlayerToUsize = Box<dyn Fn(&Player) -> usize>;
 pub type FnPlayerToi32 = Box<dyn Fn(&Player) -> i32>;
 pub type FnUsizeToVecUsize = Box<dyn Fn(usize) -> Vec<usize>>;
 pub type FnPlayerUsize = Box<dyn Fn(&Player, usize)>;
-pub type FnPlayerToBool = Box<dyn Fn(&Player) -> bool>;
+pub type FnPlayerToBool = Box<dyn Fn(&mut Player) -> bool>;
 
 pub struct Callbacks {
     /// Is the player done with this phase

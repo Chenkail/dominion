@@ -201,6 +201,10 @@ impl Card for Library {
         while player.hand.len() < 7 {
             if player.deck.front().unwrap().is_action() {
                 //TODO: get player consent to draw or discard the card
+                println!("discard? ");
+                if (callbacks.get_player_consent)(player) {
+                    player.discard.push_back(player.deck.pop_front().unwrap());
+                }
             } else {
                 player.draw_cards(1);
             }
