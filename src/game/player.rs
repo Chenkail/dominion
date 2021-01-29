@@ -217,7 +217,7 @@ impl Player {
         //TODO (much later): Duration cards
 
         let mut more = true;
-        while (self.resources.actions > 0) & more {
+        while (self.resources.actions > 0) && more {
             more = (callbacks.prompt_player_done)();
             if more {
                 for i in 0..self.hand.len() {
@@ -306,7 +306,7 @@ impl Player {
         }
 
         let mut more = true;
-        while (self.resources.buys > 0) & more {
+        while (self.resources.buys > 0) && more {
             // Buy cards
             // TODO: Figure out how to allow player to choose card they want
             // TODO: If player chooses a card they cannot buy, loop
