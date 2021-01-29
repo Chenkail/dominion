@@ -118,7 +118,7 @@ impl Card for Festival {
     name!("Festival");
     cost!(5);
     types!(vec![Action]);
-    basic_action_effects!(0, 2, 1, 2);
+    basic_on_play_effects!(0, 2, 1, 2);
 }
 
 // Gardens
@@ -172,7 +172,7 @@ impl Card for Laboratory {
     name!("Laboratory");
     cost!(5);
     types!(vec![Action]);
-    basic_action_effects!(2, 1, 0, 0);
+    basic_on_play_effects!(2, 1, 0, 0);
 }
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Library)
@@ -207,7 +207,7 @@ impl Card for Market {
     name!("Market");
     cost!(5);
     types!(vec![Action]);
-    basic_action_effects!(1, 1, 1, 1);
+    basic_on_play_effects!(1, 1, 1, 1);
 }
 
 
@@ -268,7 +268,7 @@ impl Card for Smithy {
     name!("Smithy");
     cost!(4);
     types!(vec![Action]);
-    basic_action_effects!(3, 0, 0, 0);
+    basic_on_play_effects!(3, 0, 0, 0);
 }
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/ThroneRoom)
@@ -292,7 +292,7 @@ impl Card for Village {
     name!("Village");
     cost!(3);
     types!(vec![Action]);
-    basic_action_effects!(1, 2, 0, 0);
+    basic_on_play_effects!(1, 2, 0, 0);
 }
 
 

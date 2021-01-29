@@ -212,7 +212,7 @@ macro_rules! victory_points {
 /// }
 /// ```
 #[macro_export]
-macro_rules! basic_action_effects {
+macro_rules! basic_on_play_effects {
     ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
         fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, _: &Callbacks) {
             player.draw_cards($cards);

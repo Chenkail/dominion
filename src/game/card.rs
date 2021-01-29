@@ -92,11 +92,17 @@ pub trait Card: Clone {
     /// The number of points the card is worth (if it is a victory/curse card)
     fn victory_points(&self, player: &Player) -> isize { 0 }
 
+    // Setup
+    /// Heirloom to add at start of game
+    fn heirloom(&self) -> Option<Box<dyn Card>> { None }
+
     // Effect triggers
     /// The card's effects when played as an action
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
     fn effects_on_react(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
+    /// Effects to trigger when this card is bought (but not gained through some other means)
+    fn effects_on_buy(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained
     fn effects_on_gain(&self, player: &mut Player, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {}
 

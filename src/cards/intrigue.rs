@@ -1,4 +1,4 @@
-//! Cards from the Intrigue expansion (2nd edition)
+//! Cards from the Intrigue set (2nd edition)
 
 use super::prelude::*;
 

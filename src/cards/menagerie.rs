@@ -1,0 +1,20 @@
+//! Cards from the Menagerie set
+
+use super::prelude::*;
+
+/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Horse)
+#[derive(Clone, Serialize, Deserialize)]
+pub struct Horse;
+
+#[typetag::serde]
+impl Card for Horse {
+    name!("Horse");
+    cost!(3);
+    types!(vec![Action]);
+    fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, _: &Callbacks) {
+        player.draw_cards(2);
+        player.add_actions(1);
+
+        // TODO: Figure out how to return this to its pile
+    }
+}

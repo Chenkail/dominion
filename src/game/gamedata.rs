@@ -23,14 +23,7 @@ impl Default for Game {
 impl Game {
     /// Create a new [Game] given a list of [Cards](Card) for the supply
     pub fn new(player_count: usize, cards: CardList) -> Game {
-        let mut player_vec: PlayerList = Vec::with_capacity(player_count);
         let mut supply: Supply = HashMap::new();
-        let trash: CardDeck = VecDeque::new();
-        let extras: Supply = HashMap::new();
-
-        for i in 0..player_count {
-            player_vec.push(Player::new_with_default_deck(i))
-        }
 
         let (victory_card_count, province_count, curse_count) = match player_count {
             2 => (8, 8, 10),
@@ -49,18 +42,39 @@ impl Game {
         supply.insert(Box::new(Province), province_count);
         supply.insert(Box::new(BasicCurse), curse_count);
 
-        // If card is victory card, count matches other victory cards
-        // Otherwise use 10 copies
+
         for card in cards {
+            // Check if we need Potions
+            if card.potion_cost() > 0 {
+                supply.insert(Box::new(Potion), 16);
+            }
+
+            // If card is victory card, count matches other victory cards
+            // Otherwise use 10 copies
             let count = if card.is_victory() {
                 victory_card_count
             } else {
                 10
             };
+
             supply.insert(card, count);
+
         }
 
-        Game { players: player_vec, supply, trash , extras }
+        Game::new_with_supply(player_count, supply)
+    }
+
+    /// Creates a new Game with a given supply and number of players
+    pub fn new_with_supply(player_count: usize, supply: Supply) -> Game {
+        let mut player_vec: PlayerList = Vec::with_capacity(player_count);
+        let trash: CardDeck = VecDeque::new();
+        let extras: Supply = HashMap::new();
+
+        for i in 0..player_count {
+            player_vec.push(Player::new_with_default_deck(i))
+        }
+
+        Game { players: player_vec, supply, trash, extras }
     }
 
     /// Prints out all the cards in the supply and their remaining quantities

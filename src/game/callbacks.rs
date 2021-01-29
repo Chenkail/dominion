@@ -5,6 +5,7 @@ use crate::game::player::Player;
 pub type FnToBool = Box<dyn Fn() -> bool>;
 pub type FnToUsize = Box<dyn Fn() -> usize>;
 pub type FnToVecUsize = Box<dyn Fn() -> Vec<usize>>;
+pub type FnPlayer = Box<dyn Fn(&Player)>;
 pub type FnPlayerToUsize = Box<dyn Fn(&Player) -> usize>;
 pub type FnPlayerToi32 = Box<dyn Fn(&Player) -> i32>;
 pub type FnUsizeToVecUsize = Box<dyn Fn(usize) -> Vec<usize>>;
@@ -25,7 +26,7 @@ pub struct Callbacks {
     pub reveal_top_discard_pile: FnPlayerUsize,
 
     /// reveal player's hand
-    pub reveal_hand: Box<dyn Fn(&Player)>,
+    pub reveal_hand: FnPlayer,
 
     /// reveal top x cards of the player's draw pile
     /// if reveal whole draw pile, just pass in draw.len()
