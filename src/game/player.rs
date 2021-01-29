@@ -23,8 +23,12 @@ pub struct Resources {
 /// Struct to keep track of certain conditions
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct State {
+    /// Is the player immune to attacks
     pub immune: bool,
-    pub fortuned: bool,
+    /// Has the player already played Fortune once this turn
+    pub played_fortune: bool,
+    /// Has the player already played Fool's Gold once this turn
+    pub played_fools_gold: bool,
 }
 
 /// What phase are we in

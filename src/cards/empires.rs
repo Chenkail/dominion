@@ -14,7 +14,7 @@ impl Card for Fortune {
     types!(vec![Treasure]);
 
     fn treasure_value(&self, player: &Player) -> usize {
-        if player.state.fortuned {
+        if player.state.played_fortune {
             0
         } else {
             player.resources.coins_remaining
@@ -25,7 +25,7 @@ impl Card for Fortune {
         let player = &mut game.players[player_index];
 
         // This needs to happen AFTER adding the treasure value
-        player.state.fortuned = true;
+        player.state.played_fortune = true;
         player.resources.buys += 1;
     }
 
