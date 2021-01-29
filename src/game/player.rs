@@ -21,10 +21,20 @@ pub struct Resources {
     pub debt: usize,
 }
 
+/// Struct to keep track of certain conditions
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct State {
     pub immune: bool,
     pub fortuned: bool,
+}
+
+/// What phase are we in
+#[derive(Debug, Serialize, Deserialize)]
+pub enum Phase {
+    OutOfTurn,
+    ActionPhase,
+    BuyPhase,
+    NightPhase,
 }
 
 /// Struct representing a player
@@ -38,6 +48,7 @@ pub struct Player {
     pub treasures_in_play: CardDeck,
     pub resources: Resources,
     pub state: State,
+    pub phase: Phase,
 }
 
 impl Player {
@@ -56,6 +67,7 @@ impl Player {
         let treasures_in_play: CardDeck = VecDeque::new();
         let resources = Resources::default();
         let state = State::default();
+        let phase = Phase::OutOfTurn;
 
         utils::shuffle(&mut deck);
 
@@ -64,7 +76,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources, state }
+        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources, state, phase }
     }
 
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
@@ -194,11 +206,14 @@ impl Player {
         self.reset_state();
         self.action_phase(supply, trash, other_players, callbacks);
         self.buy_phase(supply, trash, other_players, callbacks);
+        self.phase = Phase::OutOfTurn;
         self.cleanup();
     }
 
     /// Action phase
     pub fn action_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        self.phase = Phase::ActionPhase;
+
         //TODO (much later): Duration cards
 
         let mut more = true;
@@ -270,6 +285,8 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        self.phase = Phase::BuyPhase;
+
         // TODO: prompt user to play treasures
 
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
