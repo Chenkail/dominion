@@ -4,6 +4,7 @@
         "matklad.rust-analyzer",
         "tabnine.tabnine-vscode",
         "tamasfe.even-better-toml",
-        "usernamehw.errorlens"
+        "usernamehw.errorlens",
+        "nathanridley.autotrim"
     ]
 }
