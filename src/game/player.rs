@@ -126,8 +126,6 @@ impl Player {
                 return;
             }
             self.discard.push_back(self.hand.remove(i).unwrap());
-            
-            
         }
     }
 
@@ -155,7 +153,6 @@ impl Player {
                 return;
             }
             trash.push_back(self.hand.remove(i).unwrap());
-            
         }
     }
 

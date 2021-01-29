@@ -103,9 +103,6 @@ impl Game {
         false
     }
 
-
-
-
     /// Plays an action [card](Card) from the hand of the player corresponding
     /// to the given index
     ///
@@ -303,11 +300,9 @@ impl Game {
         Ok(())
     }
 
-
-
-
-    /// returns vector of cards available under a certain cost
-    /// hopefully we can combine this and related methods into one generic one
+    /// Returns vector of cards available under a certain cost
+    ///
+    /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_ucost(&self, cost: usize) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
         return self.supply.keys()
@@ -317,8 +312,9 @@ impl Game {
             .collect();
     }
 
-    /// returns vector of cards available above a certain cost
-    /// hopefully we can combine this and related methods into one generic one
+    /// Returns vector of cards available above a certain cost
+    ///
+    /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_acost(&self, cost: usize) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
         return self.supply.keys()
@@ -328,8 +324,9 @@ impl Game {
             .collect();
     }
 
-    /// returns vector of cards available of a certain type
-    /// hopefully we can combine this and related methods into one generic one
+    /// Returns vector of cards available of a certain type
+    ///
+    /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_type(&self, t: CardType) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
         return self.supply.keys()
