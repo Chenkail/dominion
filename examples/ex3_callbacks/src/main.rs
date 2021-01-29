@@ -11,7 +11,7 @@ fn main() {
     player1.gain_to_hand(Box::new(Smithy), &mut game.supply, &mut others, &callbacks);
     player1.print_hand();
     player1.action_phase(&mut game.supply, &mut others, &callbacks);
-    player1.print_state();
+    player1.print_status();
     player1.print_hand();
     player1.buy_phase(&mut game.supply, &mut others, &callbacks);
     player1.cleanup();

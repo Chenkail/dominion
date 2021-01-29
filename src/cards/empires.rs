@@ -14,10 +14,16 @@ impl Card for Fortune {
     types!(vec![Treasure]);
 
     fn treasure_value(&self, player: &Player) -> usize {
-        player.resources.coins_remaining
+        if player.state.fortuned {
+            0
+        } else {
+            player.resources.coins_remaining
+        }
     }
 
     fn effects_on_play(&self, player: &mut Player, _: &mut Supply, _: &mut CardDeck, _: &mut PlayerSlice, _: &Callbacks) {
+        // This needs to happen AFTER adding the treasure value
+        player.state.fortuned = true;
         player.resources.buys += 1;
     }
 

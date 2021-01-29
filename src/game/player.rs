@@ -22,6 +22,12 @@ pub struct Resources {
     pub debt: usize,
 }
 
+#[derive(Default, Debug, Serialize, Deserialize)]
+pub struct State {
+    pub immune: bool,
+    pub fortuned: bool,
+}
+
 /// Struct representing a player
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Player {
@@ -32,6 +38,7 @@ pub struct Player {
     pub actions_in_play: CardDeck,
     pub treasures_in_play: CardDeck,
     pub resources: Resources,
+    pub state: State,
 }
 
 impl Player {
@@ -49,6 +56,7 @@ impl Player {
         let actions_in_play: CardDeck = VecDeque::new();
         let treasures_in_play: CardDeck = VecDeque::new();
         let resources = Resources::default();
+        let state = State::default();
 
         utils::shuffle(&mut deck);
 
@@ -57,7 +65,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources }
+        Player { id, hand, deck, discard, actions_in_play, treasures_in_play, resources, state }
     }
 
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
@@ -171,13 +179,27 @@ impl Player {
         card.effects_on_play(self, supply, trash, other_players, callbacks);
     }
 
-    /// Action phase
-    pub fn action_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+    /// Reset player state
+    pub fn reset_state(&mut self) {
         // Reset resources
         self.resources.actions = 1;
         self.resources.buys = 1;
         self.resources.temp_coins = 0;
 
+        // Reset conditions
+        self.state = State::default();
+    }
+
+    /// Take a turn
+    pub fn turn(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
+        self.reset_state();
+        self.action_phase(supply, trash, other_players, callbacks);
+        self.buy_phase(supply, trash, other_players, callbacks);
+        self.cleanup();
+    }
+
+    /// Action phase
+    pub fn action_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         //TODO (much later): Duration cards
 
         let mut more = true;
@@ -307,13 +329,6 @@ impl Player {
         self.draw_cards(5);
     }
 
-    /// Take a turn
-    pub fn turn(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        self.action_phase(supply, trash, other_players, callbacks);
-        self.buy_phase(supply, trash, other_players, callbacks);
-        self.cleanup();
-    }
-
     /// Count up a player's victory points
     pub fn victory_points(&self) -> isize {
         let mut points = 0;
@@ -368,7 +383,7 @@ impl Player {
     }
 
     /// Prints out resources along with number of cards in hand/deck/discard/total
-    pub fn print_state(&self) {
+    pub fn print_status(&self) {
         let hand_count = self.hand.len();
         let deck_count = self.deck.len();
         let discard_count = self.discard.len();
