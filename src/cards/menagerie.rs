@@ -15,6 +15,9 @@ impl Card for Horse {
         player.draw_cards(2);
         player.add_actions(1);
 
-        // TODO: Figure out how to return this to its pile
+        if player.actions_in_play.back().unwrap().name() == "Horse" {
+            player.actions_in_play.pop_back().unwrap();
+            // TODO: Increment Horse pile count
+        }
     }
 }
