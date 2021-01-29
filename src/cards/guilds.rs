@@ -20,8 +20,10 @@ impl Card for Soothsayer {
 
         for i in 1..player_count {
             let index = (i + player_index) % player_count;
-            let r = game.gain(index, Box::new(BasicCurse), callbacks);
-            if r.is_ok() {
+            let result = game.gain(index, Box::new(BasicCurse), callbacks);
+
+            // Only draw a card if they gained a curse
+            if result.is_ok() {
                 let player = &mut game.players[index];
                 player.draw_cards(1);
             }
