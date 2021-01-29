@@ -204,16 +204,22 @@ impl Player {
     /// Take a turn
     pub fn turn(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         self.reset_state();
+
+        self.phase = Phase::ActionPhase;
         self.action_phase(supply, trash, other_players, callbacks);
+
+        self.phase = Phase::BuyPhase;
         self.buy_phase(supply, trash, other_players, callbacks);
+
+        self.phase = Phase::NightPhase;
+        // TODO: Night phase
+
         self.phase = Phase::OutOfTurn;
         self.cleanup();
     }
 
     /// Action phase
     pub fn action_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        self.phase = Phase::ActionPhase;
-
         //TODO (much later): Duration cards
 
         let mut more = true;
@@ -285,8 +291,6 @@ impl Player {
 
     /// Buy phase
     pub fn buy_phase(&mut self, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        self.phase = Phase::BuyPhase;
-
         // TODO: prompt user to play treasures
 
         self.resources.coins_remaining = self.resources.coins_in_hand + self.resources.temp_coins;
