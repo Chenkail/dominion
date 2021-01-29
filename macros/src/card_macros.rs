@@ -196,7 +196,7 @@ macro_rules! victory_points {
 /// Effects for an action with no effects other than drawing cards
 /// and/or adding actions/buys/coins for the turn
 ///
-/// Format: `basic_action_effects!(cards, actions, buys, coins);`
+/// Format: `basic_on_play_effects!(cards, actions, buys, coins);`
 ///
 /// Example:
 /// ```
@@ -208,7 +208,7 @@ macro_rules! victory_points {
 ///     name!("Market");
 ///     cost!(5);
 ///     types!(vec![Action]);
-///     basic_action_effects!(1, 1, 1, 1);
+///     basic_on_play_effects!(1, 1, 1, 1);
 /// }
 /// ```
 #[macro_export]
@@ -242,7 +242,7 @@ macro_rules! basic_action {
             name!($name);
             cost!($cost);
             types!(vec![Action]);
-            basic_action_effects!($cards, $actions, $buys, $coins);
+            basic_on_play_effects!($cards, $actions, $buys, $coins);
         }
     };
 }
