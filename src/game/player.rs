@@ -4,8 +4,7 @@ use std::{collections::VecDeque, mem};
 use serde::{Serialize, Deserialize};
 
 use crate::game::prelude::*;
-use crate::error::DominionError;
-use DominionError::*;
+use crate::error::{DominionError::*, DominionResult};
 use dominion_macros::card_vec;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
@@ -155,7 +154,7 @@ impl Player {
     /// Plays an action [card](Card) from the player's hand
     ///
     /// This is the function to call when a player plays a card directly
-    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn play_action_from_hand(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         // Remove card from hand
         let card = self.hand.get(index).unwrap();
         if card.is_action() {
@@ -218,7 +217,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         if *supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
         }
@@ -230,7 +229,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         if *supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
         }
@@ -242,7 +241,7 @@ impl Player {
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_deck_top(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn gain_to_deck_top(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         if *supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
         }
@@ -254,7 +253,7 @@ impl Player {
     }
 
     /// Buy a card
-    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn buy_card(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         if self.resources.coins_remaining < card.coin_cost() {
             return Err(InsufficientFunds);
         }
@@ -300,7 +299,7 @@ impl Player {
         }
     }
 
-    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn play_treasure(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         // Remove card from hand
         let c = self.hand.get(index).unwrap();
         if c.is_treasure() {
@@ -314,7 +313,7 @@ impl Player {
         }
     }
 
-    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+    pub fn play_all_treasures(&mut self, index: usize, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> DominionResult {
         for i in 0..self.hand.len() {
             let card = self.hand.get(index).unwrap();
             if card.is_treasure() {
