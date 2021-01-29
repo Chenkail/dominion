@@ -9,7 +9,7 @@ fn main() {
 
     player.print_status();
     player.print_cards();
-    player.action_effects(&Market, &mut game.supply, &mut others, &callbacks);
+    player.action_effects(&Market, &mut game.supply, &mut game.trash, &mut others, &callbacks);
     player.print_status();
     player.print_cards();
     player.update_coins_in_hand();
