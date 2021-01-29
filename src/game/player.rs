@@ -218,27 +218,39 @@ impl Player {
     }
 
     /// Gain a copy of a card to the discard pile
-    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        // TODO: check if supply pile is empty
+    pub fn gain(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+        if *supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile{card});
+        }
+
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, trash, other_players, callbacks);
         self.discard.push_back(card);
+        Ok(())
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        // TODO: check if supply pile is empty
+    pub fn gain_to_hand(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+        if *supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile{card});
+        }
+
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, trash, other_players, callbacks);
         self.hand.push_back(card);
+        Ok(())
     }
 
     /// Gain a copy of a card to hand
-    pub fn gain_to_deck_top(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
-        // TODO: check if supply pile is empty
+    pub fn gain_to_deck_top(&mut self, card: Box<dyn Card>, supply: &mut Supply, trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) -> Result<(), DominionError> {
+        if *supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile{card});
+        }
+
         *supply.get_mut(&card).unwrap() -= 1;
         card.effects_on_gain(self, supply, trash, other_players, callbacks);
         self.deck.push_front(card);
+        Ok(())
     }
 
     /// Buy a card

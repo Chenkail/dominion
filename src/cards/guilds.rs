@@ -19,9 +19,10 @@ impl Card for Soothsayer {
             // not sure how we can make that work. There are (as of jan 2021)
             // no reaction cards that both care about being given a curse
             // AND have effects that impact other players
-            // TODO: Make gain() return a Result and check it to see if they draw a card
-            p.gain(Box::new(BasicCurse), supply, trash, &mut Vec::new(), callbacks);
-            p.draw_cards(1);
+            let r = p.gain(Box::new(BasicCurse), supply, trash, &mut Vec::new(), callbacks);
+            if r.is_ok() {
+                p.draw_cards(1);
+            }
         }
     }
 }
