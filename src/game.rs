@@ -4,7 +4,6 @@
 //! players, the cards, and the game itself.
 
 pub mod prelude;
-pub mod utils;
 pub mod callbacks;
 
 mod cso;

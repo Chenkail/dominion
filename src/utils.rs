@@ -2,6 +2,33 @@
 
 use std::collections::VecDeque;
 
+use crate::types::*;
+
+/// Creates an unsorted CardDeck from a map containing cards and their counts
+///
+/// For example:
+/// ```
+/// # use dominion::types::*;
+/// # use dominion::cards::base::*;
+/// # use dominion_macros::*;
+/// # use dominion::utils::map_to_list;
+/// let mut map = Supply::new();
+/// map.insert(Box::new(Copper), 7);
+/// map.insert(Box::new(Estate), 3);
+/// let mut deck = map_to_list(map);
+/// deck.sort_unstable();
+/// assert_eq!(deck, card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate]);
+/// ```
+pub fn map_to_list(map: Supply) -> CardList {
+    let mut deck = CardList::new();
+    for (card, count) in map {
+        for _ in 0..count {
+            deck.push(card.clone());
+        }
+    }
+    deck
+}
+
 /// Shuffles anything which implements the associated trait LenAndSwap
 ///
 /// Uses Fisher-Yates shuffle

@@ -2,6 +2,7 @@
 //!
 //! See the trait for usage and examples
 
+use std::cmp::Ordering;
 use std::fmt;
 use std::fmt::Formatter;
 use std::hash::{Hash, Hasher};
@@ -136,8 +137,20 @@ impl Hash for dyn Card {
 
 impl PartialEq for dyn Card {
     fn eq(&self, other: &Self) -> bool {
-        self.name().eq_ignore_ascii_case(other.name())
+        self.name().to_ascii_lowercase().eq(&other.name().to_ascii_lowercase())
     }
 }
 
 impl Eq for dyn Card {}
+
+impl Ord for dyn Card {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.name().to_ascii_lowercase().cmp(&other.name().to_ascii_lowercase())
+    }
+}
+
+impl PartialOrd for dyn Card {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
