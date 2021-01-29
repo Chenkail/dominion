@@ -13,7 +13,8 @@ pub fn callbacks() -> Callbacks {
         prompt_indices_from_hand_u: Box::new(prompt_indices_from_hand_u),
         reveal_hand: Box::new(reveal_hand),
         reveal_top_discard_pile: Box::new(reveal_top_discard_pile),
-        reveal_top_draw_pile: Box::new(reveal_top_draw_pile)
+        reveal_top_draw_pile: Box::new(reveal_top_draw_pile),
+        get_player_consent: Box::new(get_player_consent),
     }
 }
 
@@ -81,4 +82,11 @@ fn reveal_top_draw_pile(player: &Player, n: usize) {
     for i in 0..n {
         println!("{}: {}",n , player.deck.get(i).unwrap().name())
     }
+}
+
+fn get_player_consent(player: &Player) -> bool {
+    let mut input = String::new();
+    println!("(y)es/(n)o");
+    io::stdin().read_line(&mut input).expect("error: unable to read user input");
+    return input.starts_with("y")
 }

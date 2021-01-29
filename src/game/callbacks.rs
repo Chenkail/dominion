@@ -10,6 +10,7 @@ pub type FnPlayerToUsize = Box<dyn Fn(&Player) -> usize>;
 pub type FnPlayerToi32 = Box<dyn Fn(&Player) -> i32>;
 pub type FnUsizeToVecUsize = Box<dyn Fn(usize) -> Vec<usize>>;
 pub type FnPlayerUsize = Box<dyn Fn(&Player, usize)>;
+pub type FnPlayerToBool = Box<dyn Fn(&Player) -> bool>;
 
 pub struct Callbacks {
     /// Is the player done with this phase
@@ -31,8 +32,12 @@ pub struct Callbacks {
     /// reveal top x cards of the player's draw pile
     /// if reveal whole draw pile, just pass in draw.len()
     pub reveal_top_draw_pile: FnPlayerUsize,
-    // future callbacks to be implemented:
+
     // callback to get player consent (yes / no)
+    pub get_player_consent: FnPlayerToBool,
+
+    // future callbacks to be implemented:
+    
     // callback to prompt card from discard,
     // callback to prompt list of indexes from discard
     // callback to prompt list of cards from trash
