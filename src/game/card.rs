@@ -62,7 +62,7 @@ use crate::types::*;
 /// from print_types() onward is automatically implemented and should probably
 /// not be overridden.
 ///
-/// [`dominion_macros`]: ../../../dominion_macros/index.html
+/// [`dominion_macros`]: ../../dominion_macros/index.html
 
 #[clonable]
 #[typetag::serde(tag = "card")]
