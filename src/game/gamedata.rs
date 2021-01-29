@@ -106,7 +106,8 @@ impl Game {
 
 
 
-    /// Plays an action [card](Card) from the player's hand
+    /// Plays an action [card](Card) from the hand of the player corresponding
+    /// to the given index
     ///
     /// This is the function to call when a player plays a card directly
     pub fn play_action_from_hand(&mut self, player_index: usize, card_index: usize, callbacks: &Callbacks) -> DominionResult {
@@ -205,7 +206,7 @@ impl Game {
         Ok(())
     }
 
-    /// Gain a copy of a card to hand
+    /// Gain a copy of a card to the top of the deck
     pub fn gain_to_deck_top(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
         if *self.supply.get(&card).unwrap() == 0 {
             return Err(EmptyPile{card});
