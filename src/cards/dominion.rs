@@ -185,18 +185,15 @@ impl Card for Library {
     name!("Library");
     cost!(5);
     types!(vec![Action]);
-    
+
     fn effects_on_play(&self, player: &mut Player, _supply: &mut Supply, _trash: &mut CardDeck, _other_players: &mut PlayerSlice, _callbacks: &Callbacks) {
         while player.hand.len() < 7 {
-
             if player.deck.front().unwrap().is_action() {
                 //TODO: get player consent to draw or discard the card
             } else {
                 player.draw_cards(1);
             }
-
         }
-
     }
 }
 
@@ -309,11 +306,11 @@ impl Card for Witch {
     name!("Witch");
     cost!(5);
     types!(vec![Action, Attack]);
-    
+
     fn effects_on_play(&self, player: &mut Player, supply: &mut Supply, _trash: &mut CardDeck, other_players: &mut PlayerSlice, callbacks: &Callbacks) {
         player.draw_cards(2);
         for p in other_players {
-            // CODE DEBT: This doesn't actually pass in other_players but I'm
+            // FIXME: This doesn't actually pass in other_players but I'm
             // not sure how we can make that work. There are (as of jan 2021)
             // no reaction cards that both care about being given a curse
             // AND have effects that impact other players
