@@ -12,10 +12,13 @@ pub type FnUsizeToVecUsize = Box<dyn Fn(usize) -> Vec<usize>>;
 pub type FnPlayerUsize = Box<dyn Fn(&Player, usize)>;
 pub type FnPlayerToBool = Box<dyn Fn(&mut Player) -> bool>;
 
+// hmmm yes refactortime
+pub type FnPlayerVecToVecUsize<T> = Box<dyn Fn(&mut Player, Vec<T>) -> Vec<usize>>;
+
 pub struct Callbacks {
     /// Is the player done with this phase
     pub prompt_player_done: FnToBool,
-    /// Get an index of a card in hand to choose to play
+    /// Get an index of a card in hand to choose to play 
     pub prompt_card_from_hand: FnToUsize,
     /// Get a list of indices of cards from hand
     pub prompt_indices_from_hand: FnToVecUsize,
