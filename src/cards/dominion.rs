@@ -289,7 +289,28 @@ impl Card for Smithy {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct ThroneRoom;
 
-placeholder_effects!(ThroneRoom, "Throne Room", 4);
+#[typetag::serde]
+impl Card for ThroneRoom {
+    name!("Throne Room");
+    cost!(4);
+    types!(vec![Action]);
+
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let card_index = (callbacks.prompt_card_from_hand)();
+        let player = &mut game.players[player_index];
+        let card = player.hand.remove(card_index).unwrap();
+
+        if !card.is_action() {
+            // TODO: Prompt for new card
+        }
+
+        game.action_effects(player_index, card.clone(), callbacks);
+        game.action_effects(player_index, card.clone(), callbacks);
+
+        let player = &mut game.players[player_index];
+        player.in_play.push_back(card);
+    }
+}
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)
 #[derive(Clone, Serialize, Deserialize)]
