@@ -243,7 +243,19 @@ impl Card for Market {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Merchant;
 
-placeholder_effects!(Merchant, "Merchant", 3);
+#[typetag::serde]
+impl Card for Merchant {
+    name!("Merchant");
+    cost!(3);
+    types!(vec![Action]);
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let p = game.players.get_mut(player_index).unwrap();
+        p.add_actions(1);
+        p.draw_cards(1);
+
+        //TODO: add method on game
+    }
+}
 
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Militia)
