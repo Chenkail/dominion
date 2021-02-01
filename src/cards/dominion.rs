@@ -17,9 +17,13 @@ impl Card for Artisan {
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         // TODO: change to card of choice from supply and put a card from hand back on deck
         let card = Box::new(Silver);
-        game.gain_to_hand(player_index, card, callbacks);
+        let result = game.gain_to_hand(player_index, card, callbacks);
+        if result.is_err() {
+            // TODO: get new card
+        }
     }
 }
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Bandit)
 #[derive(Clone, Serialize, Deserialize)]
@@ -48,11 +52,13 @@ impl Card for Bandit {
     }
 }
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Bureaucrat)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Bureaucrat;
 
 placeholder_effects!(Bureaucrat, "Bureaucrat", 4);
+
 
 // Cellar
 // +1 Action, discard any number of cards, then draw that many
@@ -75,6 +81,7 @@ impl Card for Cellar {
     }
 }
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Chapel;
@@ -90,6 +97,7 @@ impl Card for Chapel {
         player.trash_given_indexes(indexes, &mut game.trash);
     }
 }
+
 
 // Council Room
 // +4 cards, +1 buy, each other player draws a card
@@ -117,6 +125,7 @@ impl Card for CouncilRoom {
     }
 }
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Festival;
@@ -128,6 +137,7 @@ impl Card for Festival {
     types!(vec![Action]);
     basic_on_play_effects!(0, 2, 1, 2);
 }
+
 
 // Gardens
 // effect: victory card, worth 1 per 10 cards you have(round down)
@@ -146,6 +156,7 @@ impl Card for Gardens {
         ((player.deck.len() + player.hand.len() + player.discard.len()) / 10) as isize
     }
 }
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Harbinger)
 #[derive(Clone, Serialize, Deserialize)]
@@ -172,6 +183,7 @@ impl Card for Harbinger {
     }
 }
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Laboratory)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Laboratory;
@@ -183,6 +195,7 @@ impl Card for Laboratory {
     types!(vec![Action]);
     basic_on_play_effects!(2, 1, 0, 0);
 }
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Library)
 #[derive(Clone, Serialize, Deserialize)]
@@ -210,6 +223,7 @@ impl Card for Library {
     }
 }
 
+
 // Market
 // effects: +1 Action, +1 Buy, +1 temp_coins, +1 Card
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Market)
@@ -231,11 +245,13 @@ pub struct Merchant;
 
 placeholder_effects!(Merchant, "Merchant", 3);
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Militia)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Militia;
 
 placeholder_effects!(Militia, "Militia", 4);
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Mine)
 #[derive(Clone, Serialize, Deserialize)]
@@ -243,11 +259,13 @@ pub struct Mine;
 
 placeholder_effects!(Mine, "Mine", 5);
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Moat)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Moat;
 
 placeholder_effects!(Moat, "Moat", 2);
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Moneylender)
 #[derive(Clone, Serialize, Deserialize)]
@@ -255,11 +273,13 @@ pub struct Moneylender;
 
 placeholder_effects!(Moneylender, "Moneylender", 4);
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Poacher)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Poacher;
 
 placeholder_effects!(Poacher, "Poacher", 4);
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Remodel)
 #[derive(Clone, Serialize, Deserialize)]
@@ -267,11 +287,13 @@ pub struct Remodel;
 
 placeholder_effects!(Remodel, "Remodel", 4);
 
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Sentry)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Sentry;
 
 placeholder_effects!(Sentry, "Sentry", 5);
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)
 #[derive(Clone, Serialize, Deserialize)]
@@ -284,6 +306,7 @@ impl Card for Smithy {
     types!(vec![Action]);
     basic_on_play_effects!(3, 0, 0, 0);
 }
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/ThroneRoom)
 #[derive(Clone, Serialize, Deserialize)]
@@ -311,6 +334,7 @@ impl Card for ThroneRoom {
         player.in_play.push_back(card);
     }
 }
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)
 #[derive(Clone, Serialize, Deserialize)]
@@ -353,6 +377,7 @@ impl Card for Witch {
         }
     }
 }
+
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop)
 #[derive(Clone, Serialize, Deserialize)]
