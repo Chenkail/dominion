@@ -1,6 +1,8 @@
 {
     "rust-analyzer.checkOnSave.command": "Clippy",
     "rust-analyzer.checkOnSave.overrideCommand": null,
+    "rust-analyzer.procMacro.enable": true,
+    "rust-analyzer.cargo.loadOutDirsFromCheck": true,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -11,5 +13,8 @@
     },
     "cSpell.ignoreWords": [
         "thiserror"
+    ],
+    "cSpell.words": [
+        "gamedata"
     ],
 }
