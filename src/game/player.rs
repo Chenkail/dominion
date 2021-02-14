@@ -21,6 +21,7 @@ pub struct Resources {
 }
 
 /// Struct to keep track of certain conditions
+#[non_exhaustive]
 #[derive(Default, Debug, Serialize, Deserialize)]
 pub struct State {
     /// Is the player immune to attacks
@@ -32,6 +33,7 @@ pub struct State {
 }
 
 /// What phase are we in
+#[non_exhaustive]
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Phase {
     OutOfTurn,
