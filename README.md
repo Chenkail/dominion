@@ -2,7 +2,7 @@
 
 ![GitHub](https://img.shields.io/github/license/anticardgamecardgameclub/dominion)
 [![dependency status](https://deps.rs/repo/github/anticardgamecardgameclub/dominion/status.svg)](https://deps.rs/repo/github/anticardgamecardgameclub/dominion)
-![GitHub branch checks state](https://img.shields.io/github/checks-status/anticardgamecardgameclub/dominion/main)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/anticardgamecardgameclub/dominion/CI)
 
 STILL A WORK IN PROGRESS - NOT CURRENTLY USABLE
 
