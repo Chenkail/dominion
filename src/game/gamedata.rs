@@ -262,8 +262,12 @@ impl Game {
         while (self.players[player_index].resources.buys > 0) && more {
             // Buy cards
             // TODO: Figure out how to allow player to choose card they want
+            let card = (callbacks.choose_card_from_supply)(&self.supply);
+
             // TODO: If player chooses a card they cannot buy, loop
-            self.buy_card(player_index, Box::new(Copper), callbacks);
+            while let Err(e) = self.buy_card(player_index, card.clone(), callbacks) {
+
+            }
 
             more = (callbacks.prompt_player_done)();
         }

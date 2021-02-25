@@ -1,6 +1,9 @@
 //! Command line text client for Dominion for demonstrating callbacks
 
 use std::{io, vec};
+use itertools::Itertools;
+
+use crate::{game::Card, types::Supply};
 
 // use crate::game::player::Player;
 use crate::game::{Callbacks, Player};
@@ -15,6 +18,7 @@ pub fn callbacks() -> Callbacks {
         reveal_top_discard_pile: Box::new(reveal_top_discard_pile),
         reveal_top_draw_pile: Box::new(reveal_top_draw_pile),
         get_player_consent: Box::new(get_player_consent),
+        choose_card_from_supply: Box::new(choose_card_from_supply),
     }
 }
 
@@ -84,9 +88,25 @@ fn reveal_top_draw_pile(player: &Player, n: usize) {
     }
 }
 
-fn get_player_consent(player: &mut Player) -> bool {
+fn get_player_consent(_player: &mut Player) -> bool {
     let mut input = String::new();
     println!("(y)es/(n)o");
     io::stdin().read_line(&mut input).expect("error: unable to read user input");
-    return input.starts_with("y")
+
+    input.starts_with('y')
+}
+
+fn choose_card_from_supply(supply: &Supply) -> Box<dyn Card> {
+    let mut alphabetized = supply.keys().collect_vec();
+    alphabetized.sort_unstable();
+    println!("Cards:");
+    println!("{:?}", alphabetized);
+
+    println!("Enter index to select:");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("error: unable to read user input");
+    let i = input.parse::<usize>().unwrap();
+    let card = *alphabetized.get(i).expect("Index out of bounds");
+
+    card.clone()
 }

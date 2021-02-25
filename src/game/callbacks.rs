@@ -1,6 +1,8 @@
 //! The callbacks that need to be provided when building a client
 
-use crate::game::player::Player;
+use crate::game::{Card, Player};
+
+use super::prelude::Supply;
 
 pub type FnToBool = Box<dyn Fn() -> bool>;
 pub type FnToUsize = Box<dyn Fn() -> usize>;
@@ -11,14 +13,16 @@ pub type FnPlayerToi32 = Box<dyn Fn(&Player) -> i32>;
 pub type FnUsizeToVecUsize = Box<dyn Fn(usize) -> Vec<usize>>;
 pub type FnPlayerUsize = Box<dyn Fn(&Player, usize)>;
 pub type FnPlayerToBool = Box<dyn Fn(&mut Player) -> bool>;
+pub type FnPlayerToCard = Box<dyn Fn(&mut Player) -> Box<dyn Card>>;
+pub type FnSupplyToCard = Box<dyn Fn(&Supply) -> Box<dyn Card>>;
 
-// hmmm yes refactortime
+// hmm yes refactor time
 pub type FnPlayerVecToVecUsize<T> = Box<dyn Fn(&mut Player, Vec<T>) -> Vec<usize>>;
 
 pub struct Callbacks {
     /// Is the player done with this phase
     pub prompt_player_done: FnToBool,
-    /// Get an index of a card in hand to choose to play 
+    /// Get an index of a card in hand to choose to play
     pub prompt_card_from_hand: FnToUsize,
     /// Get a list of indices of cards from hand
     pub prompt_indices_from_hand: FnToVecUsize,
@@ -38,6 +42,8 @@ pub struct Callbacks {
 
     // callback to get player consent (yes / no)
     pub get_player_consent: FnPlayerToBool,
+
+    pub choose_card_from_supply: FnSupplyToCard,
 
     // future callbacks to be implemented:
 
