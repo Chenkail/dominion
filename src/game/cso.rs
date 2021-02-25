@@ -1,4 +1,8 @@
 //! "Card-shaped objects"
+
+// Need to allow unused variables for default implementations
+#![allow(unused_variables)]
+
 use crate::game::{player::Player, card::Card};
 use crate::types::*;
 
@@ -31,5 +35,5 @@ pub trait State {
 }
 
 pub trait Way {
-    fn effects(&self, _player: Player, _card: Box<dyn Card>, _supply: Supply);
+    fn effects(&self, player: Player, card: Box<dyn Card>, supply: Supply);
 }
