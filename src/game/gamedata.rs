@@ -261,12 +261,11 @@ impl Game {
         let mut more = true;
         while (self.players[player_index].resources.buys > 0) && more {
             // Buy cards
-            // TODO: Figure out how to allow player to choose card they want
-            let card = (callbacks.choose_card_from_supply)(&self.supply);
+            let mut card = (callbacks.choose_card_from_supply)(&self.supply);
 
-            // TODO: If player chooses a card they cannot buy, loop
-            while let Err(e) = self.buy_card(player_index, card.clone(), callbacks) {
-
+            // If player chooses a card they cannot buy, loop
+            while self.buy_card(player_index, card.clone(), callbacks).is_err() {
+                card = (callbacks.choose_card_from_supply)(&self.supply);
             }
 
             more = (callbacks.prompt_player_done)();
