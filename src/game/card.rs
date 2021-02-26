@@ -137,7 +137,7 @@ impl fmt::Debug for dyn Card {
 
 impl Hash for dyn Card {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        self.name().hash(state);
+        self.name().to_lowercase().hash(state);
     }
 }
 

@@ -248,7 +248,7 @@ impl Card for Merchant {
     name!("Merchant");
     cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
         let p = game.players.get_mut(player_index).unwrap();
         p.add_actions(1);
         p.draw_cards(1);

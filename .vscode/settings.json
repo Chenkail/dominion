@@ -12,9 +12,15 @@
         "**/target": true
     },
     "cSpell.ignoreWords": [
-        "thiserror"
+        "acost",
+        "avail",
+        "cards",
+        "return",
+        "thiserror",
+        "ucost",
+        "gamedata"
     ],
     "cSpell.words": [
-        "gamedata"
+
     ],
 }

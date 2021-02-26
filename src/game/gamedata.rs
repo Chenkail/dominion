@@ -303,26 +303,28 @@ impl Game {
         Ok(())
     }
 
-    /// Returns vector of cards available under a certain cost
+    /// Returns vector of available cards with cost less than or equal
+    /// to the given value
     ///
     /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_ucost(&self, cost: usize) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
         return self.supply.keys()
             .filter(|a| *self.supply.get(*a).unwrap() > 0)
-            .filter(|a| a.coin_cost() < cost)
+            .filter(|a| a.coin_cost() <= cost)
             .cloned()
             .collect();
     }
 
-    /// Returns vector of cards available above a certain cost
+    /// Returns vector of available cards with cost greater than or equal
+    /// to the given value
     ///
     /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_acost(&self, cost: usize) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
         return self.supply.keys()
             .filter(|a| *self.supply.get(*a).unwrap() > 0)
-            .filter(|a| a.coin_cost() > cost)
+            .filter(|a| a.coin_cost() >= cost)
             .cloned()
             .collect();
     }
