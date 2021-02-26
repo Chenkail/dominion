@@ -81,7 +81,7 @@ macro_rules! name {
 /// Set the card's cost
 ///
 /// Format: `cost!(coins, debt, potions);`
-/// (If ``potions`` is present, ``debt`` is required, otherwise both are optional)
+/// (If ``potions`` is present, ``debt`` is required; otherwise both are optional)
 ///
 /// For example:
 /// ```
