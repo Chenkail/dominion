@@ -1,0 +1,21 @@
+[package]
+name = "examples"
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[dev-dependencies]
+dominion = { path = "../dominion" }
+dominion-macros = { path = "../dominion-macros/" }
+
+[[example]]
+name = "ex1_create_game"
+path = "ex1_create_game/main.rs"
+
+[[example]]
+name = "ex2_actions"
+path = "ex2_actions/main.rs"
+
+[[example]]
+name = "ex3_callbacks"
+path = "ex3_callbacks/main.rs"
