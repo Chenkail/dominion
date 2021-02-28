@@ -74,7 +74,7 @@ pub trait Card: Clone {
     /// The card's [types](CardType)
     fn types(&self) -> Vec<CardType>;
     /// The card text (this will often be blank, as is the case with all the
-    /// cards in the base set)
+    /// basic treasures/victory cards)
     fn description(&self) -> &str { "" }
 
     /// How much the card costs to buy, in coins
@@ -97,7 +97,7 @@ pub trait Card: Clone {
     fn heirloom(&self) -> Option<Box<dyn Card>> { None }
 
     // Effects and triggers
-    /// The card's effects when played as an action
+    /// The card's effects when played from hand
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
     fn effects_on_react(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}

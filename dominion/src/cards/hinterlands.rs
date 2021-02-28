@@ -18,6 +18,7 @@ impl Card for SilkRoad {
                 victory_cards += 1;
             }
         }
+
         victory_cards / 4
     }
 }

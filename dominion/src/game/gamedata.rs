@@ -150,8 +150,10 @@ impl Game {
         // TODO: Night phase
 
         let player = &mut self.players[player_index];
-        player.phase = Phase::OutOfTurn;
+        player.phase = Phase::CleanupPhase;
         player.cleanup();
+
+        player.phase = Phase::OutOfTurn;
     }
 
     /// Action phase

@@ -40,6 +40,7 @@ pub enum Phase {
     ActionPhase,
     BuyPhase,
     NightPhase,
+    CleanupPhase,
 }
 
 /// Struct representing a player
