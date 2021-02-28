@@ -97,8 +97,12 @@ pub trait Card: Clone {
     fn heirloom(&self) -> Option<Box<dyn Card>> { None }
 
     // Effects and triggers
-    /// The card's effects when played from hand
+    /// The card's regular effects when played from hand
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    /// The card's attack effects on other players
+    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    /// Who the attack targets
+    fn attack_targets(&self) -> Option<AttackTargetType> { None }
     /// The card's effects when used as a reaction
     fn effects_on_react(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is bought (but not gained through some other means)

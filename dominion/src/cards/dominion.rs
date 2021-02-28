@@ -396,17 +396,12 @@ impl Card for Witch {
     name!("Witch");
     cost!(5);
     types!(vec![Action, Attack]);
+    basic_on_play_effects!(2, 0, 0, 0);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
-        let player = &mut game.players[player_index];
-        player.draw_cards(2);
+    fn attack_targets(&self) -> Option<AttackTargetType> { Some(EveryoneElse) }
 
-        let player_count = game.players.len();
-
-        for i in 1..player_count {
-            let index = (i + player_index) % player_count;
-            let _ = game.gain(index, Box::new(BasicCurse), callbacks);
-        }
+    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        let _ = game.gain(player_index, Box::new(BasicCurse), callbacks);
     }
 }
 

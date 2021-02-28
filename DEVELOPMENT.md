@@ -15,7 +15,8 @@ involving other players (e.g. Attack cards).
 ## Player Turn Order
 
 Turn order follows increasing player index, i.e. Player 2 goes after Player 1
-and sits to their left
+and sits to their left (in other words, player index increases clockwise when
+viewed from the top)
 
 For example, the following code loops over every player in the game, starting
 with the player whose turn it is:

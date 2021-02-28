@@ -51,6 +51,15 @@ impl Display for CardType {
     }
 }
 
+/// Which players an attack can target
+#[derive(PartialEq, Eq, Debug)]
+#[derive(Serialize, Deserialize)]
+pub enum AttackTargetType {
+    PlayerToLeft,
+    EveryoneElse,
+    PlayerOfChoice,
+}
+
 /// Triggers for Reaction cards
 #[derive(PartialEq, Eq, Debug)]
 #[derive(Serialize, Deserialize)]
