@@ -276,7 +276,27 @@ placeholder_effects!(Mine, "Mine", 5);
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Moat;
 
-placeholder_effects!(Moat, "Moat", 2);
+#[typetag::serde]
+impl Card for Moat {
+    name!("Moat");
+    cost!(2);
+    types!(vec![Action, Reaction]);
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+        let p = game.players.get_mut(player_index).unwrap();
+        p.draw_cards(2);
+    }
+
+    fn effects_on_react(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+        // TODO: Fix this to make it a choice per attack, rather than making
+        // the player completely immune until their next turn
+        let p = game.players.get_mut(player_index).unwrap();
+        p.state.immune = true;
+    }
+
+    fn reaction_trigger(&self) -> Option<ReactionTrigger> {
+        Some(OtherPlayerPlaysAttack)
+    }
+}
 
 
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Moneylender)

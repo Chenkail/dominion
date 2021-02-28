@@ -96,7 +96,7 @@ pub trait Card: Clone {
     /// Heirloom to add at start of game
     fn heirloom(&self) -> Option<Box<dyn Card>> { None }
 
-    // Effect triggers
+    // Effects and triggers
     /// The card's effects when played as an action
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// The card's effects when used as a reaction
@@ -105,6 +105,9 @@ pub trait Card: Clone {
     fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained
     fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+
+    /// The trigger for a reaction card
+    fn reaction_trigger(&self) -> Option<ReactionTrigger> { None }
 
     // Type check methods - these should generally not be overridden
     /// Print out all types a card has, separated by commas

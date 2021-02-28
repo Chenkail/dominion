@@ -50,3 +50,27 @@ impl Display for CardType {
         write!(f, "{:?}", *self)
     }
 }
+
+/// Triggers for Reaction cards
+#[derive(PartialEq, Eq, Debug)]
+#[derive(Serialize, Deserialize)]
+pub enum ReactionTrigger {
+    // Most common reaction trigger - another player plays an attack card
+    OtherPlayerPlaysAttack,
+    // Hovel
+    BuyAVictoryCard,
+    // Black Cat
+    OtherPlayerGainsVictoryCard,
+    // Fool's Gold
+    OtherPlayerGainsProvince,
+    // Faithful Hound, Tunnel, Village Green
+    DiscardedNotDuringCleanup,
+    // Sheepdog, Sleigh, Trader, Watchtower
+    YouGainACard,
+    // Market Square
+    CardIsTrashed,
+    // Patron
+    YouRevealThis,
+    // Falconer
+    FalconerReaction,
+}
