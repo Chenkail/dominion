@@ -58,10 +58,10 @@ use crate::types::*;
 ///
 /// All other methods are optional, though for certain card types it doesn't
 /// make sense not to have custom implementations for some of these methods.
-/// For example, all action cards should implement `action_effects()`, and all
-/// victory cards should implement `victory_points()`. Note that every method
-/// from print_types() onward is automatically implemented and should probably
-/// not be overridden.
+/// For example, all action cards should generally implement `effects_on_play()`,
+/// and all victory cards should implement `victory_points()`. Note that every
+/// method from print_types() onward is automatically implemented and should
+/// probably not be overridden.
 ///
 /// [`dominion_macros`]: ../../dominion_macros/index.html
 
