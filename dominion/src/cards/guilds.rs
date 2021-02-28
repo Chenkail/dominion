@@ -15,18 +15,16 @@ impl Card for Soothsayer {
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         // If there are no more Golds, we don't care so we move on
         let _ = game.gain(player_index, Box::new(Gold), callbacks);
+    }
 
-        let player_count = game.players.len();
+    fn attack_targets(&self) -> Option<AttackTargetType> { Some(EveryoneElse) }
 
-        for i in 1..player_count {
-            let index = (i + player_index) % player_count;
-            let result = game.gain(index, Box::new(BasicCurse), callbacks);
-
+    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+        // Try to give them a curse
+        if game.gain(player_index, Box::new(BasicCurse), callbacks).is_ok() {
             // Only draw a card if they gained a curse
-            if result.is_ok() {
-                let player = &mut game.players[index];
-                player.draw_cards(1);
-            }
+            let player = &mut game.players[player_index];
+            player.draw_cards(1);
         }
     }
 }
