@@ -57,7 +57,7 @@ impl Display for CardType {
 pub enum AttackTargetType {
     PlayerToLeft,
     EveryoneElse,
-    PlayerOfChoice,
+    // PlayerOfChoice,
 }
 
 /// Triggers for Reaction cards

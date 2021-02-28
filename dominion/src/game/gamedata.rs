@@ -129,7 +129,34 @@ impl Game {
     /// Does not subtract actions from the player's total. Should only be called
     /// in the effects() function of other cards (e.g. Throne Room)
     pub fn action_effects(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) {
+        // Effects on the player who played the card
         card.effects_on_play(self, player_index, callbacks);
+
+        // Attack effects, if any
+        if card.is_attack() {
+            let targets = self.get_targets(player_index, card.attack_targets().expect("Card has Attack type but does not define targets!"));
+
+            for index in targets {
+                card.attack_effects(self, index, callbacks)
+            }
+        }
+    }
+
+    /// Convert the attack target type into a vec of player indices
+    pub fn get_targets(&mut self, player_index: usize, target_type: AttackTargetType) -> Vec<usize> {
+        match target_type {
+            EveryoneElse => {
+                let mut indices = vec![];
+                for i in 0..self.players.len() {
+                    indices.push(i);
+                }
+                indices.remove(player_index);
+
+                indices
+            }
+
+            PlayerToLeft => { vec![player_index + 1] }
+        }
     }
 
     /// Take a turn

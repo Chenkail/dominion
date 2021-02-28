@@ -14,4 +14,5 @@ pub use crate::game::callbacks::Callbacks;
 pub use crate::utils;
 pub use crate::types::*;
 pub use crate::types::CardType::*;
+pub use crate::types::AttackTargetType::*;
 pub use crate::types::ReactionTrigger::*;
