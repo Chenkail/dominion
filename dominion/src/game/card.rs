@@ -109,6 +109,8 @@ pub trait Card: Clone {
     fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
     /// Effects to trigger when this card is gained
     fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    /// Effects to trigger when this card is trashed
+    fn effects_on_trash(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
 
     /// The trigger for a reaction card
     fn reaction_trigger(&self) -> Option<ReactionTrigger> { None }
