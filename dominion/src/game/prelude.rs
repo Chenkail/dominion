@@ -10,7 +10,7 @@ pub use dominion_macros::*;
 
 pub use crate::cards::all::*;
 pub use crate::game::*;
-pub use crate::game::callbacks::Callbacks;
+pub use crate::game::cso::*;
 pub use crate::utils;
 pub use crate::types::*;
 pub use crate::types::CardType::*;

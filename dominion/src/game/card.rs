@@ -10,8 +10,8 @@ use std::hash::{Hash, Hasher};
 use itertools::Itertools;
 use dyn_clonable::*;
 
-use crate::game::{Game, Player};
-use crate::game::callbacks::Callbacks;
+use crate::game::{Game, Player, Callbacks};
+use crate::game::cso::*;
 use crate::types::*;
 
 /// The Card trait that each card should implement
@@ -93,7 +93,9 @@ pub trait Card: Clone {
     fn victory_points(&self, player: &Player) -> isize { 0 }
 
     // Setup
-    /// Heirloom to add at start of game
+    /// Artifact associated with the card, if any
+    fn artifact(&self) -> Option<Box<dyn Artifact>> { None }
+    /// Heirloom associated with the card, if any
     fn heirloom(&self) -> Option<Box<dyn Card>> { None }
 
     // Effects and triggers
