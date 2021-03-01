@@ -14,13 +14,18 @@ pub trait Artifact: CSO {}
 
 pub trait Boon: CSO {}
 
-pub trait Event: CSO {}
+pub trait Event: CSO {
+    fn coin_cost(&self) -> usize;
+    fn debt_cost(&self) -> usize;
+}
 
 pub trait Hex: CSO {}
 
 pub trait Landmark: CSO {}
 
-pub trait Project: CSO {}
+pub trait Project: CSO {
+    fn coin_cost(&self) -> usize;
+}
 
 pub trait State: CSO {}
 
