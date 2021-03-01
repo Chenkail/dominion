@@ -2,6 +2,8 @@
 
 use super::prelude::*;
 
+placeholder_card!(Champion, "Champion", 6);
+
 /// [Wiki link](http://wiki.dominionstrategy.com/index.php/Port)
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Port;

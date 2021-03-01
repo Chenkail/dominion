@@ -136,8 +136,18 @@ impl Game {
         if card.is_attack() {
             let targets = self.get_targets(player_index, card.attack_targets().expect("Card has Attack type but does not define targets!"));
 
+            self.check_reactions(player_index, OtherPlayerPlaysAttack, callbacks);
+
             for index in targets {
-                card.attack_effects(self, index, callbacks)
+                let player = &self.players[player_index];
+                let champion: Box<dyn Card> = Box::new(crate::cards::adventures::Champion);
+
+                if !(player.state.immune || player.in_play.contains(&champion)) {
+                    card.attack_effects(self, index, callbacks)
+                }
+
+                let mut player = &mut self.players[player_index];
+                player.state.immune = false;
             }
         }
     }
@@ -254,6 +264,10 @@ impl Game {
             return Err(InsufficientFunds);
         }
 
+        if *self.supply.get(&card).unwrap() == 0 {
+            return Err(EmptyPile { card });
+        }
+
         card.effects_on_buy(self, player_index, callbacks);
         card.effects_on_gain(self, player_index, callbacks);
 
@@ -263,6 +277,12 @@ impl Game {
         player.resources.temp_coins -= card.coin_cost();
 
         player.resources.buys -= 1;
+
+        // Hovel check
+        if card.is_victory() {
+            self.check_reactions(player_index, BuyAVictoryCard, callbacks);
+        }
+
         Ok(())
     }
 
@@ -330,6 +350,11 @@ impl Game {
         }
 
         Ok(())
+    }
+
+    pub fn check_reactions(&mut self, player_index: usize, reaction_trigger: ReactionTrigger, callbacks: &Callbacks) {
+        // TODO: prompt player and perform reaction
+
     }
 
     /// Returns vector of available cards with cost less than or equal
