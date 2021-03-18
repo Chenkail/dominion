@@ -1,7 +1,7 @@
 [package]
 name = "dominion-macros"
 version = "0.1.0"
-authors = ["Chenkail <40770208+Chenkail@users.noreply.github.com>"]
+authors = ["circumspect <40770208+circumspect@users.noreply.github.com>"]
 edition = "2018"
 license = "AGPLv3"
 

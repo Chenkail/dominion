@@ -59,7 +59,6 @@ impl Game {
             };
 
             supply.insert(card, count);
-
         }
 
         Game::new_with_supply(player_count, supply)

@@ -1,7 +1,7 @@
 [package]
 name = "dominion"
 version = "0.1.0"
-authors = ["chenkail <40770208+Chenkail@users.noreply.github.com>"]
+authors = ["circumspect <40770208+circumspect@users.noreply.github.com>"]
 
 description = "A Rust backend library for playing Dominion"
 readme = "README.md"
