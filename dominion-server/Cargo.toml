@@ -1,0 +1,10 @@
+[package]
+name = "dominion-server"
+version = "0.1.0"
+authors = ["circumspect <40770208+circumspect@users.noreply.github.com>"]
+edition = "2018"
+license = "AGPLv3"
+
+[dependencies]
+dominion = { path = "../dominion" }
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
