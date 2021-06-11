@@ -13,17 +13,18 @@ pub struct Game {
     pub extras: Supply,
 }
 
-impl Default for Game {
-    /// Creates a two-player game with the recommended first game set
-    fn default() -> Self {
-        let kingdom_cards: CardList = card_vec![Cellar, Market, Merchant, Militia, Mine, Moat, Remodel, Smithy, Village, Workshop];
-        Game::new(2, kingdom_cards)
-    }
-}
-
 impl Game {
-    /// Create a new [Game] given a list of [Cards](Card) for the supply
-    pub fn new(player_count: usize, cards: CardList) -> Game {
+    pub fn default_supply_list() -> CardList {
+        card_vec![Cellar, Market, Merchant, Militia, Mine, Moat, Remodel, Smithy, Village, Workshop]
+    }
+
+    pub fn new() -> Game {
+        Game { players: Vec::new(), supply: HashMap::new(), trash: VecDeque::new(), extras: HashMap::new() }
+    }
+
+    /// Generates the supply piles for the game given a list of cards to use
+    pub fn generate_supply(&mut self, cards: CardList) {
+        let player_count = self.players.len();
         let mut supply: Supply = HashMap::new();
 
         let (victory_card_count, province_count, curse_count) = match player_count {
@@ -61,20 +62,12 @@ impl Game {
             supply.insert(card, count);
         }
 
-        Game::new_with_supply(player_count, supply)
+        self.supply = supply;
     }
 
-    /// Creates a new Game with a given supply and number of players
-    pub fn new_with_supply(player_count: usize, supply: Supply) -> Game {
-        let mut player_vec: PlayerList = Vec::with_capacity(player_count);
-        let trash: CardDeck = VecDeque::new();
-        let extras: Supply = HashMap::new();
-
-        for i in 0..player_count {
-            player_vec.push(Player::new_with_default_deck(i))
-        }
-
-        Game { players: player_vec, supply, trash, extras }
+    /// Add a player to the game
+    pub fn add_player(&mut self, player: Player) {
+        self.players.push(player);
     }
 
     /// Prints out all the cards in the supply and their remaining quantities

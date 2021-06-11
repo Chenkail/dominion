@@ -70,7 +70,7 @@ use crate::types::*;
 #[clonable]
 #[allow(unused_variables)]
 #[typetag::serde(tag = "card")]
-pub trait Card: Clone {
+pub trait Card: Clone + Send {
     /// The name on the card (e.g. "Throne Room")
     fn name(&self) -> &str;
     /// The card's [types](CardType)
