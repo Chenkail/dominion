@@ -23,7 +23,7 @@ async fn main() {
         let mut rx = tx.subscribe();
 
         let player = Player::new_with_default_deck(player_number);
-        // println!("Player #{} joined with UUID: {}", &player.number, &player.uuid);
+        println!("Player #{} joined with UUID: {}", &player.number, &player.uuid);
         player_number += 1;
 
         let new_data = Arc::clone(&data);
