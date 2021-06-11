@@ -46,7 +46,6 @@ async fn main() {
             let mut line = String::new();
 
             loop {
-                let new_data = Arc::clone(&new_data);
                 tokio::select! {
                     result = reader.read_line(&mut line) => {
                         if result.unwrap() == 0 {
@@ -54,8 +53,13 @@ async fn main() {
                         }
 
                         match line.trim() {
-                            "print" => {
-                                println!("Hello!")
+                            "ping" => {
+                                println!("pong!")
+                            }
+
+                            "hand" => {
+                                // TODO: print out hand
+                                println!("hand")
                             }
 
                             "start" => {
