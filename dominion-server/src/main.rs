@@ -7,6 +7,7 @@ use tokio::{
 };
 
 use dominion::game::prelude::*;
+use dominion::error::DominionError::*;
 
 #[tokio::main]
 async fn main() {
@@ -21,6 +22,12 @@ async fn main() {
 
         let tx = tx.clone();
         let mut rx = tx.subscribe();
+
+
+        if player_number > 5 {
+            println!("Too many players already!");
+            continue;
+        }
 
         let player = Player::new_with_default_deck(player_number);
         println!("Player #{} joined with UUID: {}", &player.number, &player.uuid);
@@ -53,8 +60,12 @@ async fn main() {
 
                             "start" => {
                                 let mut game = new_data.lock().unwrap();
-                                game.generate_supply(Game::default_supply_list());
-                                println!("Started game with default supply cards!")
+                                match game.generate_supply(Game::default_supply_list()) {
+                                    Ok(()) => println!("Started game with default supply cards!"),
+                                    Err(NotEnoughPlayers) => println!("Not enough players to start!"),
+                                    _ => panic!("Unknown error while starting!")
+                                }
+
                             }
 
                             _ => println!("Unknown command!")

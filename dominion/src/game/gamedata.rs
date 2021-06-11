@@ -23,7 +23,7 @@ impl Game {
     }
 
     /// Generates the supply piles for the game given a list of cards to use
-    pub fn generate_supply(&mut self, cards: CardList) {
+    pub fn generate_supply(&mut self, cards: CardList) -> DominionResult {
         let player_count = self.players.len();
         let mut supply: Supply = HashMap::new();
 
@@ -33,7 +33,7 @@ impl Game {
             4 => (12, 12, 30),
             5 => (12, 15, 40),
             6 => (12, 18, 50),
-            _ => panic!("Invalid player count!")
+            _ => return Err(NotEnoughPlayers)
         };
 
         supply.insert(Box::new(Copper), 40);
@@ -63,6 +63,7 @@ impl Game {
         }
 
         self.supply = supply;
+        Ok(())
     }
 
     /// Add a player to the game

@@ -15,4 +15,6 @@ pub enum DominionError {
     EmptyPile { card: Box<dyn Card> },
     #[error("Not enough money to buy that card!")]
     InsufficientFunds,
+    #[error("Not enough players to start!")]
+    NotEnoughPlayers,
 }
