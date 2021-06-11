@@ -69,21 +69,37 @@ async fn main() {
                         match command_parts.next().unwrap_or("Oops") {
                             "ping" => {
                                 let recipients = single_recipient(player_number);
-                                tx.send(("pong!\n", recipients)).unwrap();
+                                tx.send(("pong!\n".to_string(), recipients)).unwrap();
                             }
 
                             "hand" => {
-                                // TODO: send hand message back to player
                                 let game = new_data.lock().unwrap();
                                 let player = &game.players[player_number];
-                                player.print_hand();
+                                let recipients = single_recipient(player_number);
+                                let message = player.print_hand() + "\n";
+                                tx.send((message, recipients)).unwrap();
                             }
 
                             "start" => {
                                 let mut game = new_data.lock().unwrap();
-                                match game.generate_supply(Game::default_supply_list()) {
-                                    Ok(()) => println!("Started game with default supply cards!"),
-                                    Err(NotEnoughPlayers) => println!("Not enough players to start!"),
+                                if game.started {
+                                    let recipients = single_recipient(player_number);
+                                    tx.send(("Game has already started!\n".to_string(), recipients)).unwrap();
+                                    continue;
+                                }
+
+                                let supply_list = Game::default_supply_list();
+
+                                match game.generate_supply(supply_list) {
+                                    Ok(()) => {
+                                        game.started = true;
+                                        let recipients = single_recipient(player_number);
+                                        tx.send(("Started game with default supply cards!\n".to_string(), recipients)).unwrap();
+                                    }
+                                    Err(NotEnoughPlayers) => {
+                                        let recipients = single_recipient(player_number);
+                                        tx.send(("Not enough players to start!\n".to_string(), recipients)).unwrap();
+                                    }
                                     _ => panic!("Unknown error while starting!")
                                 }
 

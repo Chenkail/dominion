@@ -73,7 +73,7 @@ fn prompt_indices_from_hand_u(num_cards: usize) -> Vec<usize> {
 }
 
 fn reveal_hand(player: &Player) {
-    player.print_hand()
+    println!("{}", player.print_hand());
 }
 
 fn reveal_top_discard_pile(player: &Player, n: usize) {

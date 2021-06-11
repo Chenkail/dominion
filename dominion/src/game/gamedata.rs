@@ -7,6 +7,7 @@ use crate::error::{DominionError::*, DominionResult};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Game {
+    pub started: bool,
     pub players: PlayerList,
     pub supply: Supply,
     pub trash: CardDeck,
@@ -19,13 +20,12 @@ impl Game {
     }
 
     pub fn new() -> Game {
-        Game { players: Vec::new(), supply: HashMap::new(), trash: VecDeque::new(), extras: HashMap::new() }
+        Game { started: false, players: Vec::new(), supply: HashMap::new(), trash: VecDeque::new(), extras: HashMap::new() }
     }
 
     /// Generates the supply piles for the game given a list of cards to use
     pub fn generate_supply(&mut self, cards: CardList) -> DominionResult {
         let player_count = self.players.len();
-        let mut supply: Supply = HashMap::new();
 
         let (victory_card_count, province_count, curse_count) = match player_count {
             2 => (8, 8, 10),
@@ -36,6 +36,7 @@ impl Game {
             _ => return Err(NotEnoughPlayers)
         };
 
+        let mut supply: Supply = HashMap::new();
         supply.insert(Box::new(Copper), 40);
         supply.insert(Box::new(Silver), 40);
         supply.insert(Box::new(Gold), 40);

@@ -1,6 +1,7 @@
 //! Defines Player object and associated functions
 
 use std::{collections::VecDeque, mem};
+use itertools::Itertools;
 use serde::{Serialize, Deserialize};
 
 use crate::game::prelude::*;
@@ -221,15 +222,8 @@ impl Player {
     }
 
     /// Prints out all cards in hand
-    pub fn print_hand(&self) {
-        let indent = "    ";
-
-        println!("Hand:");
-        print!("{}", indent);
-        for card in &self.hand {
-            print!("{}, ", card.name());
-        }
-        println!();
+    pub fn print_hand(&self) -> String {
+        self.hand.iter().join(", ")
     }
 
     /// Prints out all cards in hand
