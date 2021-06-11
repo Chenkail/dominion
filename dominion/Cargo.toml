@@ -15,6 +15,7 @@ edition = "2018"
 [dependencies]
 dominion-macros = { path = "../dominion-macros" }
 
+async-trait =  "0.1"
 dyn-clonable = "0.9"
 itertools = "0.10"
 rand = "0.8"
@@ -23,3 +24,4 @@ serde_json = "1"
 thiserror = "1"
 tokio = { version = "1", features = ["rt",] }
 typetag = "0.1"
+uuid = { version = "0.8", features = ["serde", "v4"] }

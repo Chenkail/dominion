@@ -46,7 +46,8 @@ pub enum Phase {
 /// Struct representing a player
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Player {
-    pub id: usize,
+    pub uuid: Uuid,
+    pub number: usize,
     pub hand: CardDeck,
     pub deck: CardDeck,
     pub discard: CardDeck,
@@ -58,13 +59,14 @@ pub struct Player {
 
 impl Player {
     /// Constructs a new Player with the default deck (3 estates and 7 copper)
-    pub fn new_with_default_deck(id: usize) -> Player {
+    pub fn new_with_default_deck(number: usize) -> Player {
         let deck = card_vec![Copper, Copper, Copper, Copper, Copper, Copper, Copper, Estate, Estate, Estate];
-        Player::new(id, deck)
+        Player::new(number, deck)
     }
 
     /// Constructs a new Player with a given deck
-    pub fn new (id: usize, cards: CardList) -> Player {
+    pub fn new (number: usize, cards: CardList) -> Player {
+        let uuid = Uuid::new_v4();
         let mut hand: CardDeck = VecDeque::new();
         let mut deck: CardDeck = VecDeque::from(cards);
         let discard: CardDeck = VecDeque::new();
@@ -80,7 +82,7 @@ impl Player {
             hand.push_back(deck.pop_front().unwrap());
         }
 
-        Player { id, hand, deck, discard, in_play, resources, state, phase }
+        Player { uuid, number, hand, deck, discard, in_play, resources, state, phase }
     }
 
     /// Reset player state

@@ -7,6 +7,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::hash::{Hash, Hasher};
 
+use async_trait::async_trait;
 use itertools::Itertools;
 use dyn_clonable::*;
 
@@ -65,6 +66,7 @@ use crate::types::*;
 ///
 /// [`dominion_macros`]: ../../dominion_macros/index.html
 
+#[async_trait]
 #[clonable]
 #[allow(unused_variables)]
 #[typetag::serde(tag = "card")]

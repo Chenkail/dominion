@@ -7,6 +7,7 @@
 pub use std::collections::{HashMap, VecDeque};
 
 pub use dominion_macros::*;
+pub use uuid::Uuid;
 
 pub use crate::cards::all::*;
 pub use crate::game::*;
