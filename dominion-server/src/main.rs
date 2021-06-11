@@ -1,10 +1,8 @@
-use serde::{Serialize, Deserialize};
 use tokio::{
     io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
     net::TcpListener,
     sync::broadcast
 };
-use uuid::Uuid;
 
 use dominion::game::prelude::*;
 
@@ -21,9 +19,10 @@ async fn main() {
         let tx = tx.clone();
         let mut rx = tx.subscribe();
 
-
         let player = Player::new_with_default_deck(player_number);
-        println!("Player joined with UUID: {}", player.uuid);
+        player_number += 1;
+
+        println!("Player #{} joined with UUID: {}", player.number, player.uuid);
 
         tokio::spawn(async move {
             let (reader, mut writer) = socket.split();
