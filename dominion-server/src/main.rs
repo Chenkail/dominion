@@ -15,7 +15,7 @@ async fn main() {
     let (tx, _rx) = broadcast::channel(10);
 
     let data = Arc::new(Mutex::new(Game::new()));
-    let mut player_number = 0;
+    let mut player_count = 0;
 
     loop {
         let (mut socket, addr) = listener.accept().await.unwrap();
@@ -23,15 +23,15 @@ async fn main() {
         let tx = tx.clone();
         let mut rx = tx.subscribe();
 
-
-        if player_number > 5 {
+        if player_count > 5 {
             println!("Too many players already!");
             continue;
         }
 
+        let player_number = player_count;
         let player = Player::new_with_default_deck(player_number);
         println!("Player #{} joined with UUID: {}", &player.number, &player.uuid);
-        player_number += 1;
+        player_count += 1;
 
         let new_data = Arc::clone(&data);
         {
@@ -40,6 +40,7 @@ async fn main() {
         }
 
         tokio::spawn(async move {
+            let player_number = player_number;
             let (reader, mut writer) = socket.split();
 
             let mut reader = BufReader::new(reader);
@@ -58,8 +59,10 @@ async fn main() {
                             }
 
                             "hand" => {
-                                // TODO: print out hand
-                                println!("hand")
+                                // TODO: send hand message back to player
+                                let game = new_data.lock().unwrap();
+                                let player = &game.players[player_number];
+                                player.print_hand();
                             }
 
                             "start" => {
