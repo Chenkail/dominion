@@ -9,6 +9,18 @@ use tokio::{
 use dominion::game::prelude::*;
 use dominion::error::DominionError::*;
 
+type Recipients = Option<Vec<usize>>;
+
+fn single_recipient(player_number: usize) -> Recipients {
+    Some(vec![player_number])
+}
+
+fn everyone_but(player_count: usize, player_number: usize) -> Recipients {
+    let mut v = (0..player_count).collect::<Vec<usize>>();
+    v.remove(player_number);
+    Some(v)
+}
+
 #[tokio::main]
 async fn main() {
     let listener = TcpListener::bind("localhost:8080").await.unwrap();
@@ -53,9 +65,11 @@ async fn main() {
                             break;
                         }
 
-                        match line.trim() {
+                        let mut command_parts = line.split_whitespace();
+                        match command_parts.next().unwrap_or("Oops") {
                             "ping" => {
-                                println!("pong!")
+                                let recipients = single_recipient(player_number);
+                                tx.send(("pong!\n", recipients)).unwrap();
                             }
 
                             "hand" => {
@@ -78,14 +92,13 @@ async fn main() {
                             _ => println!("Unknown command!")
                         }
 
-                        tx.send((line.clone(), addr)).unwrap();
                         line.clear();
                     }
 
                     result = rx.recv() => {
-                        let (msg, other_addr) = result.unwrap();
+                        let (msg, recipients) = result.unwrap();
 
-                        if addr != other_addr {
+                        if recipients.unwrap().contains(&player_number) {
                             writer.write_all(msg.as_bytes()).await.unwrap();
                         }
                     }
