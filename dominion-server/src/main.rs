@@ -1,36 +1,25 @@
 use std::sync::{Arc, Mutex};
 
-use tokio::{
-    io::{AsyncBufReadExt, AsyncWriteExt, BufReader},
-    net::TcpListener,
-    sync::broadcast
-};
+use tokio::{io::{AsyncBufReadExt, AsyncWriteExt, BufReader}, net::{TcpListener, TcpStream}, sync::broadcast};
 
 use tokio_serde::formats::*;
-use tokio_util::codec::{FramedRead, LengthDelimitedCodec};
+use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
 
 
 use dominion::game::prelude::*;
 use dominion::error::DominionError::*;
 
-mod api;
-use api::*;
+
+use futures::prelude::*;
+use serde_json::{json, Value};
+use tokio_serde::formats::*;
 
 type Recipients = Vec<usize>;
 
-fn single_recipient(player_number: usize) -> Recipients {
-    vec![player_number]
-}
-
-fn everyone_but(player_count: usize, player_number: usize) -> Recipients {
-    let mut v = (0..player_count).collect::<Vec<usize>>();
-    v.remove(player_number);
-
-    v
-}
 
 #[tokio::main]
-async fn main() {
+pub async fn main() {
+    // Bind a server socket
     let listener = TcpListener::bind("localhost:8080").await.unwrap();
     let (tx, _rx) = broadcast::channel::<(String, Recipients)>(10);
 
@@ -38,7 +27,7 @@ async fn main() {
     let mut player_count = 0;
 
     loop {
-        let (mut socket, _addr) = listener.accept().await.unwrap();
+        let (socket, _addr) = listener.accept().await.unwrap();
 
         let tx = tx.clone();
         let mut rx = tx.subscribe();
@@ -59,81 +48,40 @@ async fn main() {
             game.add_player(player);
         }
 
+        let socket = socket.into_std().unwrap();
+        let socket2 = socket.try_clone().unwrap();
+        let socket = TcpStream::from_std(socket).unwrap();
+        let socket2 = TcpStream::from_std(socket2).unwrap();
+
+        // Delimit frames using a length header
+        let length_delimited = FramedRead::new(socket, LengthDelimitedCodec::new());
+
+        // Deserialize frames
+        let mut deserialized = tokio_serde::SymmetricallyFramed::new(
+            length_delimited,
+            SymmetricalJson::<Value>::default(),
+        );
+
+        let length_delimited = FramedWrite::new(socket2, LengthDelimitedCodec::new());
+        let mut serialized =
+            tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
+
+        // Spawn a task that prints all received messages to STDOUT
         tokio::spawn(async move {
-            let player_number = player_number;
-            let (reader, mut writer) = socket.split();
+            while let Some(msg) = deserialized.try_next().await.unwrap() {
+                println!("GOT: {:?}", msg);
 
-            let mut reader = BufReader::new(reader);
-            let mut line = String::new();
-
-            loop {
-                tokio::select! {
-                    result = reader.read_line(&mut line) => {
-                        if result.unwrap() == 0 {
-                            break;
-                        }
-
-                        let mut command_parts = line.split_whitespace();
-                        match command_parts.next().unwrap_or("Oops") {
-                            "ping" => {
-                                let recipients = single_recipient(player_number);
-                                let message = "pong!\n".to_string();
-                                tx.send((message, recipients)).unwrap();
-                            }
-
-                            "hand" => {
-                                let game = new_data.lock().unwrap();
-                                let player = &game.players[player_number];
-                                let recipients = single_recipient(player_number);
-                                let message = player.print_hand() + "\n";
-                                tx.send((message, recipients)).unwrap();
-                            }
-
-                            "start" => {
-                                let mut game = new_data.lock().unwrap();
-                                if game.started {
-                                    let recipients = single_recipient(player_number);
-                                    let message = "Game has already started!\n".to_string();
-                                    tx.send((message, recipients)).unwrap();
-                                    continue;
-                                }
-
-                                let supply_list = Game::default_supply_list();
-
-                                match game.generate_supply(supply_list) {
-                                    Ok(()) => {
-                                        game.started = true;
-                                        let recipients = single_recipient(player_number);
-                                        let message = "Started game with default supply cards!\n".to_string();
-                                        tx.send((message, recipients)).unwrap();
-                                    }
-                                    Err(NotEnoughPlayers) => {
-                                        let recipients = single_recipient(player_number);
-                                        let message = "Not enough players to start!\n".to_string();
-                                        tx.send((message, recipients)).unwrap();
-                                    }
-                                    _ => panic!("Unknown error while starting!")
-                                }
-                            }
-
-                            _ => {
-                                let recipients = single_recipient(player_number);
-                                let message = "Unknown command!\n".to_string();
-                                tx.send((message, recipients)).unwrap();
-                            }
-                        }
-
-                        line.clear();
-                    }
-
-                    result = rx.recv() => {
-                        let (msg, recipients) = result.unwrap();
-
-                        if recipients.contains(&player_number) {
-                            writer.write_all(msg.as_bytes()).await.unwrap();
-                        }
-                    }
-                }
+                serialized
+                    .send(json!({
+                        "name": "John Doe",
+                        "age": 43,
+                        "phones": [
+                            "+44 1234567",
+                            "+44 2345678"
+                        ]
+                    }))
+                    .await
+                    .unwrap()
             }
         });
     }

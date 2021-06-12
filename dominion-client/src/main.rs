@@ -1,20 +1,31 @@
-use std::io::{self, BufReader, BufRead, Write};
-use std::net::TcpStream;
-use std::str;
+use futures::prelude::*;
+use serde_json::json;
+use tokio::net::TcpStream;
+use tokio_serde::formats::*;
+use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
 
 #[tokio::main]
-async fn main() {
-    let mut socket = TcpStream::connect("localhost:8080").unwrap();
+pub async fn main() {
+    // Bind a server socket
+    let socket = TcpStream::connect("localhost:8080").await.unwrap();
 
-    loop {
-        let mut input = String::new();
-        let mut buffer: Vec<u8> = Vec::new();
-        io::stdin().read_line(&mut input).expect("error: unable to read user input");
-        socket.write_all(input.as_bytes()).unwrap();
+    // Delimit frames using a length header
+    let length_delimited = FramedWrite::new(socket, LengthDelimitedCodec::new());
 
-        let mut reader = BufReader::new(&socket);
+    // Serialize frames with JSON
+    let mut serialized =
+        tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
 
-        reader.read_until(b'\n', &mut buffer).unwrap();
-        print!("{}", str::from_utf8(&buffer).unwrap());
-    }
+    // Send the value
+    serialized
+        .send(json!({
+            "name": "John Doe",
+            "age": 43,
+            "phones": [
+                "+44 1234567",
+                "+44 2345678"
+            ]
+        }))
+        .await
+        .unwrap()
 }
