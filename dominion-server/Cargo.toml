@@ -6,6 +6,7 @@ edition = "2018"
 license = "AGPLv3"
 
 [dependencies]
+futures = "0.3"
 dominion = { path = "../dominion" }
 itertools = "0.10"
 rand = "0.8"
