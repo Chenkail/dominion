@@ -30,7 +30,7 @@ async fn main() {
     let mut player_count = 0;
 
     loop {
-        let (mut socket, addr) = listener.accept().await.unwrap();
+        let (mut socket, _addr) = listener.accept().await.unwrap();
 
         let tx = tx.clone();
         let mut rx = tx.subscribe();
@@ -69,7 +69,8 @@ async fn main() {
                         match command_parts.next().unwrap_or("Oops") {
                             "ping" => {
                                 let recipients = single_recipient(player_number);
-                                tx.send(("pong!\n".to_string(), recipients)).unwrap();
+                                let message = "pong!\n".to_string();
+                                tx.send((message, recipients)).unwrap();
                             }
 
                             "hand" => {
@@ -84,7 +85,8 @@ async fn main() {
                                 let mut game = new_data.lock().unwrap();
                                 if game.started {
                                     let recipients = single_recipient(player_number);
-                                    tx.send(("Game has already started!\n".to_string(), recipients)).unwrap();
+                                    let message = "Game has already started!\n".to_string();
+                                    tx.send((message, recipients)).unwrap();
                                     continue;
                                 }
 
@@ -94,18 +96,23 @@ async fn main() {
                                     Ok(()) => {
                                         game.started = true;
                                         let recipients = single_recipient(player_number);
-                                        tx.send(("Started game with default supply cards!\n".to_string(), recipients)).unwrap();
+                                        let message = "Started game with default supply cards!\n".to_string();
+                                        tx.send((message, recipients)).unwrap();
                                     }
                                     Err(NotEnoughPlayers) => {
                                         let recipients = single_recipient(player_number);
-                                        tx.send(("Not enough players to start!\n".to_string(), recipients)).unwrap();
+                                        let message = "Not enough players to start!\n".to_string();
+                                        tx.send((message, recipients)).unwrap();
                                     }
                                     _ => panic!("Unknown error while starting!")
                                 }
-
                             }
 
-                            _ => println!("Unknown command!")
+                            _ => {
+                                let recipients = single_recipient(player_number);
+                                let message = "Unknown command!\n".to_string();
+                                tx.send((message, recipients)).unwrap();
+                            }
                         }
 
                         line.clear();

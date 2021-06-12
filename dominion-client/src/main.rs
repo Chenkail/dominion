@@ -15,6 +15,6 @@ async fn main() {
         let mut reader = BufReader::new(&socket);
 
         reader.read_until(b'\n', &mut buffer).unwrap();
-        println!("{}", str::from_utf8(&buffer).unwrap());
+        print!("{}", str::from_utf8(&buffer).unwrap());
     }
 }
