@@ -1,3 +1,5 @@
+use dominion::game::prelude::*;
+use dominion::error::DominionError::*;
 use dominion_server::api::{ClientMessage, ServerMessage};
 
 use std::sync::{Arc, Mutex};
@@ -9,10 +11,6 @@ use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
 
 use futures::prelude::*;
 use serde_json::Value;
-
-use dominion::game::prelude::*;
-use dominion::error::DominionError::*;
-
 
 type Recipients = Vec<usize>;
 fn single_recipient(player_number: usize) -> Recipients {

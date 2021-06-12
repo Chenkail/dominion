@@ -81,7 +81,7 @@ pub async fn main() {
             InputMode::Chat => {
                 match trimmed {
                     "" => {}
-                    "exit" => {
+                    "/exit" => {
                         println!("Leaving chat mode!");
                         input_mode = InputMode::Console;
                     }
