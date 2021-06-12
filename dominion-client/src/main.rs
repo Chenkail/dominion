@@ -11,9 +11,9 @@ enum InputMode {
 
 #[tokio::main]
 pub async fn main() {
-    // Bind a server socket
     let socket = TcpStream::connect("localhost:8080").await.unwrap();
 
+    // Duplicate the socket: one for serializing and one for deserializing
     let socket = socket.into_std().unwrap();
     let socket2 = socket.try_clone().unwrap();
     let socket = TcpStream::from_std(socket).unwrap();
@@ -29,7 +29,7 @@ pub async fn main() {
     let mut serialized =
         tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
 
-    // Spawn a task to handle incoming messages
+    // Handle incoming messages from the server
     tokio::spawn(async move {
         while let Some(msg) = deserialized.try_next().await.unwrap() {
             match msg {
@@ -48,6 +48,7 @@ pub async fn main() {
 
     let mut input_mode = InputMode::Console;
 
+    // Continuously read user input and send appropriate messages to the server
     loop {
         let mut input = String::new();
         std::io::stdin().read_line(&mut input).expect("Error while reading user input!");

@@ -61,6 +61,7 @@ pub async fn main() {
             game.add_player(player);
         }
 
+        // Duplicate the socket: one for serializing and one for deserializing
         let socket = socket.into_std().unwrap();
         let socket2 = socket.try_clone().unwrap();
         let socket = TcpStream::from_std(socket).unwrap();
@@ -76,13 +77,21 @@ pub async fn main() {
         let mut serialized =
             tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
 
-        // Spawn a task to handle incoming messages
         tokio::spawn(async move {
             loop {
                 tokio::select! {
+                    // Handle messages received from the broadcaster and pass them on
+                    result = rx.recv() => {
+                        let (value, recipients) = result.unwrap();
+
+                        if recipients.contains(&player_number) {
+                            serialized.send(value).await.unwrap();
+                        }
+                    }
+
+                    // Messages received from the client
                     result = deserialized.try_next() => {
                         if let Some(msg) = result.unwrap() {
-                            // println!("GOT: {:?}", msg);
                             match msg {
                                 ClientMessage::Ping => {
                                     println!("Got a ping from player {}!", player_number);
@@ -120,21 +129,16 @@ pub async fn main() {
                                             let message = serde_json::to_value(&ServerMessage::NotEnoughPlayers).unwrap();
                                             tx.send((message, recipients)).unwrap();
                                         }
-                                        _ => panic!("Unknown error while starting!")
+                                        _ => {
+                                            panic!("Unknown error while starting!")
+                                        }
                                     }
                                 }
                                 _ => {
-                                    println!("Uh oh!")
+                                    println!("Server received an unknown message from the client!");
+                                    println!("Message: {:?}", msg);
                                 }
                             }
-                        }
-                    }
-
-                    result = rx.recv() => {
-                        let (value, recipients) = result.unwrap();
-
-                        if recipients.contains(&player_number) {
-                            serialized.send(value).await.unwrap();
                         }
                     }
                 }
