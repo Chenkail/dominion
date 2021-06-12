@@ -13,4 +13,7 @@ pub enum ClientMessage {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum ServerMessage {
     PingResponse,
+    StartingGame,
+    GameAlreadyStarted,
+    NotEnoughPlayers,
 }

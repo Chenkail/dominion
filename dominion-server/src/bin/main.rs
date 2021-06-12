@@ -93,6 +93,32 @@ pub async fn main() {
                                     tx.send((message, recipients)).unwrap();
                                     // serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
                                 }
+                                ClientMessage::StartGame => {
+                                    let mut game = new_data.lock().unwrap();
+                                    if game.started {
+                                        let recipients = single_recipient(player_number);
+                                        let message = serde_json::to_value(&ServerMessage::GameAlreadyStarted).unwrap();
+                                        tx.send((message, recipients)).unwrap();
+                                        continue;
+                                    }
+
+                                    let supply_list = Game::default_supply_list();
+
+                                    match game.generate_supply(supply_list) {
+                                        Ok(()) => {
+                                            game.started = true;
+                                            let recipients = single_recipient(player_number);
+                                            let message = serde_json::to_value(&ServerMessage::StartingGame).unwrap();
+                                            tx.send((message, recipients)).unwrap();
+                                        }
+                                        Err(NotEnoughPlayers) => {
+                                            let recipients = single_recipient(player_number);
+                                            let message = serde_json::to_value(&ServerMessage::NotEnoughPlayers).unwrap();
+                                            tx.send((message, recipients)).unwrap();
+                                        }
+                                        _ => panic!("Unknown error while starting!")
+                                    }
+                                }
                                 _ => {
                                     println!("Uh oh!")
                                 }
