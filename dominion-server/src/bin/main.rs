@@ -26,6 +26,10 @@ fn everyone_but(player_count: usize, player_number: usize) -> Recipients {
     v
 }
 
+fn everyone(player_count: usize) -> Recipients {
+    (0..player_count).collect::<Vec<usize>>()
+}
+
 #[tokio::main]
 pub async fn main() {
     // Bind a server socket
@@ -76,18 +80,31 @@ pub async fn main() {
         tokio::spawn(async move {
             loop {
                 tokio::select! {
-                    r = deserialized.try_next() => {
-                        if let Some(msg) = r.unwrap() {
+                    result = deserialized.try_next() => {
+                        if let Some(msg) = result.unwrap() {
                             // println!("GOT: {:?}", msg);
                             match msg {
                                 ClientMessage::Ping => {
                                     println!("Got a ping!");
-                                    serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
+                                    let game = new_data.lock().unwrap();
+                                    let player_count = game.players.len();
+                                    let recipients = everyone(player_count);
+                                    let message = serde_json::to_value(&ServerMessage::PingResponse).unwrap();
+                                    tx.send((message, recipients)).unwrap();
+                                    // serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
                                 }
                                 _ => {
                                     println!("Uh oh!")
                                 }
                             }
+                        }
+                    }
+
+                    result = rx.recv() => {
+                        let (value, recipients) = result.unwrap();
+
+                        if recipients.contains(&player_number) {
+                            serialized.send(value).await.unwrap();
                         }
                     }
                 }
