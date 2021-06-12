@@ -32,7 +32,7 @@ fn everyone_but(player_count: usize, player_number: usize) -> Recipients {
 #[tokio::main]
 async fn main() {
     let listener = TcpListener::bind("localhost:8080").await.unwrap();
-    let (tx, _rx) = broadcast::channel(10);
+    let (tx, _rx) = broadcast::channel::<(String, Recipients)>(10);
 
     let data = Arc::new(Mutex::new(Game::new()));
     let mut player_count = 0;
