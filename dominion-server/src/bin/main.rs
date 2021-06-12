@@ -85,8 +85,8 @@ pub async fn main() {
                             // println!("GOT: {:?}", msg);
                             match msg {
                                 ClientMessage::Ping => {
-                                    println!("Got a ping!");
-                                    // serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
+                                    println!("Got a ping from player {}!", player_number);
+                                    serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
                                 }
                                 ClientMessage::ChatMessage{ message } => {
                                     let game = new_data.lock().unwrap();

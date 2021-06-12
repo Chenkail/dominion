@@ -38,13 +38,18 @@ pub async fn main() {
         }
     });
 
-    // Send a test ping
-    serialized
-        .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
-        .await
-        .unwrap();
-
     loop {
-        // TODO: handle user input
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input).expect("Error while reading user input!");
+        let mut command_parts = input.split_whitespace();
+        match command_parts.next().unwrap_or("Oops") {
+            "ping" => {
+                serialized
+                .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
+                .await
+                .unwrap();
+            }
+            _ => println!("Couldn't understand input!")
+        }
     }
 }
