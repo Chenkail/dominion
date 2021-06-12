@@ -9,16 +9,16 @@ use tokio::{
 use dominion::game::prelude::*;
 use dominion::error::DominionError::*;
 
-type Recipients = Option<Vec<usize>>;
 
 fn single_recipient(player_number: usize) -> Recipients {
-    Some(vec![player_number])
+    vec![player_number]
 }
 
 fn everyone_but(player_count: usize, player_number: usize) -> Recipients {
     let mut v = (0..player_count).collect::<Vec<usize>>();
     v.remove(player_number);
-    Some(v)
+
+    v
 }
 
 #[tokio::main]
@@ -31,6 +31,7 @@ async fn main() {
 
     loop {
         let (mut socket, _addr) = listener.accept().await.unwrap();
+
 
         let tx = tx.clone();
         let mut rx = tx.subscribe();
@@ -121,7 +122,7 @@ async fn main() {
                     result = rx.recv() => {
                         let (msg, recipients) = result.unwrap();
 
-                        if recipients.unwrap().contains(&player_number) {
+                        if recipients.contains(&player_number) {
                             writer.write_all(msg.as_bytes()).await.unwrap();
                         }
                     }

@@ -10,7 +10,7 @@ async fn main() {
         let mut input = String::new();
         let mut buffer: Vec<u8> = Vec::new();
         io::stdin().read_line(&mut input).expect("error: unable to read user input");
-        socket.write(input.as_bytes()).unwrap();
+        socket.write_all(input.as_bytes()).unwrap();
 
         let mut reader = BufReader::new(&socket);
 
