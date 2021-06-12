@@ -74,15 +74,21 @@ pub async fn main() {
 
         // Spawn a task to handle incoming messages
         tokio::spawn(async move {
-            while let Some(msg) = deserialized.try_next().await.unwrap() {
-                // println!("GOT: {:?}", msg);
-                match msg {
-                    ClientMessage::Ping => {
-                        println!("Got a ping!");
-                        serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
-                    }
-                    _ => {
-                        println!("Uh oh!")
+            loop {
+                tokio::select! {
+                    r = deserialized.try_next() => {
+                        if let Some(msg) = r.unwrap() {
+                            // println!("GOT: {:?}", msg);
+                            match msg {
+                                ClientMessage::Ping => {
+                                    println!("Got a ping!");
+                                    serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
+                                }
+                                _ => {
+                                    println!("Uh oh!")
+                                }
+                            }
+                        }
                     }
                 }
             }
