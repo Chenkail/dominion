@@ -4,6 +4,11 @@ use tokio::net::TcpStream;
 use tokio_serde::formats::*;
 use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
 
+enum InputMode {
+    Console,
+    Chat,
+}
+
 #[tokio::main]
 pub async fn main() {
     // Bind a server socket
@@ -31,6 +36,9 @@ pub async fn main() {
                 ServerMessage::PingResponse => {
                     println!("Pong!");
                 }
+                ServerMessage::ChatMessage{ author, message } => {
+                    println!("Player {}: \"{}\"", author, message)
+                }
                 _ => {
                     println!("Got a message from the server that the client couldn't understand!")
                 }
@@ -38,27 +46,53 @@ pub async fn main() {
         }
     });
 
+    let mut input_mode = InputMode::Console;
+
     loop {
         let mut input = String::new();
         std::io::stdin().read_line(&mut input).expect("Error while reading user input!");
-        let mut command_parts = input.split_whitespace();
-        match command_parts.next().unwrap_or("Oops") {
-            "ping" => {
-                serialized
-                .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
-                .await
-                .unwrap();
+        let trimmed = input.trim_matches(char::is_whitespace);
+        match input_mode {
+            InputMode::Console => {
+                let mut command_parts = trimmed.split_whitespace();
+                match command_parts.next().unwrap_or("Oops") {
+                    "ping" => {
+                        serialized
+                        .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
+                        .await
+                        .unwrap();
+                    }
+                    "chat" => {
+                        input_mode = InputMode::Chat;
+                    }
+                    "quit" => {
+                        panic!("Exiting client")
+                    }
+                    "start" => {
+                        serialized
+                        .send(serde_json::to_value(&ClientMessage::StartGame).unwrap())
+                        .await
+                        .unwrap();
+                    }
+                    _ => println!("Couldn't understand input!")
+                }
             }
-            "quit" => {
-                panic!("Exiting client")
+            InputMode::Chat => {
+                match trimmed {
+                    "" => {}
+                    "exit" => {
+                        println!("Leaving chat mode!");
+                        input_mode = InputMode::Console;
+                    }
+                    _ => {
+                        serialized
+                        .send(serde_json::to_value(&ClientMessage::ChatMessage{ message: trimmed.to_string() }).unwrap())
+                        .await
+                        .unwrap();
+                    }
+                }
             }
-            "start" => {
-                serialized
-                .send(serde_json::to_value(&ClientMessage::StartGame).unwrap())
-                .await
-                .unwrap();
-            }
-            _ => println!("Couldn't understand input!")
         }
+
     }
 }
