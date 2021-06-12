@@ -86,12 +86,16 @@ pub async fn main() {
                             match msg {
                                 ClientMessage::Ping => {
                                     println!("Got a ping!");
+                                    // serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
+                                }
+                                ClientMessage::ChatMessage{ message } => {
                                     let game = new_data.lock().unwrap();
                                     let player_count = game.players.len();
-                                    let recipients = everyone(player_count);
-                                    let message = serde_json::to_value(&ServerMessage::PingResponse).unwrap();
+                                    // let sender = &game.players[player_number];
+                                    // let author = sender.uuid;
+                                    let message = serde_json::to_value(&ServerMessage::ChatMessage{ author: player_number, message }).unwrap();
+                                    let recipients = everyone_but(player_count, player_number);
                                     tx.send((message, recipients)).unwrap();
-                                    // serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
                                 }
                                 ClientMessage::StartGame => {
                                     let mut game = new_data.lock().unwrap();

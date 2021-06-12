@@ -8,6 +8,7 @@ pub enum ClientMessage {
     GetHand,
     StartGame,
     PlayCard { card: Box<dyn Card> },
+    ChatMessage { message: String },
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -15,5 +16,7 @@ pub enum ServerMessage {
     PingResponse,
     StartingGame,
     GameAlreadyStarted,
+    ChatMessage { author: usize, message: String },
+    // ChatMessage { author: Uuid, message: String },
     NotEnoughPlayers,
 }
