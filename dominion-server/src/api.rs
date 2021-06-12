@@ -3,6 +3,7 @@ use dominion::game::prelude::*;
 use serde::{Serialize, Deserialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[non_exhaustive]
 pub enum ClientMessage {
     Ping,
     GetHand,
@@ -12,6 +13,7 @@ pub enum ClientMessage {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+#[non_exhaustive]
 pub enum ServerMessage {
     PingResponse,
     StartingGame,
