@@ -6,7 +6,7 @@ authors = ["circumspect <40770208+circumspect@users.noreply.github.com>"]
 description = "A Rust backend library for playing Dominion"
 readme = "README.md"
 
-repository = "https://github.com/anticardgamecardgameclub/dominion"
+repository = "https://github.com/tireswing/dominion"
 
 license = "AGPLv3"
 

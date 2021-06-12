@@ -1,5 +1,5 @@
+use dominion_server::api::Message;
 use futures::prelude::*;
-use serde_json::json;
 use tokio::net::TcpStream;
 use tokio_serde::formats::*;
 use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
@@ -18,14 +18,7 @@ pub async fn main() {
 
     // Send the value
     serialized
-        .send(json!({
-            "name": "John Doe",
-            "age": 43,
-            "phones": [
-                "+44 1234567",
-                "+44 2345678"
-            ]
-        }))
+        .send(serde_json::to_value(&Message::Ping).unwrap())
         .await
         .unwrap()
 }

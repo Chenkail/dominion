@@ -1,6 +1,8 @@
+use dominion_server::api::Message;
+
 use std::sync::{Arc, Mutex};
 
-use tokio::{io::{AsyncBufReadExt, AsyncWriteExt, BufReader}, net::{TcpListener, TcpStream}, sync::broadcast};
+use tokio::{net::{TcpListener, TcpStream}, sync::broadcast};
 
 use tokio_serde::formats::*;
 use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
@@ -11,8 +13,7 @@ use dominion::error::DominionError::*;
 
 
 use futures::prelude::*;
-use serde_json::{json, Value};
-use tokio_serde::formats::*;
+use serde_json::json;
 
 type Recipients = Vec<usize>;
 
@@ -53,13 +54,10 @@ pub async fn main() {
         let socket = TcpStream::from_std(socket).unwrap();
         let socket2 = TcpStream::from_std(socket2).unwrap();
 
-        // Delimit frames using a length header
         let length_delimited = FramedRead::new(socket, LengthDelimitedCodec::new());
-
-        // Deserialize frames
         let mut deserialized = tokio_serde::SymmetricallyFramed::new(
             length_delimited,
-            SymmetricalJson::<Value>::default(),
+            SymmetricalJson::<Message>::default(),
         );
 
         let length_delimited = FramedWrite::new(socket2, LengthDelimitedCodec::new());
@@ -70,6 +68,15 @@ pub async fn main() {
         tokio::spawn(async move {
             while let Some(msg) = deserialized.try_next().await.unwrap() {
                 println!("GOT: {:?}", msg);
+
+                match msg {
+                    Message::Ping => {
+                        println!("Got a ping!")
+                    }
+                    _ => {
+                        println!("Uh oh!")
+                    }
+                }
 
                 serialized
                     .send(json!({

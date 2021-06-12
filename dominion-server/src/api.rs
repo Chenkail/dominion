@@ -2,8 +2,8 @@ pub use serde::{Serialize, Deserialize};
 
 use dominion::game::prelude::*;
 
-#[derive(Clone, Serialize, Deserialize)]
-enum Message {
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub enum Message {
     Ping,
     GetHand,
     StartGame,
