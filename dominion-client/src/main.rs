@@ -1,24 +1,50 @@
-use dominion_server::api::Message;
+use dominion_server::api::{ClientMessage, ServerMessage};
 use futures::prelude::*;
 use tokio::net::TcpStream;
 use tokio_serde::formats::*;
-use tokio_util::codec::{FramedWrite, LengthDelimitedCodec};
+use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
 
 #[tokio::main]
 pub async fn main() {
     // Bind a server socket
     let socket = TcpStream::connect("localhost:8080").await.unwrap();
 
-    // Delimit frames using a length header
-    let length_delimited = FramedWrite::new(socket, LengthDelimitedCodec::new());
+    let socket = socket.into_std().unwrap();
+    let socket2 = socket.try_clone().unwrap();
+    let socket = TcpStream::from_std(socket).unwrap();
+    let socket2 = TcpStream::from_std(socket2).unwrap();
 
-    // Serialize frames with JSON
+    let length_delimited = FramedRead::new(socket, LengthDelimitedCodec::new());
+    let mut deserialized = tokio_serde::SymmetricallyFramed::new(
+        length_delimited,
+        SymmetricalJson::<ServerMessage>::default(),
+    );
+
+    let length_delimited = FramedWrite::new(socket2, LengthDelimitedCodec::new());
     let mut serialized =
         tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
 
-    // Send the value
+    // Spawn a task to handle incoming messages
+    tokio::spawn(async move {
+        while let Some(msg) = deserialized.try_next().await.unwrap() {
+            match msg {
+                ServerMessage::PingResponse => {
+                    println!("Pong!");
+                }
+                _ => {
+                    println!("Uh oh!")
+                }
+            }
+        }
+    });
+
+    // Send a test ping
     serialized
-        .send(serde_json::to_value(&Message::Ping).unwrap())
+        .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
         .await
-        .unwrap()
+        .unwrap();
+
+    loop {
+        // TODO: handle user input
+    }
 }

@@ -1,11 +1,16 @@
-pub use serde::{Serialize, Deserialize};
-
 use dominion::game::prelude::*;
 
+use serde::{Serialize, Deserialize};
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
-pub enum Message {
+pub enum ClientMessage {
     Ping,
     GetHand,
     StartGame,
     PlayCard { card: Box<dyn Card> },
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub enum ServerMessage {
+    PingResponse,
 }

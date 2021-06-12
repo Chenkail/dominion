@@ -1,4 +1,4 @@
-use dominion_server::api::Message;
+use dominion_server::api::{ClientMessage, ServerMessage};
 
 use std::sync::{Arc, Mutex};
 
@@ -7,22 +7,30 @@ use tokio::{net::{TcpListener, TcpStream}, sync::broadcast};
 use tokio_serde::formats::*;
 use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
 
+use futures::prelude::*;
+use serde_json::Value;
 
 use dominion::game::prelude::*;
 use dominion::error::DominionError::*;
 
 
-use futures::prelude::*;
-use serde_json::json;
-
 type Recipients = Vec<usize>;
+fn single_recipient(player_number: usize) -> Recipients {
+    vec![player_number]
+}
 
+fn everyone_but(player_count: usize, player_number: usize) -> Recipients {
+    let mut v = (0..player_count).collect::<Vec<usize>>();
+    v.remove(player_number);
+
+    v
+}
 
 #[tokio::main]
 pub async fn main() {
     // Bind a server socket
     let listener = TcpListener::bind("localhost:8080").await.unwrap();
-    let (tx, _rx) = broadcast::channel::<(String, Recipients)>(10);
+    let (tx, _rx) = broadcast::channel::<(Value, Recipients)>(10);
 
     let data = Arc::new(Mutex::new(Game::new()));
     let mut player_count = 0;
@@ -30,13 +38,13 @@ pub async fn main() {
     loop {
         let (socket, _addr) = listener.accept().await.unwrap();
 
-        let tx = tx.clone();
-        let mut rx = tx.subscribe();
-
         if player_count > 5 {
-            println!("Too many players already!");
+            println!("Too many players already! Ignoring new connection");
             continue;
         }
+
+        let tx = tx.clone();
+        let mut rx = tx.subscribe();
 
         let player_number = player_count;
         let player = Player::new_with_default_deck(player_number);
@@ -57,38 +65,26 @@ pub async fn main() {
         let length_delimited = FramedRead::new(socket, LengthDelimitedCodec::new());
         let mut deserialized = tokio_serde::SymmetricallyFramed::new(
             length_delimited,
-            SymmetricalJson::<Message>::default(),
+            SymmetricalJson::<ClientMessage>::default(),
         );
 
         let length_delimited = FramedWrite::new(socket2, LengthDelimitedCodec::new());
         let mut serialized =
             tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
 
-        // Spawn a task that prints all received messages to STDOUT
+        // Spawn a task to handle incoming messages
         tokio::spawn(async move {
             while let Some(msg) = deserialized.try_next().await.unwrap() {
-                println!("GOT: {:?}", msg);
-
+                // println!("GOT: {:?}", msg);
                 match msg {
-                    Message::Ping => {
-                        println!("Got a ping!")
+                    ClientMessage::Ping => {
+                        println!("Got a ping!");
+                        serialized.send(serde_json::to_value(&ServerMessage::PingResponse).unwrap()).await.unwrap();
                     }
                     _ => {
                         println!("Uh oh!")
                     }
                 }
-
-                serialized
-                    .send(json!({
-                        "name": "John Doe",
-                        "age": 43,
-                        "phones": [
-                            "+44 1234567",
-                            "+44 2345678"
-                        ]
-                    }))
-                    .await
-                    .unwrap()
             }
         });
     }
