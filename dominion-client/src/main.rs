@@ -32,7 +32,7 @@ pub async fn main() {
                     println!("Pong!");
                 }
                 _ => {
-                    println!("Uh oh!")
+                    println!("Got a message from the server that the client couldn't understand!")
                 }
             }
         }
@@ -46,6 +46,15 @@ pub async fn main() {
             "ping" => {
                 serialized
                 .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
+                .await
+                .unwrap();
+            }
+            "quit" => {
+                panic!("Exiting client")
+            }
+            "start" => {
+                serialized
+                .send(serde_json::to_value(&ClientMessage::StartGame).unwrap())
                 .await
                 .unwrap();
             }
