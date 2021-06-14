@@ -8,7 +8,7 @@ use crate::game::prelude::*;
 use dominion_macros::card_vec;
 
 /// Struct to keep track of a Player's actions/buys/coins for each turn
-#[derive(Default, Debug, Serialize, Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Resources {
     pub actions: usize,
     pub buys: usize,
@@ -23,7 +23,7 @@ pub struct Resources {
 
 /// Struct to keep track of certain conditions
 #[non_exhaustive]
-#[derive(Default, Debug, Serialize, Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct State {
     /// Is the player immune to attacks
     pub immune: bool,
@@ -35,7 +35,7 @@ pub struct State {
 
 /// What phase are we in
 #[non_exhaustive]
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub enum Phase {
     OutOfTurn,
     ActionPhase,
@@ -45,7 +45,7 @@ pub enum Phase {
 }
 
 /// Struct representing a player
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Player {
     pub uuid: Uuid,
     pub number: usize,

@@ -97,7 +97,7 @@ pub async fn main() -> Result<()> {
                                 }
                                 ClientMessage::ChatMessage{ message } => {
                                     let game = new_data.lock().unwrap();
-                                    let player_count = game.players.len();
+                                    let player_count = game.player_count();
                                     // let sender = &game.players[player_number];
                                     // let author = sender.uuid;
                                     let message = serde_json::to_value(&ServerMessage::ChatMessage{ author: player_number, message }).unwrap();
@@ -116,8 +116,9 @@ pub async fn main() -> Result<()> {
                                     match game.generate_supply(supply_list) {
                                         Ok(()) => {
                                             game.started = true;
-                                            let recipients = single_recipient(player_number);
-                                            let message = serde_json::to_value(&ServerMessage::StartingGame).unwrap();
+                                            let recipients = single_recipient(game.player_count());
+                                            let state = game.clone();
+                                            let message = serde_json::to_value(&ServerMessage::StartingGame { state }).unwrap();
                                             tx.send((message, recipients)).unwrap();
                                         }
                                         Err(NotEnoughPlayers) => {

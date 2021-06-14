@@ -5,7 +5,7 @@ use serde::{Serialize, Deserialize};
 use crate::game::prelude::*;
 use crate::error::{DominionError::*, DominionResult};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Game {
     pub started: bool,
     pub players: PlayerList,
@@ -20,12 +20,16 @@ impl Game {
     }
 
     pub fn new() -> Game {
-        Game { started: false, players: Vec::new(), supply: HashMap::new(), trash: VecDeque::new(), extras: HashMap::new() }
+        Game::default()
+    }
+
+    pub fn player_count(&self) -> usize {
+        self.players.len()
     }
 
     /// Generates the supply piles for the game given a list of cards to use
     pub fn generate_supply(&mut self, cards: CardList) -> DominionResult {
-        let player_count = self.players.len();
+        let player_count = self.player_count();
 
         let (victory_card_count, province_count, curse_count) = match player_count {
             2 => (8, 8, 10),
@@ -151,7 +155,7 @@ impl Game {
         match target_type {
             EveryoneElse => {
                 let mut indices = vec![];
-                for i in 0..self.players.len() {
+                for i in 0..self.player_count() {
                     indices.push(i);
                 }
                 indices.remove(player_index);

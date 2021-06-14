@@ -16,7 +16,7 @@ pub enum ClientMessage {
 #[non_exhaustive]
 pub enum ServerMessage {
     PingResponse,
-    StartingGame,
+    StartingGame { state: Game },
     GameAlreadyStarted,
     ChatMessage { author: usize, message: String },
     // ChatMessage { author: Uuid, message: String },
