@@ -26,18 +26,19 @@ impl Game {
         self.players.len()
     }
 
-    pub fn partial_game(&self, player_number: usize) -> PartialGame {
-        let hand_sizes: Vec<usize> = self
-            .players
+    fn hand_sizes(&self) -> Vec<usize> {
+        self.players
             .clone()
             .into_iter()
             .map(|player| player.hand_size())
-            .collect();
+            .collect()
+    }
 
+    pub fn partial_game(&self, player_number: usize) -> PartialGame {
         PartialGame {
             started: self.started,
             player: self.players[player_number].clone(),
-            hand_sizes,
+            hand_sizes: self.hand_sizes(),
             supply: self.supply.clone(),
             trash: self.trash.clone(),
             extras: self.extras.clone(),
