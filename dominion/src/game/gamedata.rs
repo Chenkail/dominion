@@ -2,8 +2,7 @@
 
 use serde::{Serialize, Deserialize};
 
-use crate::game::prelude::*;
-use crate::error::{DominionError::*, DominionResult};
+use crate::prelude::*;
 
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Game {

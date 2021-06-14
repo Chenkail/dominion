@@ -1,4 +1,4 @@
-//! Module for common imports
+//! Module for common imports relating to gameplay
 //!
 //! ```
 //! use dominion::game::prelude::*;

@@ -17,5 +17,4 @@ pub use crate::types::CardType::*;
 pub use crate::types::AttackTargetType::*;
 pub use crate::types::ReactionTrigger::*;
 
-pub use crate::error::DominionError;
-pub use crate::error::DominionError::*;
+pub use crate::error::DominionError::{self, *};
