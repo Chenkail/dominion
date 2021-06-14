@@ -1,3 +1,4 @@
+use dominion::game::prelude::*;
 use dominion_server::api::{ClientMessage, ServerMessage};
 
 use anyhow::Result;
@@ -72,7 +73,7 @@ pub async fn main() -> Result<()> {
                     }
                     "start" => {
                         serialized
-                        .send(serde_json::to_value(&ClientMessage::StartGame)?)
+                        .send(serde_json::to_value(&ClientMessage::StartGame { supply_list: Game::default_supply_list() })?)
                         .await?;
                     }
                     _ => println!("Couldn't understand input!")

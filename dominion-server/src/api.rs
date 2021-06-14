@@ -7,7 +7,7 @@ use serde::{Serialize, Deserialize};
 pub enum ClientMessage {
     Ping,
     GetHand,
-    StartGame,
+    StartGame { supply_list: CardList },
     PlayCard { card: Box<dyn Card> },
     ChatMessage { message: String },
 }

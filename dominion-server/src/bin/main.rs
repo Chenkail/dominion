@@ -104,7 +104,7 @@ pub async fn main() -> Result<()> {
                                     let recipients = everyone_but(player_count, player_number);
                                     tx.send((message, recipients)).unwrap();
                                 }
-                                ClientMessage::StartGame => {
+                                ClientMessage::StartGame { supply_list } => {
                                     let mut game = new_data.lock().unwrap();
                                     if game.started {
                                         let recipients = single_recipient(player_number);
@@ -112,8 +112,6 @@ pub async fn main() -> Result<()> {
                                         tx.send((message, recipients)).unwrap();
                                         continue;
                                     }
-
-                                    let supply_list = Game::default_supply_list();
 
                                     match game.generate_supply(supply_list) {
                                         Ok(()) => {
