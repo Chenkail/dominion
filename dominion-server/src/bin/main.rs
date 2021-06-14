@@ -117,7 +117,7 @@ pub async fn main() -> Result<()> {
                                         Ok(()) => {
                                             game.started = true;
                                             let recipients = single_recipient(game.player_count());
-                                            let state = game.clone();
+                                            let state = game.partial_game(player_number);
                                             let message = serde_json::to_value(&ServerMessage::StartingGame { state }).unwrap();
                                             tx.send((message, recipients)).unwrap();
                                         }

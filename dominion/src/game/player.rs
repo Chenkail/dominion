@@ -97,6 +97,11 @@ impl Player {
         self.state = State::default();
     }
 
+    /// Returns number of cards in the player's hand
+    pub fn hand_size(&self) -> usize {
+        self.hand.len()
+    }
+
     /// Gets an iterator with references to all cards in the player's hand, deck, and discard
     pub fn card_iter(&self) -> impl Iterator<Item = &Box<dyn Card>> {
         return self.hand.iter()

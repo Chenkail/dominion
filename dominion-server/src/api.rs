@@ -6,7 +6,6 @@ use serde::{Serialize, Deserialize};
 #[non_exhaustive]
 pub enum ClientMessage {
     Ping,
-    GetHand,
     StartGame { supply_list: CardList },
     PlayCard { card: Box<dyn Card> },
     ChatMessage { message: String },
@@ -16,7 +15,8 @@ pub enum ClientMessage {
 #[non_exhaustive]
 pub enum ServerMessage {
     PingResponse,
-    StartingGame { state: Game },
+    StartingGame { state: PartialGame },
+    CurrentState { state: PartialGame },
     GameAlreadyStarted,
     ChatMessage { author: usize, message: String },
     // ChatMessage { author: Uuid, message: String },

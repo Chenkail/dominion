@@ -9,10 +9,12 @@ pub mod callbacks;
 mod cso;
 mod card;
 mod gamedata;
+mod partial_game;
 mod player;
 
 pub use cso::*;
 pub use card::Card;
 pub use gamedata::Game;
+pub use partial_game::PartialGame;
 pub use player::*;
 pub use callbacks::Callbacks;

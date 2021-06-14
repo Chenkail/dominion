@@ -26,6 +26,19 @@ impl Game {
         self.players.len()
     }
 
+    pub fn partial_game(&self, player_number: usize) -> PartialGame {
+        let hand_sizes: Vec<usize> = self.players.clone().into_iter().map(|player| player.hand_size()).collect();
+
+        PartialGame {
+            started: self.started,
+            player: self.players[player_number].clone(),
+            hand_sizes,
+            supply: self.supply.clone(),
+            trash: self.trash.clone(),
+            extras: self.extras.clone(),
+        }
+    }
+
     /// Generates the supply piles for the game given a list of cards to use
     pub fn generate_supply(&mut self, cards: CardList) -> DominionResult {
         let player_count = self.player_count();
