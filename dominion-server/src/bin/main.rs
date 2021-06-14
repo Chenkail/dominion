@@ -4,6 +4,7 @@ use dominion_server::api::{ClientMessage, ServerMessage};
 
 use std::sync::{Arc, Mutex};
 
+use anyhow::Result;
 use futures::prelude::*;
 use serde_json::Value;
 use tokio::{net::{TcpListener, TcpStream}, sync::broadcast};
@@ -28,16 +29,16 @@ fn everyone(player_count: usize) -> Recipients {
 }
 
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> Result<()> {
     // Bind a server socket
-    let listener = TcpListener::bind("localhost:31194").await.unwrap();
+    let listener = TcpListener::bind("localhost:31194").await?;
     let (tx, _rx) = broadcast::channel::<(Value, Recipients)>(10);
 
     let data = Arc::new(Mutex::new(Game::new()));
     let mut player_count = 0;
 
     loop {
-        let (socket, _addr) = listener.accept().await.unwrap();
+        let (socket, _addr) = listener.accept().await?;
 
         if player_count > 5 {
             println!("Too many players already! Ignoring new connection");
@@ -59,10 +60,10 @@ pub async fn main() {
         }
 
         // Duplicate the socket: one for serializing and one for deserializing
-        let socket = socket.into_std().unwrap();
-        let socket2 = socket.try_clone().unwrap();
-        let socket = TcpStream::from_std(socket).unwrap();
-        let socket2 = TcpStream::from_std(socket2).unwrap();
+        let socket = socket.into_std()?;
+        let socket2 = socket.try_clone()?;
+        let socket = TcpStream::from_std(socket)?;
+        let socket2 = TcpStream::from_std(socket2)?;
 
         let length_delimited = FramedRead::new(socket, LengthDelimitedCodec::new());
         let mut deserialized = tokio_serde::SymmetricallyFramed::new(
