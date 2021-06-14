@@ -1,4 +1,6 @@
 use dominion_server::api::{ClientMessage, ServerMessage};
+
+use anyhow::Result;
 use futures::prelude::*;
 use tokio::net::TcpStream;
 use tokio_serde::formats::*;
@@ -10,14 +12,14 @@ enum InputMode {
 }
 
 #[tokio::main]
-pub async fn main() {
-    let socket = TcpStream::connect("localhost:31194").await.unwrap();
+pub async fn main() -> Result<()> {
+    let socket = TcpStream::connect("localhost:31194").await?;
 
     // Duplicate the socket: one for serializing and one for deserializing
-    let socket = socket.into_std().unwrap();
-    let socket2 = socket.try_clone().unwrap();
-    let socket = TcpStream::from_std(socket).unwrap();
-    let socket2 = TcpStream::from_std(socket2).unwrap();
+    let socket = socket.into_std()?;
+    let socket2 = socket.try_clone()?;
+    let socket = TcpStream::from_std(socket)?;
+    let socket2 = TcpStream::from_std(socket2)?;
 
     let length_delimited = FramedRead::new(socket, LengthDelimitedCodec::new());
     let mut deserialized = tokio_serde::SymmetricallyFramed::new(
@@ -59,9 +61,8 @@ pub async fn main() {
                 match command_parts.next().unwrap_or("Oops") {
                     "ping" => {
                         serialized
-                        .send(serde_json::to_value(&ClientMessage::Ping).unwrap())
-                        .await
-                        .unwrap();
+                        .send(serde_json::to_value(&ClientMessage::Ping)?)
+                        .await?;
                     }
                     "chat" => {
                         input_mode = InputMode::Chat;
@@ -71,9 +72,8 @@ pub async fn main() {
                     }
                     "start" => {
                         serialized
-                        .send(serde_json::to_value(&ClientMessage::StartGame).unwrap())
-                        .await
-                        .unwrap();
+                        .send(serde_json::to_value(&ClientMessage::StartGame)?)
+                        .await?;
                     }
                     _ => println!("Couldn't understand input!")
                 }
@@ -87,9 +87,8 @@ pub async fn main() {
                     }
                     _ => {
                         serialized
-                        .send(serde_json::to_value(&ClientMessage::ChatMessage{ message: trimmed.to_string() }).unwrap())
-                        .await
-                        .unwrap();
+                        .send(serde_json::to_value(&ClientMessage::ChatMessage{ message: trimmed.to_string() })?)
+                        .await?;
                     }
                 }
             }
