@@ -31,7 +31,7 @@ fn everyone(player_count: usize) -> Recipients {
 #[tokio::main]
 pub async fn main() {
     // Bind a server socket
-    let listener = TcpListener::bind("localhost:8080").await.unwrap();
+    let listener = TcpListener::bind("localhost:31194").await.unwrap();
     let (tx, _rx) = broadcast::channel::<(Value, Recipients)>(10);
 
     let data = Arc::new(Mutex::new(Game::new()));

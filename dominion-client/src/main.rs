@@ -11,7 +11,7 @@ enum InputMode {
 
 #[tokio::main]
 pub async fn main() {
-    let socket = TcpStream::connect("localhost:8080").await.unwrap();
+    let socket = TcpStream::connect("localhost:31194").await.unwrap();
 
     // Duplicate the socket: one for serializing and one for deserializing
     let socket = socket.into_std().unwrap();
@@ -34,7 +34,7 @@ pub async fn main() {
         while let Some(msg) = deserialized.try_next().await.unwrap() {
             match msg {
                 ServerMessage::PingResponse => {
-                    println!("Pong!");
+                    println!("pong!");
                 }
                 ServerMessage::ChatMessage{ author, message } => {
                     println!("Player {}: \"{}\"", author, message)

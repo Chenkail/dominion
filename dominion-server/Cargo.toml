@@ -10,7 +10,7 @@ name = "dominion_server"
 path = "src/lib.rs"
 
 [[bin]]
-name = "dominion-example-server"
+name = "dominion-server"
 path = "src/bin/main.rs"
 
 [dependencies]
