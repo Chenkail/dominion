@@ -4,13 +4,12 @@ use dominion_server::api::{ClientMessage, ServerMessage};
 
 use std::sync::{Arc, Mutex};
 
+use futures::prelude::*;
+use serde_json::Value;
 use tokio::{net::{TcpListener, TcpStream}, sync::broadcast};
-
 use tokio_serde::formats::*;
 use tokio_util::codec::{FramedRead, FramedWrite, LengthDelimitedCodec};
 
-use futures::prelude::*;
-use serde_json::Value;
 
 type Recipients = Vec<usize>;
 fn single_recipient(player_number: usize) -> Recipients {
