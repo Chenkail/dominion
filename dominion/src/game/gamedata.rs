@@ -36,7 +36,6 @@ impl Game {
 
     pub fn partial_game(&self, player_number: usize) -> PartialGame {
         PartialGame {
-            started: self.started,
             player: self.players[player_number].clone(),
             hand_sizes: self.hand_sizes(),
             supply: self.supply.clone(),
