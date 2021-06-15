@@ -23,9 +23,9 @@ use crate::types::*;
 /// ```
 pub fn map_to_list(map: Supply) -> CardList {
     let mut deck = CardList::new();
-    for (card, count) in map {
-        for _ in 0..count {
-            deck.push(card.clone());
+    for entry in map.values() {
+        for _ in 0..entry.count {
+            deck.push(entry.card.clone());
         }
     }
     deck

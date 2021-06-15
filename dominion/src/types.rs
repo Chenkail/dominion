@@ -12,7 +12,13 @@ pub type PlayerList = Vec<Player>;
 pub type PlayerSlice = [Player];
 pub type CardList = Vec<Box<dyn Card>>;
 pub type CardDeck = VecDeque<Box<dyn Card>>;
-pub type Supply = HashMap<Box<dyn Card>, u8>;
+pub type Supply = HashMap<String, SupplyEntry>;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct SupplyEntry {
+    pub card: Box<dyn Card>,
+    pub count: usize,
+}
 
 /// Card Types
 #[derive(PartialEq, Eq, Debug)]

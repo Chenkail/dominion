@@ -97,7 +97,7 @@ fn get_player_consent(_player: &mut Player) -> bool {
 }
 
 fn choose_card_from_supply(supply: &Supply) -> Box<dyn Card> {
-    let mut alphabetized = supply.keys().collect_vec();
+    let mut alphabetized = supply.values().map(|entry| entry.card.clone()).collect_vec();
     alphabetized.sort_unstable();
     println!("Cards:");
     println!("{:?}", alphabetized);
@@ -106,7 +106,7 @@ fn choose_card_from_supply(supply: &Supply) -> Box<dyn Card> {
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("error: unable to read user input");
     let i = input.parse::<usize>().unwrap();
-    let card = *alphabetized.get(i).expect("Index out of bounds");
+    let card = alphabetized.get(i).expect("Index out of bounds");
 
     card.clone()
 }

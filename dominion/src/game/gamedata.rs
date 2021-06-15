@@ -62,19 +62,19 @@ impl Game {
         };
 
         let mut supply: Supply = HashMap::new();
-        supply.insert(Box::new(Copper), 40);
-        supply.insert(Box::new(Silver), 40);
-        supply.insert(Box::new(Gold), 40);
-        supply.insert(Box::new(Estate), victory_card_count);
-        supply.insert(Box::new(Duchy), victory_card_count);
-        supply.insert(Box::new(Province), province_count);
-        supply.insert(Box::new(BasicCurse), curse_count);
+        supply.insert(Copper.name().to_string(), SupplyEntry { card: Box::new(Copper), count: 40 });
+        supply.insert(Silver.name().to_string(), SupplyEntry { card: Box::new(Silver), count: 40 });
+        supply.insert(Gold.name().to_string(), SupplyEntry { card: Box::new(Gold), count: 40 });
+        supply.insert(Estate.name().to_string(), SupplyEntry { card: Box::new(Estate), count: victory_card_count });
+        supply.insert(Duchy.name().to_string(), SupplyEntry { card: Box::new(Duchy), count: victory_card_count });
+        supply.insert(Province.name().to_string(), SupplyEntry { card: Box::new(Province), count: victory_card_count });
+        supply.insert(BasicCurse.name().to_string(), SupplyEntry { card: Box::new(BasicCurse), count: victory_card_count });
 
 
         for card in cards {
             // Check if we need Potions
             if card.potion_cost() > 0 {
-                supply.insert(Box::new(Potion), 16);
+                supply.insert(Potion.name().to_string(), SupplyEntry { card: Box::new(Potion), count: 16 });
             }
 
             // If card is victory card, count matches other victory cards
@@ -85,7 +85,7 @@ impl Game {
                 10
             };
 
-            supply.insert(card, count);
+            supply.insert(card.name().to_string(), SupplyEntry{ card, count });
         }
 
         self.supply = supply;
@@ -99,8 +99,8 @@ impl Game {
 
     /// Prints out all the cards in the supply and their remaining quantities
     pub fn print_supply(&mut self) {
-        for (card, count) in &self.supply {
-            println!("{}: {} cards", card, count);
+        for entry in self.supply.values() {
+            println!("{}: {} cards", entry.card, entry.count);
         }
     }
 
@@ -108,13 +108,13 @@ impl Game {
     /// returns true if the province cards are exhausted OR when 3 stacks in the supply are exhausted.
     pub fn victory_met(&mut self) -> bool {
         let province: Box<dyn Card> = Box::new(Province);
-        if *self.supply.get(&province).unwrap() as u32 == 0 {
+        if self.supply.get(province.name()).unwrap().count == 0 {
             return true;
         }
 
         if self.supply
             .values()
-            .filter(|e| **e == 0)
+            .filter(|e| e.count == 0)
             .count() == 3 {
             return true;
         };
@@ -235,11 +235,11 @@ impl Game {
 
     /// Gain a copy of a card to the discard pile
     pub fn gain(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
-        if *self.supply.get(&card).unwrap() == 0 {
+        if self.supply.get(card.name()).unwrap().count == 0 {
             return Err(EmptyPile{card});
         }
 
-        *self.supply.get_mut(&card).unwrap() -= 1;
+        self.supply.get_mut(card.name()).unwrap().count -= 1;
         card.effects_on_gain(self, player_index, callbacks);
 
         let player = &mut self.players[player_index];
@@ -249,11 +249,11 @@ impl Game {
 
     /// Gain a copy of a card to hand
     pub fn gain_to_hand(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
-        if *self.supply.get(&card).unwrap() == 0 {
+        if self.supply.get(card.name()).unwrap().count == 0 {
             return Err(EmptyPile{card});
         }
 
-        *self.supply.get_mut(&card).unwrap() -= 1;
+        self.supply.get_mut(card.name()).unwrap().count -= 1;
         card.effects_on_gain(self, player_index, callbacks);
 
         let player = &mut self.players[player_index];
@@ -263,11 +263,11 @@ impl Game {
 
     /// Gain a copy of a card to the top of the deck
     pub fn gain_to_deck_top(&mut self, player_index: usize, card: Box<dyn Card>, callbacks: &Callbacks) -> DominionResult {
-        if *self.supply.get(&card).unwrap() == 0 {
+        if self.supply.get(card.name()).unwrap().count == 0 {
             return Err(EmptyPile{card});
         }
 
-        *self.supply.get_mut(&card).unwrap() -= 1;
+        self.supply.get_mut(card.name()).unwrap().count -= 1;
         card.effects_on_gain(self, player_index, callbacks);
 
         let player = &mut self.players[player_index];
@@ -283,7 +283,7 @@ impl Game {
             return Err(InsufficientFunds);
         }
 
-        if *self.supply.get(&card).unwrap() == 0 {
+        if self.supply.get(card.name()).unwrap().count == 0 {
             return Err(EmptyPile { card });
         }
 
@@ -382,10 +382,10 @@ impl Game {
     /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_ucost(&self, cost: usize) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
-        return self.supply.keys()
-            .filter(|a| *self.supply.get(*a).unwrap() > 0)
-            .filter(|a| a.coin_cost() <= cost)
-            .cloned()
+        return self.supply.values()
+            .filter(|entry| entry.count > 0)
+            .filter(|entry| entry.card.coin_cost() <= cost)
+            .map(|entry| entry.card.clone())
             .collect();
     }
 
@@ -395,10 +395,10 @@ impl Game {
     /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_acost(&self, cost: usize) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
-        return self.supply.keys()
-            .filter(|a| *self.supply.get(*a).unwrap() > 0)
-            .filter(|a| a.coin_cost() >= cost)
-            .cloned()
+        return self.supply.values()
+            .filter(|entry| entry.count > 0)
+            .filter(|entry| entry.card.coin_cost() >= cost)
+            .map(|entry| entry.card.clone())
             .collect();
     }
 
@@ -407,10 +407,10 @@ impl Game {
     /// Hopefully we can combine this and related methods into one generic one
     pub fn return_avail_cards_type(&self, t: CardType) -> CardList {
         //TODO: rewrite to not use collect and to use filter() with the lambda passed in
-        return self.supply.keys()
-            .filter(|a| *self.supply.get(*a).unwrap() > 0)
-            .filter(|a| a.types().contains(&t))
-            .cloned()
+        return self.supply.values()
+            .filter(|entry| entry.count > 0)
+            .filter(|entry| entry.card.types().contains(&t))
+            .map(|entry| entry.card.clone())
             .collect();
     }
 }
