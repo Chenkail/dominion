@@ -286,11 +286,11 @@ macro_rules! basic_action {
 /// For example, Silver could be declared as follows:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// basic_treasure!(Silver, "Silver", 3, 2);
+/// basic_treasure!(Silver, "Silver", cost=3, value=2);
 /// ```
 #[macro_export]
 macro_rules! basic_treasure {
-    ($struct_name:ident, $name:expr, $cost:expr, $value:expr) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, value=$value:expr) => {
         card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
@@ -300,7 +300,7 @@ macro_rules! basic_treasure {
             treasure_value!($value);
         }
     };
-    ($struct_name:ident, $name:expr, $cost:expr, $value:expr, $doc:tt) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, value=$value:expr, $doc:tt) => {
         card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
@@ -319,11 +319,11 @@ macro_rules! basic_treasure {
 /// For example, Province could be declared as follows:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// basic_victory!(Province, "Province", 8, 6);
+/// basic_victory!(Province, "Province", cost=8, points=6);
 /// ```
 #[macro_export]
 macro_rules! basic_victory {
-    ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr) => {
         card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
@@ -333,7 +333,7 @@ macro_rules! basic_victory {
             victory_points!($points);
         }
     };
-    ($struct_name:ident, $name:expr, $cost:expr, $points:expr, $doc:tt) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr, $doc:tt) => {
         card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
@@ -355,11 +355,11 @@ macro_rules! basic_victory {
 /// name is BasicCurse because the name Curse is already used for the card type):
 /// ```
 /// # use dominion::cards::prelude::*;
-/// basic_curse!(BasicCurse, "Curse", 0, -1);
+/// basic_curse!(BasicCurse, "Curse", cost=0, points=-1);
 /// ```
 #[macro_export]
 macro_rules! basic_curse {
-    ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr) => {
         card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
@@ -369,7 +369,7 @@ macro_rules! basic_curse {
             victory_points!($points);
         }
     };
-    ($struct_name:ident, $name:expr, $cost:expr, $points:expr, $doc:tt) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr, $doc:tt) => {
         card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
