@@ -116,10 +116,12 @@ pub async fn main() -> Result<()> {
                                     match game.generate_supply(supply_list) {
                                         Ok(()) => {
                                             game.started = true;
-                                            let recipients = single_recipient(game.player_count());
-                                            let state = game.partial_game(player_number);
-                                            let message = serde_json::to_value(&ServerMessage::StartingGame { state }).unwrap();
-                                            tx.send((message, recipients)).unwrap();
+                                            for i in 0..game.player_count() {
+                                                let recipients = single_recipient(i);
+                                                let state = game.partial_game(i);
+                                                let message = serde_json::to_value(&ServerMessage::StartingGame { state }).unwrap();
+                                                tx.send((message, recipients)).unwrap();
+                                            }
                                         }
                                         Err(NotEnoughPlayers) => {
                                             let recipients = single_recipient(player_number);

@@ -4,6 +4,8 @@ use serde::{Serialize, Deserialize};
 
 use crate::prelude::*;
 
+/// The data for a game of Dominion.
+
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Game {
     pub started: bool,

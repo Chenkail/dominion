@@ -19,6 +19,5 @@ pub enum ServerMessage {
     CurrentState { state: PartialGame },
     GameAlreadyStarted,
     ChatMessage { author: usize, message: String },
-    // ChatMessage { author: Uuid, message: String },
     NotEnoughPlayers,
 }
