@@ -1,8 +1,8 @@
 # Dominion
 
-![GitHub](https://img.shields.io/github/license/anticardgamecardgameclub/dominion)
-[![dependency status](https://deps.rs/repo/github/anticardgamecardgameclub/dominion/status.svg)](https://deps.rs/repo/github/anticardgamecardgameclub/dominion)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/anticardgamecardgameclub/dominion/CI)
+![GitHub](https://img.shields.io/github/license/tireswing/dominion)
+[![dependency status](https://deps.rs/repo/github/tireswing/dominion/status.svg)](https://deps.rs/repo/github/tireswing/dominion)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tireswing/dominion/CI)
 
 STILL A WORK IN PROGRESS - NOT CURRENTLY USABLE
 
