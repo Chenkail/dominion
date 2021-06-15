@@ -3,8 +3,6 @@
 members = [
   "dominion",
   "dominion-macros",
-  "dominion-server",
-  "dominion-client",
 
   # Internal
   "examples",
