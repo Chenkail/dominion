@@ -204,7 +204,7 @@ macro_rules! victory_points {
 /// Effects for an action with no effects other than drawing cards
 /// and/or adding actions/buys/coins for the turn
 ///
-/// Format: `basic_on_play_effects!(cards, actions, buys, coins);`
+/// Format: `basic_on_play_effects!(cards=cards, actions=actions, buys=buys, coins=coins);`
 ///
 /// Example:
 /// ```
@@ -216,7 +216,11 @@ macro_rules! victory_points {
 ///     name!("Market");
 ///     card_cost!(5);
 ///     types!(vec![Action]);
-///     basic_on_play_effects!(1, 1, 1, 1);
+///     basic_on_play_effects!(
+///        cards=1,
+///        actions=1,
+///        buys=1,
+///        coins=1);
 /// }
 /// ```
 #[macro_export]
@@ -241,18 +245,25 @@ macro_rules! basic_on_play_effects {
 /// For example, Market could be declared as follows:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// basic_action!(Market, "Market", 5, 1, 1, 1, 1);
+/// basic_action!(
+///    Market,
+///    "Market",
+///    cost=5,
+///    cards=1,
+///    actions=1,
+///    buys=1,
+///    coins=1);
 /// ```
 #[macro_export]
 macro_rules! basic_action {
-    ($struct_name:ident, $name:expr, cost=$cost:expr, $(cards=$cards:expr,)? $(actions=$actions:expr,)? $(buys=$buys:expr,)? $(coins=$coins:expr)?) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr) => {
         card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
             card_cost!($cost);
             types!(vec![Action]);
-            basic_on_play_effects!($cards, $actions, $buys, $coins);
+            basic_on_play_effects!(cards=$cards, actions=$actions, buys=$buys, coins=$coins);
         }
     };
 

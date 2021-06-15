@@ -14,5 +14,9 @@ impl Card for Pouch {
     card_cost!(2);
     types!(vec![Treasure, Heirloom]);
     treasure_value!(1);
-    basic_on_play_effects!(0, 0, 1, 0);
+    basic_on_play_effects!(
+        cards=0,
+        actions=0,
+        buys=1,
+        coins=0);
 }
