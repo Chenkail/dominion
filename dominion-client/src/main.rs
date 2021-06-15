@@ -1,6 +1,8 @@
 use dominion::game::prelude::*;
 use dominion_server::api::{ClientMessage, ServerMessage};
 
+use std::sync::{Arc, Mutex};
+
 use anyhow::Result;
 use futures::prelude::*;
 use tokio::net::TcpStream;
@@ -32,6 +34,9 @@ pub async fn main() -> Result<()> {
     let mut serialized =
         tokio_serde::SymmetricallyFramed::new(length_delimited, SymmetricalJson::default());
 
+    let game_state = Arc::new(Mutex::new(PartialGame::default()));
+    let game_state2 = game_state.clone();
+
     // Handle incoming messages from the server
     tokio::spawn(async move {
         while let Some(msg) = deserialized.try_next().await.unwrap() {
@@ -43,9 +48,13 @@ pub async fn main() -> Result<()> {
                     println!("Player {}: \"{}\"", author, message)
                 }
                 ServerMessage::StartingGame{ state } => {
+                    let mut old_state = game_state.lock().unwrap();
+                    *old_state = state;
                     println!("Starting game!");
                 }
                 ServerMessage::CurrentState{ state } => {
+                    let mut old_state = game_state.lock().unwrap();
+                    *old_state = state;
                 }
                 _ => {
                     println!("Got a message from the server that the client couldn't understand!")
@@ -83,7 +92,8 @@ pub async fn main() -> Result<()> {
                     }
                     "play" => {
                         let card_name = command_parts.next().unwrap_or("");
-                        for card in &game_state.player.hand {
+                        let state = game_state2.lock().unwrap();
+                        for card in &state.player.hand {
 
                         }
                     }

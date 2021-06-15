@@ -44,8 +44,12 @@ pub enum Phase {
     CleanupPhase,
 }
 
+impl Default for Phase {
+    fn default() -> Self { Phase::OutOfTurn }
+}
+
 /// Struct representing a player
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Player {
     pub uuid: Uuid,
     pub number: usize,

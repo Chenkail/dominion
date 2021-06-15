@@ -7,7 +7,7 @@ use serde::{Serialize, Deserialize};
 /// These should be generated using `Game::partial_game()` and not constructed
 /// by hand.
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct PartialGame {
     pub player: Player,
     pub hand_sizes: Vec<usize>,
