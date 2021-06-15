@@ -115,7 +115,7 @@ basic_action!(
     actions=2,
     buys=1,
     coins=2,
-    doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)");
+    "[Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)");
 
 // Gardens
 //
@@ -201,7 +201,7 @@ basic_action!(
     actions=1,
     buys=1,
     coins=1,
-    doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Market)");
+    "[Wiki link](http://wiki.dominionstrategy.com/index.php/Market)");
 
 // Merchant
 card!(Merchant, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)");
@@ -271,7 +271,7 @@ basic_action!(
     actions=0,
     buys=0,
     coins=0,
-    doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)");
+    "[Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)");
 
 card!(ThroneRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Throne_Room)");
 #[typetag::serde]
@@ -307,7 +307,7 @@ basic_action!(Village, "Village",
             actions=2,
             buys=0,
             coins=0,
-            doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Village)");
+            "[Wiki link](http://wiki.dominionstrategy.com/index.php/Village)");
 
 card!(Witch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)");
 #[typetag::serde]

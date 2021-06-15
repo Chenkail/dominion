@@ -267,8 +267,7 @@ macro_rules! basic_action {
         }
     };
 
-    ($struct_name:ident, $name:expr, cost=$cost:expr, cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr, doc=$doc:tt) => {
-    // ($struct_name:ident, $name:expr, cost=$cost:expr, $(cards=$cards:expr,)? $(actions=$actions:expr,)? $(buys=$buys:expr,)? $(coins=$coins:expr,)? $(doc=$doc:tt)?) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr, $doc:tt) => {
         card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
