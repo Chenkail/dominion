@@ -84,7 +84,7 @@ fn reveal_top_discard_pile(player: &Player, n: usize) {
 
 fn reveal_top_draw_pile(player: &Player, n: usize) {
     for i in 0..n {
-        println!("{}: {}",n , player.deck.get(i).unwrap().name())
+        println!("{}: {}", n, player.deck.get(i).unwrap().name())
     }
 }
 
