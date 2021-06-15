@@ -3,6 +3,7 @@
 /// Declares a card struct
 ///
 /// This macro accepts an optional argument for a docstring
+///
 /// Format:
 /// ```
 /// # use dominion::cards::prelude::*;
