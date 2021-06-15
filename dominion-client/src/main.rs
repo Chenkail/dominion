@@ -93,8 +93,18 @@ pub async fn main() -> Result<()> {
                     "play" => {
                         let card_name = command_parts.next().unwrap_or("");
                         let state = game_state2.lock().unwrap();
-                        for card in &state.player.hand {
-
+                        let hand = &state.player.hand;
+                        let n = hand
+                                                    .clone()
+                                                    .into_iter()
+                                                    .position(|c| c.clean_name() == card_name);
+                        match n {
+                            Some(index) => {
+                                serialized
+                                    .send(serde_json::to_value(&ClientMessage::PlayCard { index })?)
+                                    .await?;
+                            }
+                            None => println!("Couldn't find that card!"),
                         }
                     }
                     _ => println!("Couldn't understand input!")

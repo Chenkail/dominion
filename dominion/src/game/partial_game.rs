@@ -9,6 +9,7 @@ use serde::{Serialize, Deserialize};
 
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct PartialGame {
+    pub current_turn: usize,
     pub player: Player,
     pub hand_sizes: Vec<usize>,
     pub supply: Supply,

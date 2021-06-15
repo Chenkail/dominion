@@ -9,6 +9,7 @@ use crate::prelude::*;
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct Game {
     pub started: bool,
+    pub current_turn: usize,
     pub players: PlayerList,
     pub supply: Supply,
     pub trash: CardDeck,
@@ -38,6 +39,7 @@ impl Game {
 
     pub fn partial_game(&self, player_number: usize) -> PartialGame {
         PartialGame {
+            current_turn: self.current_turn,
             player: self.players[player_number].clone(),
             hand_sizes: self.hand_sizes(),
             supply: self.supply.clone(),

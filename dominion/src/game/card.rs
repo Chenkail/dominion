@@ -119,7 +119,7 @@ pub trait Card: Clone + Send + Sync {
     /// The trigger for a reaction card
     fn reaction_trigger(&self) -> Option<ReactionTrigger> { None }
 
-    // Type check methods - these should generally not be overridden
+    // The following methods should generally not be overridden
     /// Print out all types a card has, separated by commas
     fn print_types(&self) { println!("{}", self.types().iter().format(", ")) }
     /// Check if this card is an Action
@@ -134,6 +134,13 @@ pub trait Card: Clone + Send + Sync {
     fn is_victory(&self) -> bool { self.types().contains(&CardType::Victory) }
     /// Check if this card is a Curse card
     fn is_curse(&self) -> bool { self.types().contains(&CardType::Curse) }
+    /// Lowercase name with no spaces
+    fn clean_name(&self) -> String {
+        let mut s = self.name().to_string();
+        s.retain(|c| !c.is_whitespace());
+
+        s
+    }
 }
 
 impl fmt::Display for dyn Card {
