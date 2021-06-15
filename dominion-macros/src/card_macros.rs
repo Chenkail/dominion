@@ -2,14 +2,21 @@
 
 /// Declares a card struct
 ///
+/// This macro accepts an optional argument for a docstring
 /// Format:
 /// ```
 /// # use dominion::cards::prelude::*;
 /// card!(Market);
+/// card!(MyCard, "Your card description here");
 /// ```
 #[macro_export]
 macro_rules! card {
     ($struct_name:ident) => {
+        #[derive(Clone, Serialize, Deserialize)]
+        pub struct $struct_name;
+    };
+    ($struct_name:ident, $doc:tt) => {
+        #[doc = $doc]
         #[derive(Clone, Serialize, Deserialize)]
         pub struct $struct_name;
     };

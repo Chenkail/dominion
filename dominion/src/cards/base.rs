@@ -2,10 +2,7 @@
 
 use super::prelude::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Copper)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Copper;
-
+card!(Copper, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Copper)");
 #[typetag::serde]
 impl Card for Copper {
     name!("Copper");
@@ -14,10 +11,7 @@ impl Card for Copper {
     treasure_value!(1);
 }
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Silver)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Silver;
-
+card!(Silver, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Silver)");
 #[typetag::serde]
 impl Card for Silver {
     name!("Silver");
@@ -26,10 +20,7 @@ impl Card for Silver {
     treasure_value!(2);
 }
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Gold)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Gold;
-
+card!(Gold, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Gold)");
 #[typetag::serde]
 impl Card for Gold {
     name!("Gold");
@@ -38,10 +29,7 @@ impl Card for Gold {
     treasure_value!(3);
 }
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Estate)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Estate;
-
+card!(Estate, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Estate)");
 #[typetag::serde]
 impl Card for Estate {
     name!("Estate");
@@ -50,10 +38,7 @@ impl Card for Estate {
     victory_points!(1);
 }
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Duchy)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Duchy;
-
+card!(Duchy, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Duchy)");
 #[typetag::serde]
 impl Card for Duchy {
     name!("Duchy");
@@ -62,10 +47,7 @@ impl Card for Duchy {
     victory_points!(3);
 }
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Province)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Province;
-
+card!(Province, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Province)");
 #[typetag::serde]
 impl Card for Province {
     name!("Province");
@@ -74,10 +56,7 @@ impl Card for Province {
     victory_points!(6);
 }
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Curse)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct BasicCurse;
-
+card!(BasicCurse, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Curse)");
 #[typetag::serde]
 impl Card for BasicCurse {
     name!("Curse");
