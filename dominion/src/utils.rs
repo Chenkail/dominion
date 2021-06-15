@@ -13,17 +13,17 @@ use crate::types::*;
 /// # use dominion_macros::*;
 /// use dominion::utils::map_to_list;
 ///
-/// let mut map = Supply::new();
-/// map.insert(Box::new(Copper), 1);
-/// map.insert(Box::new(Gold), 3);
-/// map.insert(Box::new(Estate), 2);
-/// let mut deck = map_to_list(map);
+/// let mut supply = Supply::new();
+/// supply_add!(supply, Copper, 1);
+/// supply_add!(supply, Gold, 3);
+/// supply_add!(supply, Estate, 2);
+/// let mut deck = map_to_list(supply);
 /// deck.sort_unstable();
 /// assert_eq!(deck, card_vec![Copper, Estate, Estate, Gold, Gold, Gold]);
 /// ```
-pub fn map_to_list(map: Supply) -> CardList {
+pub fn supply_to_list(supply: Supply) -> CardList {
     let mut deck = CardList::new();
-    for entry in map.values() {
+    for entry in supply.values() {
         for _ in 0..entry.count {
             deck.push(entry.card.clone());
         }

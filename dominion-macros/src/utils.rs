@@ -20,3 +20,12 @@ macro_rules! card_vec {
         }
     };
 }
+
+#[macro_export]
+macro_rules! supply_add {
+    ($supply:expr, $card:expr, $quantity:expr) => {
+        {
+            $supply.insert($card.name().to_string(), SupplyEntry { card: Box::new($card), count: $quantity })
+        }
+    };
+}

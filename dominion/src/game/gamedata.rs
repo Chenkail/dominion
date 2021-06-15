@@ -6,7 +6,7 @@ use crate::prelude::*;
 
 /// The data for a game of Dominion.
 
-#[derive(Clone, Default, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Game {
     pub started: bool,
     pub current_turn: usize,
@@ -16,13 +16,32 @@ pub struct Game {
     pub extras: Supply,
 }
 
+impl Default for Game {
+    fn default() -> Self {
+        let mut game = Game::new();
+        for i in 0..2 {
+            let player = Player::new_with_default_deck(i);
+            game.add_player(player);
+        }
+        game.generate_supply(Game::default_supply_list()).unwrap();
+
+        game
+    }
+}
+
 impl Game {
     pub fn default_supply_list() -> CardList {
         card_vec![Cellar, Market, Merchant, Militia, Mine, Moat, Remodel, Smithy, Village, Workshop]
     }
 
     pub fn new() -> Game {
-        Game::default()
+        let started = false;
+        let current_turn = 0;
+        let players = PlayerList::new();
+        let supply = Supply::new();
+        let trash = CardDeck::new();
+        let extras = Supply::new();
+        Game { started, current_turn, players, supply, trash, extras }
     }
 
     pub fn player_count(&self) -> usize {
@@ -62,14 +81,14 @@ impl Game {
         };
 
         let mut supply: Supply = HashMap::new();
-        supply.insert(Copper.name().to_string(), SupplyEntry { card: Box::new(Copper), count: 40 });
-        supply.insert(Silver.name().to_string(), SupplyEntry { card: Box::new(Silver), count: 40 });
-        supply.insert(Gold.name().to_string(), SupplyEntry { card: Box::new(Gold), count: 40 });
-        supply.insert(Estate.name().to_string(), SupplyEntry { card: Box::new(Estate), count: victory_card_count });
-        supply.insert(Duchy.name().to_string(), SupplyEntry { card: Box::new(Duchy), count: victory_card_count });
-        supply.insert(Province.name().to_string(), SupplyEntry { card: Box::new(Province), count: province_count });
-        supply.insert(BasicCurse.name().to_string(), SupplyEntry { card: Box::new(BasicCurse), count: curse_count });
+        supply_add!(supply, Copper, 40);
+        supply_add!(supply, Silver, 40);
+        supply_add!(supply, Gold, 40);
 
+        supply_add!(supply, Estate, victory_card_count);
+        supply_add!(supply, Duchy, victory_card_count);
+        supply_add!(supply, Province, province_count);
+        supply_add!(supply, BasicCurse, curse_count);
 
         for card in cards {
             // Check if we need Potions
@@ -106,7 +125,7 @@ impl Game {
 
     /// checks game state, used for victory condition.
     /// returns true if the province cards are exhausted OR when 3 stacks in the supply are exhausted.
-    pub fn victory_met(&mut self) -> bool {
+    pub fn victory_met(&self) -> bool {
         let province: Box<dyn Card> = Box::new(Province);
         if self.supply.get(province.name()).unwrap().count == 0 {
             return true;
