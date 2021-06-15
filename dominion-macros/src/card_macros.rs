@@ -254,6 +254,16 @@ macro_rules! basic_action {
             basic_on_play_effects!($cards, $actions, $buys, $coins);
         }
     };
+    ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr, $doc:tt) => {
+        card!($struct_name, $doc);
+        #[typetag::serde]
+        impl Card for $struct_name {
+            name!($name);
+            cost!($cost);
+            types!(vec![Action]);
+            basic_on_play_effects!($cards, $actions, $buys, $coins);
+        }
+    };
 }
 
 /// Implementation in one line for a treasure card with a fixed coin value
@@ -269,6 +279,16 @@ macro_rules! basic_action {
 macro_rules! basic_treasure {
     ($struct_name:ident, $name:expr, $cost:expr, $value:expr) => {
         card!($struct_name);
+        #[typetag::serde]
+        impl Card for $struct_name {
+            name!($name);
+            cost!($cost);
+            types!(vec![Treasure]);
+            treasure_value!($value);
+        }
+    };
+    ($struct_name:ident, $name:expr, $cost:expr, $value:expr, $doc:tt) => {
+        card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -300,6 +320,16 @@ macro_rules! basic_victory {
             victory_points!($points);
         }
     };
+    ($struct_name:ident, $name:expr, $cost:expr, $points:expr, $doc:tt) => {
+        card!($struct_name, $doc);
+        #[typetag::serde]
+        impl Card for $struct_name {
+            name!($name);
+            cost!($cost);
+            types!(vec![Victory]);
+            victory_points!($points);
+        }
+    };
 }
 
 /// Implementation in one line for a curse card with a fixed points value
@@ -318,6 +348,16 @@ macro_rules! basic_victory {
 macro_rules! basic_curse {
     ($struct_name:ident, $name:expr, $cost:expr, $points:expr) => {
         card!($struct_name);
+        #[typetag::serde]
+        impl Card for $struct_name {
+            name!($name);
+            cost!($cost);
+            types!(vec![Curse]);
+            victory_points!($points);
+        }
+    };
+    ($struct_name:ident, $name:expr, $cost:expr, $points:expr, $doc:tt) => {
+        card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
