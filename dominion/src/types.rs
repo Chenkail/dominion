@@ -21,7 +21,7 @@ pub struct SupplyEntry {
 }
 
 /// Card Types
-#[derive(PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 #[derive(Serialize, Deserialize)]
 pub enum CardType {
     // Basic types
@@ -58,7 +58,7 @@ impl Display for CardType {
 }
 
 /// Which players an attack can target
-#[derive(PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 #[derive(Serialize, Deserialize)]
 pub enum AttackTargetType {
     PlayerToLeft,
@@ -67,7 +67,7 @@ pub enum AttackTargetType {
 }
 
 /// Triggers for Reaction cards
-#[derive(PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 #[derive(Serialize, Deserialize)]
 pub enum ReactionTrigger {
     // Most common reaction trigger - another player plays an attack card

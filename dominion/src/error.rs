@@ -3,11 +3,12 @@
 use crate::game::Card;
 use crate::types::CardType;
 
+use serde::{Serialize, Deserialize};
 use thiserror::Error;
 
 pub type DominionResult = Result<(), DominionError>;
 
-#[derive(Debug, Error)]
+#[derive(Clone, Debug, Error, Serialize, Deserialize)]
 pub enum DominionError {
     #[error("Card doesn't have expected type! Expected: {expected:?}")]
     CardTypeMisMatch { expected: CardType },
