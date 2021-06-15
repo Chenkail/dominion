@@ -8,16 +8,14 @@ use crate::types::*;
 ///
 /// For example:
 /// ```
-/// # use dominion::types::*;
-/// # use dominion::cards::base::*;
-/// # use dominion_macros::*;
-/// use dominion::utils::map_to_list;
+/// # use dominion::prelude::*;
+/// use dominion::utils::supply_to_list;
 ///
 /// let mut supply = Supply::new();
 /// supply_add!(supply, Copper, 1);
 /// supply_add!(supply, Gold, 3);
 /// supply_add!(supply, Estate, 2);
-/// let mut deck = map_to_list(supply);
+/// let mut deck = supply_to_list(supply);
 /// deck.sort_unstable();
 /// assert_eq!(deck, card_vec![Copper, Estate, Estate, Gold, Gold, Gold]);
 /// ```
