@@ -67,8 +67,8 @@ impl Game {
         supply.insert(Gold.name().to_string(), SupplyEntry { card: Box::new(Gold), count: 40 });
         supply.insert(Estate.name().to_string(), SupplyEntry { card: Box::new(Estate), count: victory_card_count });
         supply.insert(Duchy.name().to_string(), SupplyEntry { card: Box::new(Duchy), count: victory_card_count });
-        supply.insert(Province.name().to_string(), SupplyEntry { card: Box::new(Province), count: victory_card_count });
-        supply.insert(BasicCurse.name().to_string(), SupplyEntry { card: Box::new(BasicCurse), count: victory_card_count });
+        supply.insert(Province.name().to_string(), SupplyEntry { card: Box::new(Province), count: province_count });
+        supply.insert(BasicCurse.name().to_string(), SupplyEntry { card: Box::new(BasicCurse), count: curse_count });
 
 
         for card in cards {
