@@ -11,5 +11,5 @@ A backend library for playing Dominion, written entirely in Rust. Includes a sam
 To see the documentation, clone the repository and then run
 
 ```shell
-cargo doc --open
+cargo doc --no-deps --open
 ```
