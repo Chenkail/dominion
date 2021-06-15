@@ -3,10 +3,7 @@
 use super::prelude::*;
 use super::base::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Fortune)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Fortune;
-
+card!(Fortune, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Fortune)");
 #[typetag::serde]
 impl Card for Fortune {
     name!("Fortune");

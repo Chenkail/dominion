@@ -4,10 +4,7 @@ use std::collections::HashSet;
 
 use super::prelude::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Fairgrounds)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Fairgrounds;
-
+card!(Fairgrounds, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Fairgrounds)");
 #[typetag::serde]
 impl Card for Fairgrounds {
     name!("Fairgrounds");

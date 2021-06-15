@@ -5,10 +5,7 @@
 use super::prelude::*;
 use super::base::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Artisan;
-
+card!(Artisan, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)");
 #[typetag::serde]
 impl Card for Artisan {
     name!("Artisan");
@@ -25,10 +22,7 @@ impl Card for Artisan {
 }
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Bandit)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Bandit;
-
+card!(Bandit, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bandit)");
 #[typetag::serde]
 impl Card for Bandit {
     name!("Bandit");
@@ -54,19 +48,12 @@ impl Card for Bandit {
 }
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Bureaucrat)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Bureaucrat;
-
+card!(Bureaucrat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bureaucrat)");
 placeholder_effects!(Bureaucrat, "Bureaucrat", 4);
-
 
 // Cellar
 // +1 Action, discard any number of cards, then draw that many
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Cellar)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Cellar;
-
+card!(Cellar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Cellar)");
 #[typetag::serde]
 impl Card for Cellar {
     name!("Cellar");
@@ -82,10 +69,7 @@ impl Card for Cellar {
     }
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Chapel;
+card!(Chapel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)");
 #[typetag::serde]
 impl Card for Chapel {
     name!("Chapel");
@@ -102,10 +86,7 @@ impl Card for Chapel {
 
 // Council Room
 // +4 cards, +1 buy, each other player draws a card
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Council_Room)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct CouncilRoom;
-
+card!(CouncilRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Council_Room)");
 #[typetag::serde]
 impl Card for CouncilRoom {
     name!("Council Room");
@@ -126,26 +107,12 @@ impl Card for CouncilRoom {
     }
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Festival;
-
-#[typetag::serde]
-impl Card for Festival {
-    name!("Festival");
-    cost!(5);
-    types!(vec![Action]);
-    basic_on_play_effects!(0, 2, 1, 2);
-}
-
+basic_action!(Festival, "Festival", 5, 0, 2, 1, 2, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)");
 
 // Gardens
-// effect: victory card, worth 1 per 10 cards you have(round down)
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Gardens)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Gardens;
-
+//
+// Effect: victory card, worth 1 per 10 cards you have(round down)
+card!(Gardens, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Gardens)");
 #[typetag::serde]
 impl Card for Gardens {
     name!("Gardens");
@@ -158,11 +125,7 @@ impl Card for Gardens {
     }
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Harbinger)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Harbinger;
-
+card!(Harbinger, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Harbinger)");
 #[typetag::serde]
 impl Card for Harbinger {
     name!("Harbinger");
@@ -184,11 +147,7 @@ impl Card for Harbinger {
     }
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Laboratory)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Laboratory;
-
+card!(Laboratory, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Laboratory)");
 #[typetag::serde]
 impl Card for Laboratory {
     name!("Laboratory");
@@ -197,11 +156,7 @@ impl Card for Laboratory {
     basic_on_play_effects!(2, 1, 0, 0);
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Library)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Library;
-
+card!(Library, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Library)");
 #[typetag::serde]
 impl Card for Library {
     name!("Library");
@@ -224,26 +179,12 @@ impl Card for Library {
     }
 }
 
-
 // Market
 // effects: +1 Action, +1 Buy, +1 temp_coins, +1 Card
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Market)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Market;
+basic_action!(Market, "Market", 5, 1, 1, 1, 1, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Market)");
 
-#[typetag::serde]
-impl Card for Market {
-    name!("Market");
-    cost!(5);
-    types!(vec![Action]);
-    basic_on_play_effects!(1, 1, 1, 1);
-}
-
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Merchant;
-
+// Merchant
+card!(Merchant, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)");
 #[typetag::serde]
 impl Card for Merchant {
     name!("Merchant");
@@ -258,25 +199,15 @@ impl Card for Merchant {
     }
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Militia)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Militia;
-
+card!(Militia, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Militia)");
 placeholder_effects!(Militia, "Militia", 4);
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Mine)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Mine;
-
+card!(Mine, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Mine)");
 placeholder_effects!(Mine, "Mine", 5);
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Moat)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Moat;
-
+card!(Moat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moat)");
 #[typetag::serde]
 impl Card for Moat {
     name!("Moat");
@@ -299,52 +230,22 @@ impl Card for Moat {
     }
 }
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Moneylender)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Moneylender;
-
+card!(Moneylender, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moneylender)");
 placeholder_effects!(Moneylender, "Moneylender", 4);
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Poacher)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Poacher;
-
+card!(Poacher, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poacher)");
 placeholder_effects!(Poacher, "Poacher", 4);
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Remodel)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Remodel;
-
+card!(Remodel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Remodel)");
 placeholder_effects!(Remodel, "Remodel", 4);
 
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Sentry)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Sentry;
-
+card!(Sentry, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Sentry)");
 placeholder_effects!(Sentry, "Sentry", 5);
 
+basic_action!(Smithy, "Smithy", 4, 3, 0, 0 ,0, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)");
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Smithy;
-
-#[typetag::serde]
-impl Card for Smithy {
-    name!("Smithy");
-    cost!(4);
-    types!(vec![Action]);
-    basic_on_play_effects!(3, 0, 0, 0);
-}
-
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/ThroneRoom)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct ThroneRoom;
-
+card!(ThroneRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Throne_Room)");
 #[typetag::serde]
 impl Card for ThroneRoom {
     name!("Throne Room");
@@ -369,29 +270,12 @@ impl Card for ThroneRoom {
 }
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Vassal;
-
+card!(Vassal, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)");
 placeholder_effects!(Vassal, "Vassal", 3);
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Village)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Village;
+basic_action!(Village, "Village", 3, 1, 2, 0, 0, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Village)");
 
-#[typetag::serde]
-impl Card for Village {
-    name!("Village");
-    cost!(3);
-    types!(vec![Action]);
-    basic_on_play_effects!(1, 2, 0, 0);
-}
-
-
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Witch;
-
+card!(Witch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)");
 #[typetag::serde]
 impl Card for Witch {
     name!("Witch");
@@ -407,10 +291,7 @@ impl Card for Witch {
 }
 
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Workshop;
-
+card!(Workshop, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop)");
 #[typetag::serde]
 impl Card for Workshop {
     name!("Workshop");

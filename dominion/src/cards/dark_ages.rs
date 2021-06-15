@@ -4,10 +4,7 @@ use std::cmp::max;
 
 use super::prelude::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Poor_House)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct PoorHouse;
-
+card!(PoorHouse, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poor_House)");
 #[typetag::serde]
 impl Card for PoorHouse {
     name!("Poor House");

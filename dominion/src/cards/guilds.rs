@@ -3,10 +3,7 @@
 use super::prelude::*;
 use super::base::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Soothsayer)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Soothsayer;
-
+card!(Soothsayer, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Soothsayer)");
 #[typetag::serde]
 impl Card for Soothsayer {
     name!("Soothsayer");

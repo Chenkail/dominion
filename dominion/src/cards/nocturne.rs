@@ -7,10 +7,7 @@ use super::prelude::*;
 
 // Heirlooms
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Pouch)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Pouch;
-
+card!(Pouch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Pouch)");
 #[typetag::serde]
 impl Card for Pouch {
     name!("Pouch");

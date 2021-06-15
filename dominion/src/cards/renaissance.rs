@@ -2,10 +2,7 @@
 
 use super::prelude::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Scholar)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Scholar;
-
+card!(Scholar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Scholar)");
 #[typetag::serde]
 impl Card for Scholar {
     name!("Scholar");

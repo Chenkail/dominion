@@ -2,10 +2,7 @@
 
 use super::prelude::*;
 
-/// [Wiki link](http://wiki.dominionstrategy.com/index.php/Potion)
-#[derive(Clone, Serialize, Deserialize)]
-pub struct Potion;
-
+card!(Potion, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Potion)");
 #[typetag::serde]
 impl Card for Potion {
     name!("Potion");
