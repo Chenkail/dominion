@@ -7,7 +7,7 @@ card!(Soothsayer, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Sooths
 #[typetag::serde]
 impl Card for Soothsayer {
     name!("Soothsayer");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action, Attack]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         // If there are no more Golds, we don't care so we move on

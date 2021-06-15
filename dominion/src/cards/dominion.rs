@@ -9,7 +9,7 @@ card!(Artisan, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)"
 #[typetag::serde]
 impl Card for Artisan {
     name!("Artisan");
-    cost!(6);
+    card_cost!(6);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         // TODO: change to card of choice from supply and put a card from hand back on deck
@@ -26,7 +26,7 @@ card!(Bandit, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bandit)");
 #[typetag::serde]
 impl Card for Bandit {
     name!("Bandit");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action, Attack]);
 
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
@@ -57,7 +57,7 @@ card!(Cellar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Cellar)");
 #[typetag::serde]
 impl Card for Cellar {
     name!("Cellar");
-    cost!(2);
+    card_cost!(2);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         let player = &mut game.players[player_index];
@@ -73,7 +73,7 @@ card!(Chapel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)");
 #[typetag::serde]
 impl Card for Chapel {
     name!("Chapel");
-    cost!(2);
+    card_cost!(2);
     types!(vec![Action]);
 
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
@@ -90,7 +90,7 @@ card!(CouncilRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Counc
 #[typetag::serde]
 impl Card for CouncilRoom {
     name!("Council Room");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
         let player = &mut game.players[player_index];
@@ -107,7 +107,15 @@ impl Card for CouncilRoom {
     }
 }
 
-basic_action!(Festival, "Festival", 5, 0, 2, 1, 2, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)");
+basic_action!(
+    Festival,
+    "Festival",
+    cost=5,
+    cards=0,
+    actions=2,
+    buys=1,
+    coins=2,
+    doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Festival)");
 
 // Gardens
 //
@@ -116,7 +124,7 @@ card!(Gardens, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Gardens)"
 #[typetag::serde]
 impl Card for Gardens {
     name!("Gardens");
-    cost!(4);
+    card_cost!(4);
     types!(vec![Victory]);
 
     //integer division should be fine
@@ -129,7 +137,7 @@ card!(Harbinger, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Harbing
 #[typetag::serde]
 impl Card for Harbinger {
     name!("Harbinger");
-    cost!(3);
+    card_cost!(3);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         let player = &mut game.players[player_index];
@@ -151,16 +159,20 @@ card!(Laboratory, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Labora
 #[typetag::serde]
 impl Card for Laboratory {
     name!("Laboratory");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action]);
-    basic_on_play_effects!(2, 1, 0, 0);
+    basic_on_play_effects!(
+        cards=2,
+        actions=1,
+        buys=0,
+        coins=0);
 }
 
 card!(Library, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Library)");
 #[typetag::serde]
 impl Card for Library {
     name!("Library");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action]);
 
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
@@ -181,14 +193,22 @@ impl Card for Library {
 
 // Market
 // effects: +1 Action, +1 Buy, +1 temp_coins, +1 Card
-basic_action!(Market, "Market", 5, 1, 1, 1, 1, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Market)");
+basic_action!(
+    Market,
+    "Market",
+    cost=5,
+    cards=1,
+    actions=1,
+    buys=1,
+    coins=1,
+    doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Market)");
 
 // Merchant
 card!(Merchant, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)");
 #[typetag::serde]
 impl Card for Merchant {
     name!("Merchant");
-    cost!(3);
+    card_cost!(3);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
         let p = game.players.get_mut(player_index).unwrap();
@@ -211,7 +231,7 @@ card!(Moat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moat)");
 #[typetag::serde]
 impl Card for Moat {
     name!("Moat");
-    cost!(2);
+    card_cost!(2);
     types!(vec![Action, Reaction]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
         let p = game.players.get_mut(player_index).unwrap();
@@ -243,13 +263,21 @@ placeholder_effects!(Remodel, "Remodel", 4);
 card!(Sentry, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Sentry)");
 placeholder_effects!(Sentry, "Sentry", 5);
 
-basic_action!(Smithy, "Smithy", 4, 3, 0, 0 ,0, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)");
+basic_action!(
+    Smithy, 
+    "Smithy",
+    cost=4,
+    cards=3,
+    actions=0,
+    buys=0,
+    coins=0,
+    doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)");
 
 card!(ThroneRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Throne_Room)");
 #[typetag::serde]
 impl Card for ThroneRoom {
     name!("Throne Room");
-    cost!(4);
+    card_cost!(4);
     types!(vec![Action]);
 
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
@@ -273,15 +301,21 @@ impl Card for ThroneRoom {
 card!(Vassal, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)");
 placeholder_effects!(Vassal, "Vassal", 3);
 
-basic_action!(Village, "Village", 3, 1, 2, 0, 0, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Village)");
+basic_action!(Village, "Village",
+            cost=3,
+            cards=1,
+            actions=2,
+            buys=0,
+            coins=0,
+            doc="[Wiki link](http://wiki.dominionstrategy.com/index.php/Village)");
 
 card!(Witch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)");
 #[typetag::serde]
 impl Card for Witch {
     name!("Witch");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action, Attack]);
-    basic_on_play_effects!(2, 0, 0, 0);
+    basic_on_play_effects!(cards=2, actions=0, buys=0, coins=0);
 
     fn attack_targets(&self) -> Option<AttackTargetType> { Some(EveryoneElse) }
 
@@ -295,7 +329,7 @@ card!(Workshop, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop
 #[typetag::serde]
 impl Card for Workshop {
     name!("Workshop");
-    cost!(3);
+    card_cost!(3);
     types!(vec![Action]);
 
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {

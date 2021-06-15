@@ -74,7 +74,7 @@ macro_rules! placeholder_effects {
 /// #[typetag::serde]
 /// impl Card for MiningVillage {
 ///     name!("Mining Village");
-///     cost!(4);
+///     card_cost!(4);
 ///     types!(vec![Action]);
 ///     // ...
 /// }
@@ -99,13 +99,13 @@ macro_rules! name {
 /// #[typetag::serde]
 /// impl Card for Golem {
 ///     name!("Golem");
-///     cost!(4, 0, 1);
+///     card_cost!(4, 0, 1);
 ///     types!(vec![Action]);
 ///     // ...
 /// }
 /// ```
 #[macro_export]
-macro_rules! cost {
+macro_rules! card_cost {
     ($coins:expr) => {
         fn coin_cost(&self) -> usize { $coins }
     };
@@ -130,7 +130,7 @@ macro_rules! cost {
 /// # #[typetag::serde]
 /// impl Card for MyCard {
 /// # name!("My Card");
-/// # cost!(0);
+/// # card_cost!(0);
 ///     // ...
 ///     types!(vec![Action, Victory]);
 /// }
@@ -152,7 +152,7 @@ macro_rules! types {
 /// #[typetag::serde]
 /// impl Card for Gold {
 ///     name!("Gold");
-///     cost!(6);
+///     card_cost!(6);
 ///     types!(vec![Treasure]);
 ///     treasure_value!(3);
 /// }
@@ -174,7 +174,7 @@ macro_rules! treasure_value {
 /// #[typetag::serde]
 /// impl Card for Province {
 /// # name!("Province");
-/// # cost!(8);
+/// # card_cost!(8);
 /// # types!(vec![Victory]);
 ///     // ...
 ///     victory_points!(6);
@@ -188,7 +188,7 @@ macro_rules! treasure_value {
 /// #[typetag::serde]
 /// impl Card for BasicCurse {
 /// # name!("Curse");
-/// # cost!(0);
+/// # card_cost!(0);
 /// # types!(vec![Curse]);
 ///     // ...
 ///     victory_points!(-1);
@@ -214,14 +214,14 @@ macro_rules! victory_points {
 /// #[typetag::serde]
 /// impl Card for Market {
 ///     name!("Market");
-///     cost!(5);
+///     card_cost!(5);
 ///     types!(vec![Action]);
 ///     basic_on_play_effects!(1, 1, 1, 1);
 /// }
 /// ```
 #[macro_export]
 macro_rules! basic_on_play_effects {
-    ($cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
+    (cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr) => {
         fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
             let player = &mut game.players[player_index];
 
@@ -245,24 +245,26 @@ macro_rules! basic_on_play_effects {
 /// ```
 #[macro_export]
 macro_rules! basic_action {
-    ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr) => {
+    ($struct_name:ident, $name:expr, cost=$cost:expr, $(cards=$cards:expr,)? $(actions=$actions:expr,)? $(buys=$buys:expr,)? $(coins=$coins:expr)?) => {
         card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Action]);
             basic_on_play_effects!($cards, $actions, $buys, $coins);
         }
     };
-    ($struct_name:ident, $name:expr, $cost:expr, $cards:expr, $actions:expr, $buys:expr, $coins:expr, $doc:tt) => {
+
+    ($struct_name:ident, $name:expr, cost=$cost:expr, cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr, doc=$doc:tt) => {
+    // ($struct_name:ident, $name:expr, cost=$cost:expr, $(cards=$cards:expr,)? $(actions=$actions:expr,)? $(buys=$buys:expr,)? $(coins=$coins:expr,)? $(doc=$doc:tt)?) => {
         card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Action]);
-            basic_on_play_effects!($cards, $actions, $buys, $coins);
+            basic_on_play_effects!(cards=$cards, actions=$actions, buys=$buys, coins=$coins);
         }
     };
 }
@@ -283,7 +285,7 @@ macro_rules! basic_treasure {
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Treasure]);
             treasure_value!($value);
         }
@@ -293,7 +295,7 @@ macro_rules! basic_treasure {
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Treasure]);
             treasure_value!($value);
         }
@@ -316,7 +318,7 @@ macro_rules! basic_victory {
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Victory]);
             victory_points!($points);
         }
@@ -326,7 +328,7 @@ macro_rules! basic_victory {
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Victory]);
             victory_points!($points);
         }
@@ -352,7 +354,7 @@ macro_rules! basic_curse {
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Curse]);
             victory_points!($points);
         }
@@ -362,7 +364,7 @@ macro_rules! basic_curse {
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
-            cost!($cost);
+            card_cost!($cost);
             types!(vec![Curse]);
             victory_points!($points);
         }

@@ -8,7 +8,7 @@ card!(Port, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Port)");
 #[typetag::serde]
 impl Card for Port {
     name!("Port");
-    cost!(4);
+    card_cost!(4);
     types!(vec![Action]);
     basic_on_play_effects!(1, 2, 0, 0);
     fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {

@@ -31,7 +31,7 @@ use crate::types::*;
 /// #[typetag::serde]
 /// impl Card for MyCard {
 ///     name!("My Card");
-///     cost!(5);
+///     card_cost!(5);
 ///     types!(vec![Action]);
 ///
 ///     // Add your custom behavior here

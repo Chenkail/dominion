@@ -8,7 +8,7 @@ card!(PoorHouse, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poor_Ho
 #[typetag::serde]
 impl Card for PoorHouse {
     name!("Poor House");
-    cost!(1);
+    card_cost!(1);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
         let player = &mut game.players[player_index];

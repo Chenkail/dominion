@@ -8,7 +8,7 @@ card!(Fairgrounds, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Fairg
 #[typetag::serde]
 impl Card for Fairgrounds {
     name!("Fairgrounds");
-    cost!(6);
+    card_cost!(6);
     types!(vec![Victory]);
     fn victory_points(&self, player: &Player) -> isize {
         let mut names = HashSet::new();

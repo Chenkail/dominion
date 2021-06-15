@@ -9,7 +9,7 @@
 			"#[typetag::serde]",
 			"impl Card for ${1:NewCard} {",
 			"    name!(\"${2:Card Name}\");",
-			"    cost!(${3:Cost});",
+			"    card_cost!(${3:Cost});",
 			"    types!(vec![${4:Action}]);",
 			"    $0",
 			"}"
@@ -22,7 +22,7 @@
 			"#[typetag::serde]",
 			"impl Card for ${1:NewCard} {",
 			"    name!(\"${2:Card Name}\");",
-			"    cost!(${3:Cost});",
+			"    card_cost!(${3:Cost});",
 			"    types!(vec![${4:Action}]);",
 			"    $0",
 			"}"

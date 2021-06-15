@@ -6,7 +6,7 @@ card!(Scholar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Scholar)"
 #[typetag::serde]
 impl Card for Scholar {
     name!("Scholar");
-    cost!(5);
+    card_cost!(5);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
         let player = &mut game.players[player_index];

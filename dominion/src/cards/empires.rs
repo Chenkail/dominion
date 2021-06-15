@@ -7,7 +7,7 @@ card!(Fortune, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Fortune)"
 #[typetag::serde]
 impl Card for Fortune {
     name!("Fortune");
-    cost!(8, 8);
+    card_cost!(8, 8);
     types!(vec![Treasure]);
 
     fn treasure_value(&self, player: &Player) -> usize {

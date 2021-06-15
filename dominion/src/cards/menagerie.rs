@@ -6,7 +6,7 @@ card!(Horse, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Horse)");
 #[typetag::serde]
 impl Card for Horse {
     name!("Horse");
-    cost!(3);
+    card_cost!(3);
     types!(vec![Action]);
     fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
         let player = &mut game.players[player_index];

@@ -6,7 +6,7 @@ card!(SilkRoad, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Silk_Roa
 #[typetag::serde]
 impl Card for SilkRoad {
     name!("Silk Road");
-    cost!(4);
+    card_cost!(4);
     types!(vec![Victory]);
     fn victory_points(&self, player: &Player) -> isize {
         let mut victory_cards = 0;
