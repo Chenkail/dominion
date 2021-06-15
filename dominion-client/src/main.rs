@@ -42,6 +42,11 @@ pub async fn main() -> Result<()> {
                 ServerMessage::ChatMessage{ author, message } => {
                     println!("Player {}: \"{}\"", author, message)
                 }
+                ServerMessage::StartingGame{ state } => {
+                    println!("Starting game!");
+                }
+                ServerMessage::CurrentState{ state } => {
+                }
                 _ => {
                     println!("Got a message from the server that the client couldn't understand!")
                 }
@@ -75,6 +80,12 @@ pub async fn main() -> Result<()> {
                         serialized
                         .send(serde_json::to_value(&ClientMessage::StartGame { supply_list: Game::default_supply_list() })?)
                         .await?;
+                    }
+                    "play" => {
+                        let card_name = command_parts.next().unwrap_or("");
+                        for card in &game_state.player.hand {
+
+                        }
                     }
                     _ => println!("Couldn't understand input!")
                 }
