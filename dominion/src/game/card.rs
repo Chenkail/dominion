@@ -38,24 +38,9 @@ use crate::types::*;
 /// }
 /// ```
 ///
-/// If you are making a crate with custom cards and would like to document the
-/// cards, you have to declare the card struct by hand, e.g.:
-/// ```
-/// use dominion::cards::prelude::*;
+/// The `card!` macro also takes an optional docstring argument, so that
+/// if you are building a library with several cards you can add descriptions.
 ///
-/// /// This is my custom card!
-/// #[derive(Clone, Serialize, Deserialize)]
-/// pub struct MyCard;
-///
-/// #[typetag::serde]
-/// impl Card for MyCard {
-///     name!("My Card");
-///     cost!(5);
-///     types!(vec![Action]);
-///
-///     // Add your custom behavior here
-/// }
-/// ```
 ///
 /// All other methods are optional, though for certain card types it doesn't
 /// make sense not to have custom implementations for some of these methods.
