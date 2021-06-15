@@ -52,6 +52,9 @@ pub async fn main() -> Result<()> {
                     *old_state = state;
                     println!("Starting game!");
                 }
+                ServerMessage::NotEnoughPlayers => {
+                    println!("Not enough players to start!");
+                }
                 ServerMessage::CurrentState{ state } => {
                     let mut old_state = game_state.lock().unwrap();
                     *old_state = state;
@@ -90,6 +93,12 @@ pub async fn main() -> Result<()> {
                         .send(serde_json::to_value(&ClientMessage::StartGame { supply_list: Game::default_supply_list() })?)
                         .await?;
                     }
+                    "hand" => {
+                        let state = game_state2.lock().unwrap();
+                        let hand: Vec<Box<dyn Card>> = state.player.hand.clone().into();
+                        let names: Vec<String> = hand.iter().map(|card| card.name().to_string()).collect();
+                        println!("{}", names.join(", "));
+                    }
                     "play" => {
                         let card_name = command_parts.next().unwrap_or("");
                         let state = game_state2.lock().unwrap();
@@ -104,7 +113,9 @@ pub async fn main() -> Result<()> {
                                     .send(serde_json::to_value(&ClientMessage::PlayCard { index })?)
                                     .await?;
                             }
-                            None => println!("Couldn't find that card!"),
+                            None => {
+                                println!("Couldn't find any card named {} in hand!", card_name)
+                            }
                         }
                     }
                     _ => println!("Couldn't understand input!")

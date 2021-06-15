@@ -1,5 +1,4 @@
-use dominion::game::prelude::*;
-use dominion::error::DominionError::*;
+use dominion::prelude::*;
 use dominion_server::api::{ClientMessage, ServerMessage};
 
 use std::sync::{Arc, Mutex};
@@ -133,6 +132,14 @@ pub async fn main() -> Result<()> {
                                         }
                                     }
                                 }
+                                ClientMessage::PlayCard { index } => {
+                                    // TODO: play the card
+                                    let game = new_data.lock().unwrap();
+                                    let player = &game.players[player_number];
+                                    let card = player.hand[index].clone();
+                                    println!("Player {} played {}!", player_number, card.name());
+                                }
+
                                 _ => {
                                     println!("Server received an unknown message from the client!");
                                     println!("Message: {:?}", msg);
