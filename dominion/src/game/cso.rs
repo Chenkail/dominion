@@ -14,31 +14,39 @@ pub trait CSO: Clone + Send + Sync {
     fn effects(&self, player: Player, card: Box<dyn Card>, supply: Supply);
 }
 
+#[clonable]
 #[typetag::serde]
-pub trait Artifact: CSO {}
+pub trait Artifact: CSO + Clone {}
 
+#[clonable]
 #[typetag::serde]
-pub trait Boon: CSO {}
+pub trait Boon: CSO + Clone {}
 
+#[clonable]
 #[typetag::serde]
-pub trait Event: CSO {
+pub trait Event: CSO + Clone {
     fn coin_cost(&self) -> usize;
     fn debt_cost(&self) -> usize;
 }
 
+#[clonable]
 #[typetag::serde]
-pub trait Hex: CSO {}
+pub trait Hex: CSO + Clone {}
 
+#[clonable]
 #[typetag::serde]
-pub trait Landmark: CSO {}
+pub trait Landmark: CSO + Clone {}
 
+#[clonable]
 #[typetag::serde]
-pub trait Project: CSO {
+pub trait Project: CSO + Clone {
     fn coin_cost(&self) -> usize;
 }
 
+#[clonable]
 #[typetag::serde]
-pub trait State: CSO {}
+pub trait State: CSO + Clone {}
 
+#[clonable]
 #[typetag::serde]
-pub trait Way: CSO {}
+pub trait Way: CSO + Clone {}
