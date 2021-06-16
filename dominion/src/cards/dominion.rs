@@ -5,7 +5,7 @@
 use super::prelude::*;
 use super::base::*;
 
-card!(Artisan, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)");
+declare_card!(Artisan, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Artisan)");
 #[typetag::serde]
 impl Card for Artisan {
     name!("Artisan");
@@ -22,7 +22,7 @@ impl Card for Artisan {
 }
 
 
-card!(Bandit, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bandit)");
+declare_card!(Bandit, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bandit)");
 #[typetag::serde]
 impl Card for Bandit {
     name!("Bandit");
@@ -48,12 +48,12 @@ impl Card for Bandit {
 }
 
 
-card!(Bureaucrat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bureaucrat)");
+declare_card!(Bureaucrat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bureaucrat)");
 placeholder_effects!(Bureaucrat, "Bureaucrat", 4);
 
 // Cellar
 // +1 Action, discard any number of cards, then draw that many
-card!(Cellar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Cellar)");
+declare_card!(Cellar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Cellar)");
 #[typetag::serde]
 impl Card for Cellar {
     name!("Cellar");
@@ -69,7 +69,7 @@ impl Card for Cellar {
     }
 }
 
-card!(Chapel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)");
+declare_card!(Chapel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Chapel)");
 #[typetag::serde]
 impl Card for Chapel {
     name!("Chapel");
@@ -86,7 +86,7 @@ impl Card for Chapel {
 
 // Council Room
 // +4 cards, +1 buy, each other player draws a card
-card!(CouncilRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Council_Room)");
+declare_card!(CouncilRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Council_Room)");
 #[typetag::serde]
 impl Card for CouncilRoom {
     name!("Council Room");
@@ -120,7 +120,7 @@ basic_action!(
 // Gardens
 //
 // Effect: victory card, worth 1 per 10 cards you have(round down)
-card!(Gardens, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Gardens)");
+declare_card!(Gardens, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Gardens)");
 #[typetag::serde]
 impl Card for Gardens {
     name!("Gardens");
@@ -133,7 +133,7 @@ impl Card for Gardens {
     }
 }
 
-card!(Harbinger, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Harbinger)");
+declare_card!(Harbinger, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Harbinger)");
 #[typetag::serde]
 impl Card for Harbinger {
     name!("Harbinger");
@@ -155,7 +155,7 @@ impl Card for Harbinger {
     }
 }
 
-card!(Laboratory, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Laboratory)");
+declare_card!(Laboratory, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Laboratory)");
 #[typetag::serde]
 impl Card for Laboratory {
     name!("Laboratory");
@@ -168,7 +168,7 @@ impl Card for Laboratory {
         coins=0);
 }
 
-card!(Library, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Library)");
+declare_card!(Library, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Library)");
 #[typetag::serde]
 impl Card for Library {
     name!("Library");
@@ -204,7 +204,7 @@ basic_action!(
     "[Wiki link](http://wiki.dominionstrategy.com/index.php/Market)");
 
 // Merchant
-card!(Merchant, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)");
+declare_card!(Merchant, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Merchant)");
 #[typetag::serde]
 impl Card for Merchant {
     name!("Merchant");
@@ -219,15 +219,15 @@ impl Card for Merchant {
     }
 }
 
-card!(Militia, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Militia)");
+declare_card!(Militia, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Militia)");
 placeholder_effects!(Militia, "Militia", 4);
 
 
-card!(Mine, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Mine)");
+declare_card!(Mine, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Mine)");
 placeholder_effects!(Mine, "Mine", 5);
 
 
-card!(Moat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moat)");
+declare_card!(Moat, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moat)");
 #[typetag::serde]
 impl Card for Moat {
     name!("Moat");
@@ -250,17 +250,17 @@ impl Card for Moat {
     }
 }
 
-card!(Moneylender, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moneylender)");
+declare_card!(Moneylender, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Moneylender)");
 placeholder_effects!(Moneylender, "Moneylender", 4);
 
 
-card!(Poacher, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poacher)");
+declare_card!(Poacher, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poacher)");
 placeholder_effects!(Poacher, "Poacher", 4);
 
-card!(Remodel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Remodel)");
+declare_card!(Remodel, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Remodel)");
 placeholder_effects!(Remodel, "Remodel", 4);
 
-card!(Sentry, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Sentry)");
+declare_card!(Sentry, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Sentry)");
 placeholder_effects!(Sentry, "Sentry", 5);
 
 basic_action!(
@@ -273,7 +273,7 @@ basic_action!(
     coins=0,
     "[Wiki link](http://wiki.dominionstrategy.com/index.php/Smithy)");
 
-card!(ThroneRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Throne_Room)");
+declare_card!(ThroneRoom, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Throne_Room)");
 #[typetag::serde]
 impl Card for ThroneRoom {
     name!("Throne Room");
@@ -298,7 +298,7 @@ impl Card for ThroneRoom {
 }
 
 
-card!(Vassal, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)");
+declare_card!(Vassal, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Vassal)");
 placeholder_effects!(Vassal, "Vassal", 3);
 
 basic_action!(Village, "Village",
@@ -309,7 +309,7 @@ basic_action!(Village, "Village",
             coins=0,
             "[Wiki link](http://wiki.dominionstrategy.com/index.php/Village)");
 
-card!(Witch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)");
+declare_card!(Witch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Witch)");
 #[typetag::serde]
 impl Card for Witch {
     name!("Witch");
@@ -325,7 +325,7 @@ impl Card for Witch {
 }
 
 
-card!(Workshop, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop)");
+declare_card!(Workshop, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Workshop)");
 #[typetag::serde]
 impl Card for Workshop {
     name!("Workshop");

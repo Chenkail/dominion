@@ -2,7 +2,7 @@
 
 use super::prelude::*;
 
-card!(Scholar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Scholar)");
+declare_card!(Scholar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Scholar)");
 #[typetag::serde]
 impl Card for Scholar {
     name!("Scholar");

@@ -3,7 +3,7 @@
 use super::prelude::*;
 use super::base::*;
 
-card!(Soothsayer, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Soothsayer)");
+declare_card!(Soothsayer, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Soothsayer)");
 #[typetag::serde]
 impl Card for Soothsayer {
     name!("Soothsayer");

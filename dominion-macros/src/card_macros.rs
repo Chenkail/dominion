@@ -7,11 +7,11 @@
 /// Format:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// card!(Market);
-/// card!(MyCard, "Your card description here");
+/// declare_card!(Market);
+/// declare_card!(MyCard, "Your card description here");
 /// ```
 #[macro_export]
-macro_rules! card {
+macro_rules! declare_card {
     ($struct_name:ident) => {
         #[derive(Clone, Serialize, Deserialize)]
         pub struct $struct_name;
@@ -36,7 +36,7 @@ macro_rules! card {
 macro_rules! placeholder_card {
     ($struct_name:ident, $name:expr, $cost:expr) => {
         /// PLACEHOLDER CARD
-        card!($struct_name);
+        declare_card!($struct_name);
         placeholder_effects!($struct_name, $name, $cost);
     };
 }
@@ -48,7 +48,7 @@ macro_rules! placeholder_card {
 /// For example:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// card!(UnimplementedCard);
+/// declare_card!(UnimplementedCard);
 /// placeholder_effects!(UnimplementedCard, "Unimplemented Card", 0);
 /// ```
 #[macro_export]
@@ -70,7 +70,7 @@ macro_rules! placeholder_effects {
 /// For example:
 /// ```
 /// # use dominion::cards::prelude::*;
-/// card!(MiningVillage);
+/// declare_card!(MiningVillage);
 /// #[typetag::serde]
 /// impl Card for MiningVillage {
 ///     name!("Mining Village");
@@ -95,7 +95,7 @@ macro_rules! name {
 /// ```
 /// # use dominion::cards::prelude::*;
 /// // http://wiki.dominionstrategy.com/index.php/Golem
-/// card!(Golem);
+/// declare_card!(Golem);
 /// #[typetag::serde]
 /// impl Card for Golem {
 ///     name!("Golem");
@@ -126,7 +126,7 @@ macro_rules! card_cost {
 /// ```
 /// # use dominion::cards::prelude::*;
 /// #
-/// # card!(MyCard);
+/// # declare_card!(MyCard);
 /// # #[typetag::serde]
 /// impl Card for MyCard {
 /// # name!("My Card");
@@ -148,7 +148,7 @@ macro_rules! types {
 /// ```
 /// use dominion::cards::prelude::*;
 ///
-/// card!(Gold);
+/// declare_card!(Gold);
 /// #[typetag::serde]
 /// impl Card for Gold {
 ///     name!("Gold");
@@ -170,7 +170,7 @@ macro_rules! treasure_value {
 /// ```
 /// use dominion::cards::prelude::*;
 ///
-/// card!(Province);
+/// declare_card!(Province);
 /// #[typetag::serde]
 /// impl Card for Province {
 /// # name!("Province");
@@ -184,7 +184,7 @@ macro_rules! treasure_value {
 /// ```
 /// use dominion::cards::prelude::*;
 ///
-/// card!(BasicCurse);
+/// declare_card!(BasicCurse);
 /// #[typetag::serde]
 /// impl Card for BasicCurse {
 /// # name!("Curse");
@@ -210,7 +210,7 @@ macro_rules! victory_points {
 /// ```
 /// use dominion::cards::prelude::*;
 ///
-/// card!(Market);
+/// declare_card!(Market);
 /// #[typetag::serde]
 /// impl Card for Market {
 ///     name!("Market");
@@ -257,7 +257,7 @@ macro_rules! basic_on_play_effects {
 #[macro_export]
 macro_rules! basic_action {
     ($struct_name:ident, $name:expr, cost=$cost:expr, cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr) => {
-        card!($struct_name);
+        declare_card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -268,7 +268,7 @@ macro_rules! basic_action {
     };
 
     ($struct_name:ident, $name:expr, cost=$cost:expr, cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr, $doc:tt) => {
-        card!($struct_name, $doc);
+        declare_card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -291,7 +291,7 @@ macro_rules! basic_action {
 #[macro_export]
 macro_rules! basic_treasure {
     ($struct_name:ident, $name:expr, cost=$cost:expr, value=$value:expr) => {
-        card!($struct_name);
+        declare_card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -301,7 +301,7 @@ macro_rules! basic_treasure {
         }
     };
     ($struct_name:ident, $name:expr, cost=$cost:expr, value=$value:expr, $doc:tt) => {
-        card!($struct_name, $doc);
+        declare_card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -324,7 +324,7 @@ macro_rules! basic_treasure {
 #[macro_export]
 macro_rules! basic_victory {
     ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr) => {
-        card!($struct_name);
+        declare_card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -334,7 +334,7 @@ macro_rules! basic_victory {
         }
     };
     ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr, $doc:tt) => {
-        card!($struct_name, $doc);
+        declare_card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -360,7 +360,7 @@ macro_rules! basic_victory {
 #[macro_export]
 macro_rules! basic_curse {
     ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr) => {
-        card!($struct_name);
+        declare_card!($struct_name);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);
@@ -370,7 +370,7 @@ macro_rules! basic_curse {
         }
     };
     ($struct_name:ident, $name:expr, cost=$cost:expr, points=$points:expr, $doc:tt) => {
-        card!($struct_name, $doc);
+        declare_card!($struct_name, $doc);
         #[typetag::serde]
         impl Card for $struct_name {
             name!($name);

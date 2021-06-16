@@ -4,7 +4,7 @@ use std::cmp::max;
 
 use super::prelude::*;
 
-card!(PoorHouse, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poor_House)");
+declare_card!(PoorHouse, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Poor_House)");
 #[typetag::serde]
 impl Card for PoorHouse {
     name!("Poor House");

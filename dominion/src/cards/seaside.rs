@@ -2,4 +2,4 @@
 
 use super::prelude::*;
 
-card!(Bazaar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bazaar)");
+declare_card!(Bazaar, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Bazaar)");

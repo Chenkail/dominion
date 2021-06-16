@@ -7,7 +7,7 @@ use super::prelude::*;
 
 // Heirlooms
 
-card!(Pouch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Pouch)");
+declare_card!(Pouch, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Pouch)");
 #[typetag::serde]
 impl Card for Pouch {
     name!("Pouch");

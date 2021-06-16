@@ -4,7 +4,7 @@ use std::collections::HashSet;
 
 use super::prelude::*;
 
-card!(Fairgrounds, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Fairgrounds)");
+declare_card!(Fairgrounds, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Fairgrounds)");
 #[typetag::serde]
 impl Card for Fairgrounds {
     name!("Fairgrounds");

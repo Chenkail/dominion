@@ -4,7 +4,7 @@ use super::prelude::*;
 
 placeholder_card!(Champion, "Champion", 6);
 
-card!(Port, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Port)");
+declare_card!(Port, "[Wiki link](http://wiki.dominionstrategy.com/index.php/Port)");
 #[typetag::serde]
 impl Card for Port {
     name!("Port");
