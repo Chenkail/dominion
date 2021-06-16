@@ -15,38 +15,38 @@ pub trait CSO: Clone + Send + Sync {
 }
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "artifact")]
 pub trait Artifact: CSO + Clone + Send + Sync {}
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "boon")]
 pub trait Boon: CSO + Clone + Send + Sync {}
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "event")]
 pub trait Event: CSO + Clone + Send + Sync {
     fn coin_cost(&self) -> usize;
     fn debt_cost(&self) -> usize;
 }
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "hex")]
 pub trait Hex: CSO + Clone + Send + Sync {}
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "landmark")]
 pub trait Landmark: CSO + Clone + Send + Sync {}
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "project")]
 pub trait Project: CSO + Clone + Send + Sync {
     fn coin_cost(&self) -> usize;
 }
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "state")]
 pub trait State: CSO + Clone + Send + Sync {}
 
 #[clonable]
-#[typetag::serde]
+#[typetag::serde(tag = "way")]
 pub trait Way: CSO + Clone + Send + Sync {}
