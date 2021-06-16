@@ -27,7 +27,7 @@ use crate::types::*;
 /// ```
 /// use dominion::cards::prelude::*;
 ///
-/// card!(MyCard);
+/// declare_card!(MyCard);
 /// #[typetag::serde]
 /// impl Card for MyCard {
 ///     name!("My Card");
