@@ -8,7 +8,7 @@ impl Card for Horse {
     name!("Horse");
     card_cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
 
         player.draw_cards(2);

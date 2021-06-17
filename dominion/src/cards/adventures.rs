@@ -15,7 +15,7 @@ impl Card for Port {
         actions=2,
         buys=0,
         coins=0);
-    fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let _ = game.gain(player_index,Box::new(Port), callbacks);
     }
 }

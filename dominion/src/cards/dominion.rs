@@ -11,7 +11,7 @@ impl Card for Artisan {
     name!("Artisan");
     card_cost!(6);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         // TODO: change to card of choice from supply and put a card from hand back on deck
         let card = Box::new(Silver);
         let result = game.gain_to_hand(player_index, card, callbacks);
@@ -29,13 +29,13 @@ impl Card for Bandit {
     card_cost!(5);
     types!(vec![Action, Attack]);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let _ = game.gain(player_index, Box::new(Gold), callbacks);
     }
 
     fn attack_targets(&self) -> Option<AttackTargetType> { Some(EveryoneElse) }
 
-    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
         //callback to reveal top 2 cards in their hand
 
@@ -59,7 +59,7 @@ impl Card for Cellar {
     name!("Cellar");
     card_cost!(2);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
         let indexes: Vec<usize> = callbacks.choose_cards_from_hand(player.hand.len(), "Choose cards to discard");
         let count = indexes.len();
@@ -76,7 +76,7 @@ impl Card for Chapel {
     card_cost!(2);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
         let indexes: Vec<usize> = callbacks.choose_cards_from_hand(4, "Choose up to 4 cards to trash");
         player.trash_given_indexes(indexes, &mut game.trash);
@@ -92,7 +92,7 @@ impl Card for CouncilRoom {
     name!("Council Room");
     card_cost!(5);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
         player.draw_cards(4);
         player.add_buys(1);
@@ -139,7 +139,7 @@ impl Card for Harbinger {
     name!("Harbinger");
     card_cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
         player.add_actions(1);
         player.draw_cards(1);
@@ -175,7 +175,7 @@ impl Card for Library {
     card_cost!(5);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
         while player.hand.len() < 7 {
             if player.deck.front().unwrap().is_action() {
@@ -209,7 +209,7 @@ impl Card for Merchant {
     name!("Merchant");
     card_cost!(3);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Box<dyn Callbacks>) {
         let p = game.players.get_mut(player_index).unwrap();
         p.add_actions(1);
         p.draw_cards(1);
@@ -232,12 +232,12 @@ impl Card for Moat {
     name!("Moat");
     card_cost!(2);
     types!(vec![Action, Reaction]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Box<dyn Callbacks>) {
         let p = game.players.get_mut(player_index).unwrap();
         p.draw_cards(2);
     }
 
-    fn effects_on_react(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
+    fn effects_on_react(&self, game: &mut Game, player_index: usize, _: &Box<dyn Callbacks>) {
         // TODO: Fix this to make it a choice per attack, rather than making
         // the player completely immune until their next turn
         let p = game.players.get_mut(player_index).unwrap();
@@ -279,7 +279,7 @@ impl Card for ThroneRoom {
     card_cost!(4);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let card_index = callbacks.choose_card_from_hand_opt("Choose card to play twice").unwrap();
 
         let player = &mut game.players[player_index];
@@ -289,7 +289,7 @@ impl Card for ThroneRoom {
             // TODO: Prompt for new card
         }
 
-        game.action_effects(player_index, card.clone(), callbacks.clone());
+        game.action_effects(player_index, card.clone(), callbacks);
         game.action_effects(player_index, card.clone(), callbacks);
 
         let player = &mut game.players[player_index];
@@ -319,7 +319,7 @@ impl Card for Witch {
 
     fn attack_targets(&self) -> Option<AttackTargetType> { Some(EveryoneElse) }
 
-    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let _ = game.gain(player_index, Box::new(BasicCurse), callbacks);
     }
 }
@@ -332,7 +332,7 @@ impl Card for Workshop {
     card_cost!(3);
     types!(vec![Action]);
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let potential_cards = game.return_avail_cards_ucost(4);
     }
 }

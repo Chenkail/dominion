@@ -226,7 +226,7 @@ macro_rules! victory_points {
 #[macro_export]
 macro_rules! basic_on_play_effects {
     (cards=$cards:expr, actions=$actions:expr, buys=$buys:expr, coins=$coins:expr) => {
-        fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+        fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
             let player = &mut game.players[player_index];
 
             player.draw_cards($cards);

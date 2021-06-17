@@ -18,7 +18,7 @@ impl Card for Fortune {
         }
     }
 
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
 
         // This needs to happen AFTER adding the treasure value
@@ -26,7 +26,7 @@ impl Card for Fortune {
         player.resources.buys += 1;
     }
 
-    fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
+    fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &game.players[player_index];
 
         let in_play = player.in_play.clone();
