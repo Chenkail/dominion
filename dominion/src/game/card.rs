@@ -87,19 +87,19 @@ pub trait Card: Clone + Send + Sync {
 
     // Effects and triggers
     /// The card's regular effects when played from hand
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {}
     /// The card's attack effects on other players
-    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    fn attack_effects(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {}
     /// Who the attack targets
     fn attack_targets(&self) -> Option<AttackTargetType> { None }
     /// The card's effects when used as a reaction
-    fn effects_on_react(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_react(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {}
     /// Effects to trigger when this card is bought (but not gained through some other means)
-    fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_buy(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {}
     /// Effects to trigger when this card is gained
-    fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_gain(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {}
     /// Effects to trigger when this card is trashed
-    fn effects_on_trash(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {}
+    fn effects_on_trash(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {}
 
     /// The trigger for a reaction card
     fn reaction_trigger(&self) -> Option<ReactionTrigger> { None }

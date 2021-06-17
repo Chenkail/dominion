@@ -5,7 +5,7 @@ fn main() {
     let mut game = Game::default();
     let callbacks = sample_client::callbacks();
 
-    game.gain_to_hand(0, Box::new(Market), &callbacks).unwrap();
+    game.gain_to_hand(0, Box::new(Market), callbacks).unwrap();
 
     let player1 = &mut game.players[0];
     player1.print_hand();
@@ -14,7 +14,7 @@ fn main() {
     }
 
     player1.resources.actions = 1;
-    game.play_action_from_hand(0, 5, &callbacks).unwrap();
+    game.play_action_from_hand(0, 5, callbacks).unwrap();
 
     let player1 = &mut game.players[0];
     player1.print_hand();

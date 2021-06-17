@@ -8,7 +8,7 @@ fn main() {
 
     player.print_status();
     player.print_cards();
-    game.action_effects(0, Box::new(Market), &callbacks);
+    game.action_effects(0, Box::new(Market), callbacks);
 
     let player = &mut game.players[0];
     player.print_status();

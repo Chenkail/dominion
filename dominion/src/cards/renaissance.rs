@@ -8,7 +8,7 @@ impl Card for Scholar {
     name!("Scholar");
     card_cost!(5);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, _: Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
 
         player.discard.append(&mut player.hand);

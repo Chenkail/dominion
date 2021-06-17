@@ -10,11 +10,11 @@ impl Card for PoorHouse {
     name!("Poor House");
     card_cost!(1);
     types!(vec![Action]);
-    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: &Callbacks) {
+    fn effects_on_play(&self, game: &mut Game, player_index: usize, callbacks: Box<dyn Callbacks>) {
         let player = &mut game.players[player_index];
 
         player.resources.temp_coins += 4;
-        (callbacks.reveal_hand)(player);
+        callbacks.reveal_hand(player.player_number);
         for card in &player.hand {
             if card.is_treasure() {
                 player.resources.temp_coins = max(0, player.resources.temp_coins - 1);
