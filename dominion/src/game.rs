@@ -4,7 +4,6 @@
 //! players, the cards, and the game itself.
 
 pub mod prelude;
-pub mod callbacks;
 
 mod cso;
 mod card;
@@ -17,4 +16,3 @@ pub use card::Card;
 pub use gamedata::Game;
 pub use partial_game::PartialGame;
 pub use player::*;
-pub use callbacks::Callbacks;

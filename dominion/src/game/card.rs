@@ -11,7 +11,8 @@ use async_trait::async_trait;
 use itertools::Itertools;
 use dyn_clonable::clonable;
 
-use crate::game::{Game, Player, Callbacks};
+use crate::callbacks::Callbacks;
+use crate::game::{Game, Player};
 use crate::game::cso::*;
 use crate::types::*;
 

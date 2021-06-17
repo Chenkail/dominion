@@ -1,6 +1,6 @@
 //! The callbacks that need to be provided when building a client
 
-use crate::game::{Card, Player};
+use crate::game::Card;
 use super::prelude::Supply;
 
 use dyn_clonable::clonable;

@@ -5,6 +5,7 @@
 //! use dominion::prelude::*;
 //! ```
 
+pub use crate::callbacks::Callbacks;
 pub use crate::game::prelude::*;
 pub use crate::error::*;
 pub use crate::error::DominionError::*;
