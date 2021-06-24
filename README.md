@@ -13,3 +13,5 @@ To see the documentation, clone the repository and then run
 ```shell
 cargo doc --no-deps --open
 ```
+
+For a (work in progress) example server built using this library, click [here](https://github.com/tireswing/dominion-server).
