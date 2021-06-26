@@ -328,6 +328,7 @@ impl Game {
     /// Buy phase
     pub fn buy_phase(&mut self, player_index: usize, callbacks: &Box<dyn Callbacks>) {
         let player = &mut self.players[player_index];
+        let player_number = player.player_number;
 
         // TODO: prompt user to play treasures
         player.resources.coins_remaining = player.resources.coins_in_hand + player.resources.temp_coins;
@@ -347,7 +348,7 @@ impl Game {
         }
 
         if player.resources.buys > 0 {
-            while let Some(card) = callbacks.choose_card_from_supply(&self.supply) {
+            while let Some(card) = callbacks.choose_card_from_supply(player_number) {
                 // If player chooses a card they cannot buy, loop
                 if self.buy_card(player_index, card.clone(), callbacks).is_err() {
                     continue;
