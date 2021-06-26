@@ -7,7 +7,7 @@ use dyn_clonable::clonable;
 
 #[clonable]
 pub trait Callbacks: Clone + Send + Sync {
-    fn choose_card_from_supply(&self, supply: &Supply) -> Option<Box<dyn Card>>;
+    fn choose_card_from_supply(&self, player_number: usize) -> Option<Box<dyn Card>>;
     fn choose_card_from_hand(&self, message: &str) -> usize;
     fn choose_card_from_hand_opt(&self, message: &str) -> Option<usize>;
     fn choose_cards_from_hand(&self, number_to_choose: usize, message: &str) -> Vec<usize>;
